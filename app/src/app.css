@@ -1,0 +1,114 @@
+/* UI Drawer — 머티리얼 3. 색 · 모양 · 글자는 아래 토큰에서만 정해요.
+   색은 청록 씨앗색으로 만든 M3 색 역할 (primary, surface-container … ). */
+:root {
+  --md-primary: #006a60;
+  --md-on-primary: #ffffff;
+  --md-primary-container: #9ef2e4;
+  --md-on-primary-container: #00201c;
+  --md-secondary-container: #cce8e2;
+  --md-on-secondary-container: #05201c;
+  --md-surface: #f4fbf8;
+  --md-surface-container-lowest: #ffffff;
+  --md-surface-container-low: #eff5f2;
+  --md-surface-container: #e9efec;
+  --md-surface-container-high: #e3eae7;
+  --md-surface-container-highest: #dde4e1;
+  --md-on-surface: #161d1c;
+  --md-on-surface-variant: #3f4947;
+  --md-outline: #6f7977;
+  --md-outline-variant: #bec9c6;
+  --md-inverse-surface: #2b3231;
+  --md-inverse-on-surface: #ecf2ef;
+  --md-inverse-primary: #82d5c8;
+  --md-error: #ba1a1a;
+
+  --md-shape-s: 8px;
+  --md-shape-m: 12px;
+  --md-shape-l: 16px;
+  --md-shape-xl: 28px;
+  --md-ease: cubic-bezier(0.2, 0, 0, 1); /* M3 emphasized */
+  --font: 'Roboto', 'Pretendard', 'Apple SD Gothic Neo', 'Noto Sans KR', system-ui, sans-serif;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 1200px; background: var(--md-surface); color: var(--md-on-surface); font: 400 14px/20px var(--font); -webkit-font-smoothing: antialiased; word-break: keep-all; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; border: 0; background: none; cursor: pointer; }
+:focus-visible { outline: 2px solid var(--md-primary); outline-offset: 2px; }
+
+/* 상태 레이어: 올리면 8%, 누르면 12% (M3) */
+:is(.nd-item, .ec, .chip, .icon-btn, .btn, .btn-text, .sheet-vs button) { position: relative; overflow: hidden; }
+:is(.nd-item, .ec, .chip, .icon-btn, .btn, .btn-text, .sheet-vs button)::after { content: ''; position: absolute; inset: 0; background: currentColor; opacity: 0; transition: opacity 0.15s; pointer-events: none; }
+:is(.nd-item, .ec, .chip, .icon-btn, .btn, .btn-text, .sheet-vs button):hover::after { opacity: 0.08; }
+:is(.nd-item, .ec, .chip, .icon-btn, .btn, .btn-text, .sheet-vs button):active::after { opacity: 0.12; }
+
+/* ─── 내비게이션 드로어 (= 서랍) ─── */
+.nd { position: fixed; left: 0; top: 0; bottom: 0; z-index: 40; width: 288px; display: flex; flex-direction: column; gap: 0; padding: 12px; overflow-y: auto; background: var(--md-surface-container-low); }
+.nd-brand { display: flex; align-items: center; gap: 12px; height: 56px; padding: 0 16px; margin-bottom: 4px; }
+.nd-brand b { font: 500 22px/28px var(--font); letter-spacing: -0.01em; }
+.logo-drawer { transition: translate 0.35s var(--md-ease); }
+.nd-brand:hover .logo-drawer { translate: 0 2px; }
+.nd-item { display: flex; align-items: center; gap: 12px; height: 48px; padding: 0 24px 0 16px; border-radius: 999px; font: 500 14px/20px var(--font); color: var(--md-on-surface-variant); text-align: left; flex: none; }
+.nd-item small { margin-left: auto; font: 500 12px/16px var(--font); }
+.nd-item.on, .nd-item.sel { background: var(--md-secondary-container); color: var(--md-on-secondary-container); }
+.nd-item.on { font-weight: 700; }
+.nd hr { width: calc(100% - 32px); margin: 8px 16px; border: 0; border-top: 1px solid var(--md-outline-variant); }
+.nd-sub { margin: 4px 16px 8px; font: 500 14px/20px var(--font); color: var(--md-on-surface-variant); }
+.nd-foot { margin: auto 16px 4px; padding-top: 16px; font: 400 12px/16px var(--font); color: var(--md-outline); }
+
+/* ─── 본문 ─── */
+.main { margin-left: 288px; padding: 0 48px 80px; max-width: 1440px; }
+.searchbar-wrap { position: sticky; top: 0; z-index: 30; padding: 16px 0; background: var(--md-surface); }
+.searchbar { display: flex; align-items: center; gap: 16px; max-width: 720px; height: 56px; padding: 0 8px 0 16px; border-radius: var(--md-shape-xl); background: var(--md-surface-container-high); color: var(--md-on-surface-variant); }
+.searchbar:focus-within { background: var(--md-surface-container-highest); }
+.searchbar input { flex: 1; min-width: 0; height: 100%; border: 0; background: none; outline: none; font: 400 16px/24px var(--font); color: var(--md-on-surface); }
+.searchbar input::placeholder { color: var(--md-on-surface-variant); }
+.searchbar kbd { display: grid; place-items: center; width: 28px; height: 28px; margin-right: 8px; border-radius: var(--md-shape-s); box-shadow: inset 0 0 0 1px var(--md-outline-variant); font: 500 12px var(--font); }
+.icon-btn { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; color: var(--md-on-surface-variant); }
+
+.hero { display: grid; grid-template-columns: minmax(320px, 1fr) minmax(0, 640px); gap: 40px; align-items: end; margin-top: 16px; border-bottom: 1px solid var(--md-outline-variant); }
+.hero-copy { padding-bottom: 56px; }
+.hero h1 { margin: 0 0 12px; font: 400 36px/44px var(--font); letter-spacing: -0.02em; }
+.hero p { margin: 0 0 20px; font: 400 16px/24px var(--font); color: var(--md-on-surface-variant); }
+.hero-art { overflow: hidden; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { display: inline-flex; align-items: center; height: 32px; padding: 0 16px; border-radius: var(--md-shape-s); box-shadow: inset 0 0 0 1px var(--md-outline-variant); font: 500 14px/20px var(--font); color: var(--md-on-surface-variant); }
+
+.group { margin-top: 40px; }
+.group h2 { margin: 0 0 16px; font: 400 24px/32px var(--font); }
+.group h2 small { margin-left: 8px; font: 400 14px/20px var(--font); color: var(--md-on-surface-variant); }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(208px, 1fr)); gap: 16px; }
+.empty { padding: 48px; border-radius: var(--md-shape-l); background: var(--md-surface-container-low); text-align: center; color: var(--md-on-surface-variant); }
+
+/* 이름 카드: M3 filled card */
+.ec { display: grid; grid-template-rows: 148px auto auto; padding: 0 0 16px; border-radius: var(--md-shape-m); background: var(--md-surface-container-low); text-align: left; transition: box-shadow 0.2s var(--md-ease); }
+.ec:hover { box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 2px 6px 2px rgba(0, 0, 0, 0.15); }
+.ec-pv { overflow: hidden; border-radius: var(--md-shape-m) var(--md-shape-m) 0 0; }
+.ec > b { padding: 12px 16px 0; font: 500 16px/24px var(--font); }
+.ec > span { padding: 0 16px; font: 400 12px/16px var(--font); color: var(--md-on-surface-variant); }
+
+/* ─── 사이드 시트 ─── */
+.scrim { position: fixed; inset: 0; z-index: 90; background: rgba(0, 0, 0, 0.32); opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+.scrim.on { opacity: 1; pointer-events: auto; }
+.sheet { position: fixed; right: 0; top: 0; bottom: 0; z-index: 91; width: 480px; border-radius: var(--md-shape-l) 0 0 var(--md-shape-l); background: var(--md-surface-container-low); translate: calc(100% + 20px) 0; transition: translate 0.4s var(--md-ease); outline: none; }
+.sheet.on { translate: 0 0; box-shadow: 0 8px 12px 6px rgba(0, 0, 0, 0.15), 0 4px 4px rgba(0, 0, 0, 0.3); }
+.sheet-in { height: 100%; overflow-y: auto; padding: 12px 24px 24px; animation: sheet-in 0.3s var(--md-ease); }
+.sheet-head { display: flex; align-items: center; justify-content: space-between; min-height: 64px; margin-right: -8px; }
+.sheet-head h2 { margin: 0; font: 400 28px/36px var(--font); }
+.sheet-en { margin: 0 0 16px; color: var(--md-on-surface-variant); }
+.sheet-pv { height: 240px; border-radius: var(--md-shape-l); overflow: hidden; }
+.sheet-desc { margin: 20px 0 8px; font: 400 16px/24px var(--font); }
+.sheet h3 { margin: 24px 0 8px; font: 500 14px/20px var(--font); color: var(--md-primary); }
+.sheet-when { margin: 0; padding-left: 20px; font: 400 14px/22px var(--font); }
+.sheet-vs { display: grid; gap: 4px; margin: 0 -12px; }
+.sheet-vs button { display: grid; gap: 2px; padding: 10px 12px; border-radius: var(--md-shape-m); text-align: left; }
+.sheet-vs b { font: 500 16px/24px var(--font); }
+.sheet-vs span { color: var(--md-on-surface-variant); }
+.sheet-actions { display: flex; align-items: center; gap: 8px; margin-top: 28px; }
+.btn { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 24px 0 16px; border-radius: 999px; background: var(--md-primary); color: var(--md-on-primary); font: 500 14px/20px var(--font); }
+.btn-text { height: 40px; padding: 0 12px; border-radius: 999px; color: var(--md-primary); font: 500 14px/20px var(--font); }
+
+@keyframes sheet-in { from { opacity: 0; translate: 24px 0; } }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}

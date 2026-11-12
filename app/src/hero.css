@@ -1,0 +1,77 @@
+/* 첫 화면 Stage. 창은 아래로, 시트는 오른쪽으로 흘러 나가요.
+   창 안의 가게는 주황 M3 테마, 이름표 · 시트는 UI Drawer 의 청록 M3 테마. */
+.hs .ss-stage {
+  --ss-accent: var(--md-primary);
+  --ss-font: var(--font);
+  --ss-canvas: transparent;
+  background: transparent;
+}
+.hs .hs-win { position: absolute; left: 0; top: 20px; width: 500px; height: 380px; }
+
+/* 가게 (주황 M3) */
+.hs .hs-app { position: relative; height: 100%; background: #fff8f6; }
+.hs .hs-bar { display: flex; align-items: center; gap: 10px; height: 52px; padding: 0 20px; }
+.hs .hs-logo { font: 700 16px/1 var(--ss-font); color: #231917; letter-spacing: -0.02em; }
+.hs .hs-sp { flex: 1; }
+.hs .hs-bar .ss-bar { background: #f7e4df; }
+.hs .hs-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; padding: 4px 20px; }
+.hs .hs-card { display: grid; gap: 7px; align-content: start; padding: 8px 8px 12px; border-radius: 16px; background: #fff1ed; }
+.hs .hs-card .ss-bar { background: #f1dfda; }
+.hs .hs-img { position: relative; height: 92px; border-radius: 12px; background: #f7e4df; }
+.hs .hs-img--bread { background: radial-gradient(54px 30px at 50% 60%, #e7a873 0 96%, transparent 100%), #ffdbd1; }
+.hs .hs-name { font-weight: 600; color: #231917; }
+.hs .hs-price { color: #53433f; }
+.hs .hs-heart { position: absolute; right: 8px; top: 8px; display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: #fff8f6; }
+.hs .hs-heart path { fill: transparent; stroke: #85736e; stroke-width: 1.8; transition: fill 0.2s, stroke 0.2s; }
+.hs .hs-heart[data-on] path { fill: #8f4c38; stroke: #8f4c38; }
+.hs .hs-heart[data-on] svg { animation: hs-beat 0.45s cubic-bezier(0.3, 1.6, 0.5, 1); }
+@keyframes hs-beat { 0% { scale: 0.7; } 60% { scale: 1.25; } }
+
+/* M3 스낵바: 아래에서 올라오고, 사라질 땐 가라앉아요 */
+.hs .hs-snack {
+  position: absolute; left: 20px; bottom: 40px;
+  display: flex; align-items: center; gap: 24px; height: 48px; padding: 0 8px 0 16px; border-radius: 4px;
+  background: #322825; color: #fbeeea; font: 400 14px/1 var(--ss-font);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+  opacity: 0; translate: 0 16px; transition: opacity 0.25s, translate 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.hs .hs-snack[data-show] { opacity: 1; translate: 0 0; }
+.hs .hs-undo { padding: 8px 12px; border-radius: 999px; color: #ffb5a0; font-weight: 600; }
+.hs .hs-undo[data-pressed] { background: rgba(255, 181, 160, 0.16); }
+
+/* UI Drawer 이름표: 스낵바 왼쪽 위에 핀처럼 */
+.hs .hs-tag {
+  position: absolute; left: 0; bottom: calc(100% + 10px);
+  display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 12px 0 10px; border-radius: 8px;
+  background: var(--md-primary); color: var(--md-on-primary); font: 600 13px/1 var(--ss-font);
+  box-shadow: 0 3px 8px rgba(0, 60, 54, 0.3);
+  opacity: 0; scale: 0.85; transform-origin: 12px 100%;
+  transition: opacity 0.2s, scale 0.35s cubic-bezier(0.3, 1.4, 0.5, 1);
+}
+.hs .hs-tag::after { content: ''; position: absolute; left: 14px; top: 100%; width: 2px; height: 10px; background: var(--md-primary); }
+.hs .hs-tag i { width: 6px; height: 6px; border-radius: 50%; background: var(--md-primary-container); }
+.hs .hs-tag[data-show] { opacity: 1; scale: 1; }
+.hs .hs-tag[data-pressed] { background: color-mix(in srgb, var(--md-primary) 88%, white); }
+
+/* M3 사이드 시트 (UI Drawer 청록) */
+.hs .hs-sheet {
+  position: absolute; left: 384px; top: 52px; width: 256px; bottom: -24px;
+  display: grid; align-content: start; gap: 10px; padding: 20px 24px;
+  border-radius: 16px 0 0 0; background: var(--md-surface-container-low); color: var(--md-on-surface);
+  box-shadow: 0 8px 28px rgba(0, 40, 36, 0.22), 0 0 0 1px var(--md-outline-variant);
+  opacity: 0; translate: 40px 0; transition: opacity 0.3s, translate 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.hs .hs-sheet[data-show] { opacity: 1; translate: 0 0; }
+.hs .hs-sheet-head { display: flex; align-items: center; justify-content: space-between; }
+.hs .hs-sheet-title { font: 500 22px/28px var(--ss-font); letter-spacing: -0.01em; }
+.hs .hs-x { display: grid; place-items: center; width: 36px; height: 36px; margin-right: -8px; border-radius: 50%; }
+.hs .hs-x path { stroke: var(--md-on-surface-variant); stroke-width: 2; stroke-linecap: round; }
+.hs .hs-x[data-pressed] { background: color-mix(in srgb, var(--md-on-surface) 10%, transparent); }
+.hs .hs-sheet-en { margin-top: -8px; font: 400 13px/1 var(--ss-font); color: var(--md-on-surface-variant); }
+.hs .hs-sheet-pv { display: grid; place-items: center; height: 84px; border-radius: 12px; background: var(--md-surface-container-high); }
+.hs .hs-mini-snack { display: flex; align-items: center; gap: 12px; height: 30px; padding: 0 10px; border-radius: 4px; background: var(--md-inverse-surface); color: var(--md-inverse-primary); font: 600 11px/1 var(--ss-font); }
+.hs .hs-sheet-desc { margin: 2px 0 2px; font: 400 14px/20px var(--ss-font); color: var(--md-on-surface); }
+.hs .hs-sheet .ss-bar { background: var(--md-surface-container-highest); }
+.hs .hs-sheet-btn { justify-self: start; margin-top: 6px; display: inline-flex; align-items: center; height: 40px; padding: 0 24px; border-radius: 999px; background: var(--md-primary); color: var(--md-on-primary); font: 500 14px/1 var(--ss-font); }
+
+.hs .hs-rest { position: absolute; left: 300px; top: 250px; width: 1px; height: 1px; }

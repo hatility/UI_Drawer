@@ -1,0 +1,9 @@
+# 개발 · 시험용: docker compose up -d --build → http://localhost:8081
+# 포트를 바꾸려면 PORT=9000 docker compose up -d --build
+services:
+  web:
+    build: .
+    image: ui-drawer:test
+    ports:
+      - "${PORT:-8081}:80"
+    restart: unless-stopped
