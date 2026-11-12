@@ -162,6 +162,80 @@ function body(id: string): ReactNode {
     case 'forced-continuity': return <div className="pv-center pv-col"><b>무료 체험 7일</b><small className="pv-fine">이후 매월 9,900원 자동 결제</small></div>
     case 'hidden-costs': return <div className="pv-form pv-gap"><div className="pv-setting"><span>소금빵</span><small>3,500</small></div><div className="pv-setting pv-warn"><span>서비스 수수료</span><small>+1,900</small></div></div>
     case 'bait-switch': return <Screen className="pv-dim"><div className="pv-modal pv-modal--sm pv-pop"><b>앱 설치하기</b><span className="pv-x-trick">✕ 누르면 설치</span></div></Screen>
+    // ─── 0.4.0 에 더한 카드 ───
+    case 'notification-center': return <Screen><div className="pv-anchor pv-anchor--r"><span className="pv-ico">🔔</span><div className="pv-pop-menu pv-ncenter pv-pop"><b>알림</b>{['주문이 접수됐어요', '', ''].map((t, i) => <span key={i} className={i === 0 ? 'new' : ''}>{t || <Bar w={70} h={4} tone={3} />}</span>)}</div></div></Screen>
+    case 'presence-dot': return <div className="pv-center"><span className="pv-presence"><span className="pv-avatar">몽</span><i /></span><span className="pv-presence"><span className="pv-avatar pv-avatar--2">B</span><i className="off" /></span></div>
+    case 'status-pill': return <div className="pv-form pv-gap">{[['배송 중', 'go'], ['', 'done'], ['', 'wait']].map(([t, k], i) => <div key={i} className="pv-setting"><Bar w={50} h={5} tone={3} /><span className={`pv-pill pv-pill--${k}`}>{t || (k === 'done' ? '완료' : '대기')}</span></div>)}</div>
+    case 'live-validation': return <div className="pv-form"><span className="pv-input pv-input--focus">●●●●●●<i className="pv-caret" /></span><span className="pv-check-line ok">✓ 8자 이상</span><span className="pv-check-line">✕ 숫자 포함</span></div>
+    case 'cookie-banner': return <Screen><Lines /><div className="pv-cookie pv-rise"><span>쿠키를 써도 될까요?</span><span className="pv-btn">허용</span></div></Screen>
+    case 'daily-popup': return <Screen className="pv-dim"><div className="pv-modal pv-modal--daily pv-pop"><i className="pv-daily-img" /><div className="pv-daily-foot"><span>오늘 하루 보지 않기</span><b>닫기</b></div></div></Screen>
+    case 'error-404': return <div className="pv-center pv-col"><b className="pv-404">404</b><small>페이지를 찾을 수 없어요</small><span className="pv-btn">홈으로</span></div>
+    case 'permission-prompt': return <div className="pv-phone pv-dim"><Lines /><div className="pv-modal pv-modal--sm pv-perm pv-pop"><b>위치를 쓸까요?</b><small>가까운 매장을 찾아요</small><span className="pv-btn">허용</span><span className="pv-perm-no">허용 안 함</span></div></div>
+    case 'blur-up': return <div className="pv-center"><i className="pv-blurup" /></div>
+    case 'loading-dots': return <div className="pv-center"><span className="pv-btn pv-btn--lg pv-ldots"><i /><i /><i /></span></div>
+    case 'top-loading-bar': return <Screen head={false}><span className="pv-topbar"><i /></span><div className="pv-head"><Bar w={22} h={6} tone={4} /></div><Lines /></Screen>
+    case 'retry-state': return <div className="pv-center pv-col"><span className="pv-empty">!</span><b className="pv-emptyt">불러오지 못했어요</b><span className="pv-btn">↻ 다시 시도</span></div>
+    case 'offline-banner': return <div className="pv-phone"><div className="pv-offline pv-drop">인터넷 연결이 끊겼어요</div><Lines n={4} /></div>
+    case 'icon-button': return <div className="pv-center pv-iconbtns"><i>♡</i><i className="on">⤴</i><i>✕</i></div>
+    case 'button-hierarchy': return <div className="pv-center pv-col"><span className="pv-btn pv-btn--lg">주문하기</span><span className="pv-btn pv-btn--outline">장바구니</span><span className="pv-btn-text">나중에</span></div>
+    case 'split-button': return <div className="pv-center"><span className="pv-split-btn"><b>저장</b><i>▾</i></span></div>
+    case 'agree-all': return <div className="pv-form pv-gap"><label className="pv-check on pv-agree"><span><b>전체 동의</b></span></label><hr className="pv-hr" /><label className="pv-check on"><span>(필수) 이용약관</span></label><label className="pv-check"><span>(선택) 혜택 알림</span></label></div>
+    case 'social-login': return <div className="pv-form pv-gap"><span className="pv-social pv-social--k">카카오로 시작하기</span><span className="pv-social pv-social--n">네이버로 시작하기</span><span className="pv-social">Google로 시작하기</span></div>
+    case 'postcode': return <div className="pv-form pv-gap"><div className="pv-row2"><span className="pv-input">06236</span><span className="pv-btn">우편번호 찾기</span></div><span className="pv-input">서울 강남구 테헤란로</span><span className="pv-input pv-input--focus"><span className="pv-ph">상세 주소</span></span></div>
+    case 'signature-pad': return <div className="pv-center"><div className="pv-sign"><svg viewBox="0 0 120 50"><path d="M8 34c10-20 18-24 20-12s-6 18 4 6 14-22 18-10-2 16 8 6 12-12 20-6 10 4 30-4" /></svg><small>다시 쓰기</small></div></div>
+    case 'emoji-picker': return <div className="pv-center"><div className="pv-emoji pv-pop">{['😀', '😍', '🥐', '👍', '🎉', '😢', '🍞', '❤️'].map((e) => <i key={e}>{e}</i>)}</div></div>
+    case 'mention': return <div className="pv-form"><span className="pv-input pv-input--focus">맛있어요 <b className="pv-link">@몽</b><i className="pv-caret" /></span><div className="pv-list pv-drop"><span className="on"><span className="pv-avatar pv-avatar--xs">몽</span> 몽글 베이커리</span><span><span className="pv-avatar pv-avatar--xs pv-avatar--2">B</span> <Bar w={40} h={4} tone={3} /></span></div></div>
+    case 'rich-text-editor': return <div className="pv-form"><div className="pv-rte"><div className="pv-rte-bar"><b>B</b><i>I</i><u>U</u><span>☰</span></div><p>오늘 구운 <b>소금빵</b><i className="pv-caret" /></p></div></div>
+    case 'captcha': return <div className="pv-center"><div className="pv-captcha"><i className="on">✓</i><span>로봇이 아닙니다</span></div></div>
+    case 'scrollable-tabs': return <Screen><div className="pv-tabs pv-tabs--scroll"><span className="on">전체</span><span>빵</span><span>케이크</span><span>쿠키</span><span>음료</span><i className="pv-tab-k" /></div><Lines n={2} /></Screen>
+    case 'table-of-contents': return <div className="pv-form pv-toc"><small>목차</small><span>1. 재료</span><span className="on">2. 반죽하기</span><span>3. 굽기</span></div>
+    case 'skip-link': return <Screen><span className="pv-skip pv-drop">본문 바로가기</span><Lines /></Screen>
+    case 'quick-menu': return <Screen><Lines n={4} /><div className="pv-quick"><small>최근 본</small><i /><i /><b>TOP</b></div></Screen>
+    case 'master-detail': return <Screen head={false} className="pv-split pv-split--md"><div className="pv-md-list"><span className="on">소금빵</span><span><Bar w={40} h={4} tone={3} /></span><span><Bar w={50} h={4} tone={3} /></span></div><div className="pv-md-detail"><b>소금빵</b><Lines n={3} /></div></Screen>
+    case 'tree-view': return <div className="pv-form pv-tree"><span>▾ 빵</span><span className="in on">▸ 소금빵</span><span className="in">▸ 식빵</span><span>▸ 케이크</span></div>
+    case 'dock': return <div className="pv-dock-wrap"><div className="pv-dock">{[0, 1, 2, 3, 4].map((i) => <i key={i} className={i === 2 ? 'on' : ''} />)}</div></div>
+    case 'sitemap': return <div className="pv-sitemap">{['빵', '케이크', '고객센터'].map((t) => <div key={t}><b>{t}</b><Bar w="80%" h={4} tone={3} /><Bar w="60%" h={4} tone={3} /><Bar w="70%" h={4} tone={3} /></div>)}</div>
+    case 'ribbon': return <div className="pv-center"><div className="pv-card pv-ribbon-card"><i className="pv-img" /><span className="pv-ribbon">BEST</span><Bar w="70%" h={5} tone={3} /></div></div>
+    case 'sale-price': return <div className="pv-center pv-col pv-sale"><span><b className="pv-off">20%</b> <b>2,800원</b></span><s>3,500원</s></div>
+    case 'thumbnail-gallery': return <div className="pv-center pv-col"><i className="pv-thumb-big" /><div className="pv-thumbs"><i className="on" /><i /><i /><i /></div></div>
+    case 'pricing-table': return <div className="pv-pricing">{['기본', '추천', '프로'].map((t, i) => <div key={t} className={i === 1 ? 'on' : ''}><small>{t}</small>{i === 1 ? <b>9,900원</b> : <Bar w="70%" h={6} tone={4} />}<Bar w="80%" h={4} tone={3} /><Bar w="60%" h={4} tone={3} /></div>)}</div>
+    case 'testimonial': return <div className="pv-center"><div className="pv-quote-card"><b className="pv-qmark">“</b><span>아침마다 생각나는 맛</span><div><span className="pv-avatar pv-avatar--xs">김</span><Bar w={40} h={4} tone={3} /></div></div></div>
+    case 'blockquote': return <div className="pv-form pv-gap"><Bar w="80%" h={5} tone={3} /><blockquote className="pv-bq">빵은 기다림이 반이다</blockquote><Bar w="70%" h={5} tone={3} /></div>
+    case 'code-block': return <div className="pv-center"><div className="pv-code"><span className="pv-code-copy">⧉</span><p><i className="k">const</i> bread = <i className="s">'소금빵'</i></p><p><i className="k">bake</i>(bread)</p></div></div>
+    case 'map-pin': return <div className="pv-map"><i className="pv-road1" /><i className="pv-road2" /><span className="pv-pin pv-drop" /><span className="pv-pin-tip">몽글 성수점</span></div>
+    case 'calendar-view': return <div className="pv-month">{Array.from({ length: 21 }, (_, i) => <i key={i}>{i + 1}{i === 9 && <em>빵 클래스</em>}{(i === 3 || i === 15) && <em className="g" />}</i>)}</div>
+    case 'before-after': return <div className="pv-center"><div className="pv-ba"><i className="b" /><i className="a" /><span className="pv-ba-handle">⇆</span></div></div>
+    case 'truncation': return <div className="pv-form pv-gap"><div className="pv-li"><i className="pv-li-img" /><div><b className="pv-ellipsis">겨울 한정 밤 식빵 버터 듬뿍 우유 크림 …</b><small>더보기</small></div></div></div>
+    case 'liquid-glass': return <div className="pv-sty pv-lglass"><div><b>소금빵</b><span>담기</span></div></div>
+    case 'cyberpunk': return <div className="pv-sty pv-cyber"><b>NEON BREAD</b></div>
+    case 'monochrome': return <div className="pv-sty pv-mono"><div><i /><b>소금빵</b><span>담기</span></div></div>
+    case 'duotone': return <div className="pv-sty pv-duo"><i /><b>BAKE</b></div>
+    case 'bauhaus': return <div className="pv-sty pv-bauhaus"><i className="c" /><i className="s" /><i className="t" /></div>
+    case 'corporate-memphis': return <div className="pv-sty pv-corp"><svg viewBox="0 0 120 90"><circle cx="60" cy="18" r="9" fill="#2d2a5a" /><path d="M48 30h24l10 34H38z" fill="#6c63ff" /><path d="M46 34 18 52M74 34l30 10" stroke="#f4a3a8" strokeWidth="7" strokeLinecap="round" /><path d="M50 64 42 88M70 64l12 24" stroke="#2d2a5a" strokeWidth="8" strokeLinecap="round" /></svg></div>
+    case 'editorial': return <div className="pv-sty pv-editorial"><div><small>ISSUE 04</small><b>빵의 시간</b><Bar w={90} h={4} tone={3} /><Bar w={70} h={4} tone={3} /></div></div>
+    case 'blob': return <div className="pv-sty pv-blob"><i className="b1" /><i className="b2" /><b>말랑</b></div>
+    case 'swipe-cards': return <div className="pv-center pv-swipecards"><i className="back" /><i className="front"><span>좋아요</span></i></div>
+    case 'shake-undo': return <div className="pv-phone pv-shake"><div className="pv-modal pv-modal--sm"><b>실행 취소할까요?</b><div className="pv-row2"><span className="pv-btn pv-btn--ghost">취소</span><span className="pv-btn">되돌리기</span></div></div></div>
+    case 'scroll-reveal': return <Screen><Lines n={2} /><div className="pv-reveal"><i /><i /><i /></div></Screen>
+    case 'shared-element': return <div className="pv-center pv-shared"><i className="small" /><span>→</span><div className="big"><i /><Bar w="70%" h={5} tone={3} /></div></div>
+    case 'easing': return <div className="pv-center"><svg className="pv-curve" viewBox="0 0 100 70"><path className="axis" d="M8 62H94M8 62V6" /><path className="line" d="M8 62C30 62 34 8 94 8" /><circle className="dot" r="4" cx="94" cy="8" /></svg></div>
+    case 'spring': return <div className="pv-center"><span className="pv-springball" /></div>
+    case 'info-icon': return <div className="pv-center"><span className="pv-glyph">ⓘ</span></div>
+    case 'external-link': return <div className="pv-center"><span className="pv-glyph pv-glyph--sm">몽글 블로그 ↗</span></div>
+    case 'hamburger-morph': return <div className="pv-center pv-morph"><span className="pv-ham3"><i /><i /><i /></span></div>
+    case 'bookmark-icon': return <div className="pv-center"><svg viewBox="0 0 24 24" width="44" height="44" className="pv-bookmark"><path d="M6 3h12v18l-6-4-6 4z" /></svg></div>
+    case 'refresh-icon': return <div className="pv-center"><span className="pv-glyph pv-spin-slow">↻</span></div>
+    case 'model-picker': return <div className="pv-ai"><span className="pv-model pv-drop">빠른 모델 ▾</span><div className="pv-prompt"><Bar w="40%" h={5} tone={3} /><span className="pv-send">↑</span></div></div>
+    case 'stop-button': return <div className="pv-ai"><div className="pv-bubble">반죽은 버터를 <span className="pv-type">넣고</span><i className="pv-caret" /></div><div className="pv-prompt"><Bar w="40%" h={5} tone={2} /><span className="pv-send pv-stop">■</span></div></div>
+    case 'copy-button': return <div className="pv-center"><div className="pv-code"><span className="pv-code-copy pv-copied">✓ 복사됨</span><p><i className="k">bake</i>(<i className="s">'소금빵'</i>)</p></div></div>
+    case 'chat-history': return <Screen head={false} className="pv-split pv-split--hist"><div className="pv-hist"><span className="pv-hist-new">+ 새 대화</span><span className="on">소금빵 레시피</span><span><Bar w={50} h={4} tone={3} /></span><span><Bar w={40} h={4} tone={3} /></span></div><div className="pv-ai"><div className="pv-bubble"><Bar w="80%" h={4} tone={3} /></div></div></Screen>
+    case 'tool-call': return <div className="pv-ai"><div className="pv-toolcall">⌕ 웹에서 찾는 중<span className="pv-ldots-sm"><i /><i /><i /></span></div><Lines n={2} /></div>
+    case 'smart-reply': return <div className="pv-ai"><div className="pv-bubble">내일 빵 찾으러 갈게요</div><div className="pv-center pv-wrap"><span className="pv-chip">좋아요!</span><span className="pv-chip">몇 시쯤요?</span></div></div>
+    case 'fake-social-proof': return <div className="pv-center pv-col"><span className="pv-fomo">👀 지금 23명이 보고 있어요</span><Bar w={100} h={5} tone={3} /></div>
+    case 'fake-scarcity': return <div className="pv-center pv-col"><b>소금빵</b><span className="pv-fomo">🔥 2개 남았어요</span></div>
+    case 'friend-spam': return <div className="pv-phone"><div className="pv-modal pv-modal--sm"><b>연락처를 불러올까요?</b><small className="pv-fine">친구 312명에게 초대를 보내요</small><span className="pv-btn">확인</span></div></div>
+    case 'misdirection': return <div className="pv-center pv-col"><span className="pv-btn pv-btn--lg">구독 유지하기</span><small className="pv-maze">해지</small></div>
+    case 'autoplay-next': return <div className="pv-center"><div className="pv-video"><span className="pv-next">다음 화 <b>5</b></span><i className="pv-next-bar" /></div></div>
     case 'material': case 'flat': case 'skeuomorphism': case 'neumorphism': case 'glassmorphism': case 'claymorphism': case 'brutalism': case 'minimalism': case 'dark-mode':
       return <div className={`pv-sty pv-sty--${id}`}><div className="pv-sty-card"><i className="pv-sty-img" /><b>소금빵</b><span className="pv-sty-btn">담기</span></div></div>
     case 'bento-grid': return <div className="pv-bentogrid">{['a', 'b', 'c', 'd', 'e'].map((k) => <i key={k} className={`pv-bg-${k}`}>{k === 'a' ? '한눈에 보기' : null}</i>)}</div>

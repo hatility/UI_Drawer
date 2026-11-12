@@ -8,7 +8,7 @@
 
 <br>
 
-![version](https://img.shields.io/badge/version-0.3.0-006A60?style=flat-square)
+![version](https://img.shields.io/badge/version-0.4.0-006A60?style=flat-square)
 ![license](https://img.shields.io/badge/license-MIT-006A60?style=flat-square)
 ![Material 3](https://img.shields.io/badge/Material-3-006A60?style=flat-square&logo=materialdesign&logoColor=white)
 ![React](https://img.shields.io/badge/React-18-61DAFB?style=flat-square&logo=react&logoColor=white)
@@ -21,7 +21,7 @@
 
 | | |
 |---|---|
-| 🗄️ **서랍** | UI 이름 카드 150장을 10개 서랍(알림과 피드백 · 로딩 · 입력 폼 · 이동 구조 · 콘텐츠 담기 · 디자인 스타일 · 제스처 · 메뉴 아이콘 별명 · AI 화면 · 다크 패턴)에 나눠 담았어요. 카드에 마우스를 올리면 그림이 움직여요. |
+| 🗄️ **서랍** | UI 이름 카드 223장을 10개 서랍(알림과 피드백 · 로딩 · 입력 폼 · 이동 구조 · 콘텐츠 담기 · 디자인 스타일 · 제스처 · 메뉴 아이콘 별명 · AI 화면 · 다크 패턴)에 나눠 담았어요. 카드에 마우스를 올리면 그림이 움직여요. |
 | 🔍 **모양으로 찾기** | 이름을 몰라도 돼요. ‘아래에서 올라오는 창’, ‘점 세 개’처럼 모양을 적거나 `ㅌㅅㅌ`처럼 초성만 적어도 찾아요. |
 | 📂 **사이드 시트** | 카드를 누르면 옆에서 설명 창이 밀려 나와요. (이 창의 이름도 드로어예요!) 이럴 때 쓰는지, 헷갈리는 친구와 무엇이 다른지 알려 줘요. |
 | 🥐 **체험관** | 가상의 빵집 사이트 ‘몽글 베이커리’에서 UI를 직접 눌러 봐요. **이름표**를 켜면 화면의 모든 UI에 이름이 붙고, **스타일**을 바꾸면 같은 사이트가 플랫 · 글래스 · 뉴모피즘 · 브루탈 · 다크로 바뀌어요. |

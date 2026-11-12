@@ -228,6 +228,100 @@ export const ENTRIES: Entry[] = [
   { id: 'forced-continuity', drawer: 'dark', ko: '몰래 자동 결제', en: 'Forced continuity', aliases: ['무료 체험 함정'], hint: '무료 체험 끝나면 알림 없이 결제', desc: '무료 체험이 끝나면 미리 알리지 않고 결제를 시작하는 수법이에요.', when: ['쓰지 마세요! 결제 전에 꼭 알리기'] },
   { id: 'hidden-costs', drawer: 'dark', ko: '숨은 비용', en: 'Hidden costs', aliases: ['드립 프라이싱'], hint: '마지막 결제 단계에서 갑자기 붙는 수수료', desc: '처음엔 싸 보이게 하고 마지막 단계에서 배송비 · 수수료를 붙이는 수법이에요.', when: ['쓰지 마세요! 총액을 처음부터'] },
   { id: 'bait-switch', drawer: 'dark', ko: '미끼 상술', en: 'Bait and switch', hint: '누른 것과 다른 일이 일어남', desc: '닫기 버튼인 줄 알았는데 다른 일이 일어나는 것처럼, 기대와 다른 결과를 내는 수법이에요.', when: ['쓰지 마세요! 버튼은 말한 대로'] },
+
+  // ─── 더 많은 이름 (0.4.0) ───
+  // 알림과 피드백
+  { id: 'notification-center', drawer: 'feedback', ko: '알림 센터', en: 'Notification center', aliases: ['알림함'], hint: '종 아이콘을 누르면 펼쳐지는 알림 목록', desc: '종 아이콘을 누르면 지난 알림이 목록으로 펼쳐져요. 읽지 않은 것은 점으로 표시해요.', when: ['커뮤니티 · 업무 도구'], vs: [{ id: 'push-notification', diff: '푸시 알림은 앱 밖에서 하나씩 와요.' }] },
+  { id: 'presence-dot', drawer: 'feedback', ko: '접속 상태 점', en: 'Presence indicator', aliases: ['온라인 점'], hint: '프로필 사진 모서리의 초록 점', desc: '프로필 사진 모서리의 작은 점으로 지금 접속 중인지 알려 줘요.', when: ['메신저 · 협업 도구'], vs: [{ id: 'badge', diff: '뱃지는 개수나 새 소식을 알려요.' }] },
+  { id: 'status-pill', drawer: 'feedback', ko: '상태 라벨', en: 'Status pill', aliases: ['스테이터스 칩'], hint: '‘배송 중’ ‘완료’ 같은 색깔 알약', desc: '주문 · 일의 상태를 색깔 알약 하나로 보여 줘요. 색은 상태마다 정해 둬요.', when: ['주문 내역 · 관리자 표'] },
+  { id: 'live-validation', drawer: 'feedback', ko: '실시간 검사', en: 'Live validation', aliases: ['입력 확인 체크'], hint: '적는 동안 ✓ · ✕ 가 바로바로 바뀜', desc: '다 적고 나서가 아니라 적는 동안 조건을 하나씩 검사해서 ✓ 로 알려 줘요.', when: ['비밀번호 조건 · 아이디 중복 확인'], vs: [{ id: 'inline-error', diff: '인라인 오류는 틀린 것만 알려 줘요.' }] },
+  { id: 'cookie-banner', drawer: 'feedback', ko: '쿠키 배너', en: 'Cookie consent banner', aliases: ['쿠키 동의'], hint: '화면 아래 ‘쿠키 허용’ 띠', desc: '사이트에 처음 오면 쿠키를 써도 되는지 묻는 띠예요. 해외 사이트에서 많이 봐요.', when: ['개인정보 동의가 필요한 사이트'] },
+  { id: 'daily-popup', drawer: 'feedback', ko: '오늘 하루 보지 않기', en: 'Dismissible promo popup', aliases: ['공지 팝업', '이벤트 팝업'], hint: '첫 화면 이벤트 팝업 아래 ‘오늘 하루 보지 않기’', desc: '첫 화면에 뜨는 공지 · 이벤트 창이에요. 아래에 ‘오늘 하루 보지 않기’와 ‘닫기’가 붙어요. 한국 사이트에서 특히 많아요.', when: ['행사 · 휴무 공지'], vs: [{ id: 'modal', diff: '모달은 대답을 받기 위한 창이에요.' }] },
+  { id: 'error-404', drawer: 'feedback', ko: '404 페이지', en: '404 error page', aliases: ['에러 페이지', '페이지 없음'], hint: '‘페이지를 찾을 수 없어요’ 큰 숫자 404', desc: '없는 주소로 들어왔을 때 보여 주는 화면이에요. 홈으로 가는 길을 꼭 알려 줘요.', when: ['모든 웹사이트'] },
+  { id: 'permission-prompt', drawer: 'feedback', ko: '권한 요청', en: 'Permission prompt', aliases: ['권한 팝업'], hint: '‘위치 정보를 허용할까요?’ 창', desc: '위치 · 카메라 · 알림을 써도 되는지 묻는 창이에요. 왜 필요한지 먼저 알려 주면 허용이 늘어요.', when: ['처음 그 기능을 쓸 때'] },
+
+  // 로딩
+  { id: 'blur-up', drawer: 'loading', ko: '블러 업', en: 'Blur-up image', aliases: ['프로그레시브 이미지', 'LQIP'], hint: '뿌연 사진이 점점 또렷해짐', desc: '아주 작은 흐린 사진을 먼저 보여 주고 진짜 사진으로 또렷하게 바꿔요.', when: ['사진이 큰 페이지'], vs: [{ id: 'skeleton', diff: '스켈레톤은 회색 상자로 자리만 잡아요.' }] },
+  { id: 'loading-dots', drawer: 'loading', ko: '점 로딩', en: 'Loading dots', hint: '● ● ● 가 차례로 깜빡임', desc: '점 세 개가 차례로 깜빡이며 기다리는 중임을 알려요.', when: ['짧은 대기 · 버튼 안'], vs: [{ id: 'spinner', diff: '스피너는 동그라미가 돌아요.' }] },
+  { id: 'top-loading-bar', drawer: 'loading', ko: '상단 로딩 바', en: 'Top loading bar', aliases: ['페이지 로딩 바'], hint: '페이지 맨 위에 얇은 색 줄이 지나감', desc: '다음 페이지로 넘어가는 동안 화면 맨 위에 얇은 줄이 차올라요.', when: ['페이지 이동이 있는 웹앱'] },
+  { id: 'retry-state', drawer: 'loading', ko: '다시 시도', en: 'Error retry state', aliases: ['재시도'], hint: '‘불러오지 못했어요’ + 다시 시도 버튼', desc: '불러오기에 실패했을 때 이유와 ‘다시 시도’ 버튼을 보여 줘요.', when: ['네트워크 오류'] },
+  { id: 'offline-banner', drawer: 'loading', ko: '오프라인 표시', en: 'Offline indicator', hint: '‘인터넷 연결이 끊겼어요’ 회색 띠', desc: '인터넷이 끊기면 화면에 알리고, 다시 연결되면 저절로 사라져요.', when: ['모바일 앱 · 웹앱'] },
+
+  // 입력 폼
+  { id: 'icon-button', drawer: 'input', ko: '아이콘 버튼', en: 'Icon button', hint: '글자 없이 아이콘만 있는 동그란 버튼', desc: '글자 없이 아이콘만 있는 버튼이에요. 툴팁이나 읽어 줄 이름을 꼭 붙여요.', when: ['닫기 · 공유 · 좋아요'] },
+  { id: 'button-hierarchy', drawer: 'input', ko: '버튼 위계', en: 'Button hierarchy', aliases: ['채움 · 테두리 · 글자 버튼', 'Primary · Secondary'], hint: '색이 꽉 찬 버튼 · 테두리 버튼 · 글자만 버튼', desc: '중요한 순서대로 채운 버튼 → 테두리 버튼 → 글자 버튼을 써서 눈이 갈 곳을 정해요.', when: ['한 화면에 버튼이 여러 개일 때'] },
+  { id: 'split-button', drawer: 'input', ko: '스플릿 버튼', en: 'Split button', hint: '버튼 오른쪽에 ▾ 가 따로 붙음', desc: '왼쪽은 바로 실행, 오른쪽 ▾ 는 다른 선택지를 여는 두 칸짜리 버튼이에요.', when: ['저장 / 다른 이름으로 저장'] },
+  { id: 'agree-all', drawer: 'input', ko: '전체 동의', en: 'Select all consent', aliases: ['약관 전체 동의'], hint: '맨 위 ‘전체 동의’ 체크 아래 약관들', desc: '맨 위 하나를 체크하면 아래 약관이 모두 체크돼요. 필수와 선택을 꼭 나눠 보여 줘요.', when: ['회원가입'], vs: [{ id: 'preselection', diff: '기본 선택 함정은 선택 항목을 미리 체크해 둬요.' }] },
+  { id: 'social-login', drawer: 'input', ko: '소셜 로그인', en: 'Social login buttons', aliases: ['간편 로그인'], hint: '카카오 · 네이버 · 구글로 시작하기 버튼', desc: '다른 서비스 계정으로 한 번에 가입 · 로그인하는 버튼 묶음이에요.', when: ['가입 · 로그인 화면'] },
+  { id: 'postcode', drawer: 'input', ko: '우편번호 찾기', en: 'Address search', aliases: ['주소 검색'], hint: '주소 칸 옆 ‘우편번호 찾기’ 버튼', desc: '도로명을 적으면 주소 목록이 뜨고, 고르면 칸이 채워져요. 상세 주소만 직접 적어요.', when: ['배송지 입력'] },
+  { id: 'signature-pad', drawer: 'input', ko: '서명 패드', en: 'Signature pad', hint: '손가락으로 이름을 쓰는 네모 칸', desc: '손가락이나 마우스로 서명을 그리는 칸이에요. ‘다시 쓰기’가 함께 있어요.', when: ['계약 · 동의서'] },
+  { id: 'emoji-picker', drawer: 'input', ko: '이모지 피커', en: 'Emoji picker', hint: '웃는 얼굴 눌러서 뜨는 이모지 판', desc: '이모지를 분류별 판에서 골라 넣어요.', when: ['채팅 · 댓글'] },
+  { id: 'mention', drawer: 'input', ko: '멘션', en: 'Mention', aliases: ['@태그'], hint: '@ 를 적으면 사람 목록이 뜸', desc: '@ 를 적으면 사람 목록이 떠서 골라 부를 수 있어요. 불린 사람에게 알림이 가요.', when: ['댓글 · 협업 도구'], vs: [{ id: 'autocomplete', diff: '자동완성은 검색어를 추천해요.' }] },
+  { id: 'rich-text-editor', drawer: 'input', ko: '리치 텍스트 에디터', en: 'Rich text editor', aliases: ['WYSIWYG', '글쓰기 에디터'], hint: '위에 B I U 툴바가 있는 글쓰기 칸', desc: '굵게 · 기울임 · 목록 같은 꾸밈을 툴바로 넣으며 쓰는 칸이에요.', when: ['게시글 · 메일 쓰기'], vs: [{ id: 'textarea', diff: '텍스트 영역은 꾸밈 없이 글자만 적어요.' }] },
+  { id: 'captcha', drawer: 'input', ko: '캡차', en: 'CAPTCHA', aliases: ['로봇이 아닙니다'], hint: '‘로봇이 아닙니다’ 체크와 그림 고르기', desc: '사람인지 확인하려고 체크나 그림 고르기를 시켜요. 자동 가입 · 도배를 막아요.', when: ['가입 · 로그인 반복 실패'] },
+
+  // 이동 구조
+  { id: 'scrollable-tabs', drawer: 'nav', ko: '스크롤 탭', en: 'Scrollable tabs', aliases: ['카테고리 탭'], hint: '옆으로 넘쳐서 밀어야 보이는 탭 줄', desc: '탭이 많아 옆으로 밀어서 보는 탭 줄이에요. 끝이 잘려 보여야 더 있다는 걸 알아요.', when: ['쇼핑 · 뉴스 카테고리'], vs: [{ id: 'tabs', diff: '탭은 한 줄에 모두 보여요.' }] },
+  { id: 'table-of-contents', drawer: 'nav', ko: '목차', en: 'Table of contents', aliases: ['TOC'], hint: '글 맨 앞 · 옆의 제목 목록', desc: '긴 글의 제목들을 모아 눌러서 바로 갈 수 있게 해요.', when: ['설명서 · 긴 블로그 글'], vs: [{ id: 'scroll-spy', diff: '스크롤 스파이는 목차에 지금 위치를 켜 줘요.' }] },
+  { id: 'skip-link', drawer: 'nav', ko: '본문 바로가기', en: 'Skip link', hint: 'Tab 키를 누르면 맨 위에 뜨는 숨은 링크', desc: '키보드 사용자를 위해 메뉴를 건너뛰고 본문으로 바로 가게 해 주는 숨은 링크예요.', when: ['모든 웹사이트 (접근성)'] },
+  { id: 'quick-menu', drawer: 'nav', ko: '퀵메뉴', en: 'Quick menu', aliases: ['윙 배너', '따라다니는 메뉴'], hint: '오른쪽에 떠서 따라오는 ‘최근 본 상품 · TOP’', desc: '스크롤해도 오른쪽에 떠서 따라오는 작은 메뉴예요. 최근 본 상품, 장바구니, 맨 위로가 들어 있어요. 한국 쇼핑몰에 많아요.', when: ['쇼핑몰 PC 화면'], vs: [{ id: 'fab', diff: '플로팅 버튼은 버튼 하나예요.' }] },
+  { id: 'master-detail', drawer: 'nav', ko: '목록-상세', en: 'Master-detail (split view)', aliases: ['분할 화면', '스플릿 뷰'], hint: '왼쪽 목록에서 고르면 오른쪽에 내용', desc: '왼쪽 목록에서 고르면 오른쪽에 바로 내용이 나와요. 화면을 바꾸지 않고 비교해 봐요.', when: ['메일 · 메모 · 설정'] },
+  { id: 'tree-view', drawer: 'nav', ko: '트리 뷰', en: 'Tree view', aliases: ['폴더 트리'], hint: '▸ 를 누르면 하위 폴더가 펼쳐짐', desc: '폴더 속 폴더처럼 겹겹이 들어간 항목을 ▸ 로 펼치고 접어요.', when: ['파일 탐색기 · 분류 관리'], vs: [{ id: 'accordion', diff: '아코디언은 한 단계만 펼쳐요.' }] },
+  { id: 'dock', drawer: 'nav', ko: '독', en: 'Dock', hint: '화면 아래 떠 있는 앱 아이콘 줄', desc: '화면 아래에 떠 있는 자주 쓰는 앱 아이콘 줄이에요. 올리면 아이콘이 커지기도 해요.', when: ['컴퓨터 바탕 화면'], vs: [{ id: 'tab-bar', diff: '탭 바는 한 앱 안의 화면을 바꿔요.' }] },
+  { id: 'sitemap', drawer: 'nav', ko: '사이트맵', en: 'Sitemap', hint: '사이트의 모든 메뉴를 한 장에 펼친 지도', desc: '사이트 안의 모든 메뉴를 갈래별로 한 화면에 펼쳐 보여 줘요.', when: ['공공 · 기관 사이트'], vs: [{ id: 'mega-menu', diff: '메가 메뉴는 마우스를 올릴 때만 펼쳐져요.' }] },
+
+  // 콘텐츠 담기
+  { id: 'ribbon', drawer: 'content', ko: '리본', en: 'Ribbon', aliases: ['코너 라벨', 'BEST 띠'], hint: '사진 모서리에 비스듬히 붙은 ‘BEST’ 띠', desc: '사진이나 카드 모서리에 붙여 ‘BEST · NEW · 품절’을 알려요.', when: ['상품 목록'], vs: [{ id: 'badge', diff: '뱃지는 아이콘 위 숫자 점이에요.' }] },
+  { id: 'sale-price', drawer: 'content', ko: '할인 가격 표시', en: 'Sale price', aliases: ['취소선 가격'], hint: '빨간 % + 줄 그은 원래 가격', desc: '할인율, 할인된 가격, 줄 그은 원래 가격을 한 줄에 보여 줘요.', when: ['쇼핑 상품'] },
+  { id: 'thumbnail-gallery', drawer: 'content', ko: '썸네일 갤러리', en: 'Thumbnail gallery', hint: '큰 사진 아래 작은 사진들을 눌러 바꾸기', desc: '큰 사진 아래 작은 사진들이 있고, 누르면 큰 사진이 바뀌어요.', when: ['상품 상세'], vs: [{ id: 'carousel', diff: '캐러셀은 옆으로 넘겨요.' }] },
+  { id: 'pricing-table', drawer: 'content', ko: '요금제 표', en: 'Pricing table', aliases: ['플랜 비교'], hint: '나란한 요금제 카드, 가운데 ‘추천’', desc: '요금제를 나란히 놓고 차이를 비교하게 해요. 추천 하나를 강조해요.', when: ['구독 서비스'] },
+  { id: 'testimonial', drawer: 'content', ko: '후기 카드', en: 'Testimonial', aliases: ['리뷰 카드'], hint: '큰따옴표와 사람 사진이 있는 후기', desc: '쓴 사람의 사진 · 이름과 함께 후기 한마디를 크게 보여 줘요.', when: ['소개 · 첫 화면'] },
+  { id: 'blockquote', drawer: 'content', ko: '인용구', en: 'Blockquote', hint: '왼쪽에 굵은 선이 있는 들여 쓴 글', desc: '다른 글에서 가져온 말을 왼쪽 선과 들여쓰기로 구분해요.', when: ['블로그 · 기사'] },
+  { id: 'code-block', drawer: 'content', ko: '코드 블록', en: 'Code block', hint: '어두운 상자 속 색깔 코드와 복사 버튼', desc: '코드를 고정폭 글꼴과 색으로 보여 주고 복사 버튼을 붙여요.', when: ['개발 문서 · AI 답'] },
+  { id: 'map-pin', drawer: 'content', ko: '지도 핀', en: 'Map pin', aliases: ['마커'], hint: '지도 위 물방울 모양 표시', desc: '지도 위 위치를 물방울 모양 핀으로 찍어요. 누르면 정보 말풍선이 떠요.', when: ['매장 찾기 · 배달'] },
+  { id: 'calendar-view', drawer: 'content', ko: '캘린더', en: 'Calendar view', aliases: ['월간 일정'], hint: '한 달 칸마다 색 막대 일정', desc: '한 달을 칸으로 나누고 날짜마다 일정을 색 막대로 보여 줘요.', when: ['예약 · 일정 관리'], vs: [{ id: 'date-picker', diff: '데이트 피커는 날짜 하나를 고르는 입력이에요.' }] },
+  { id: 'before-after', drawer: 'content', ko: '비포 애프터', en: 'Before / after slider', aliases: ['이미지 비교'], hint: '가운데 손잡이를 끌어 두 사진 비교', desc: '두 사진을 겹쳐 놓고 가운데 손잡이를 끌어 전후를 비교해요.', when: ['보정 · 리모델링 · 화장품'] },
+  { id: 'truncation', drawer: 'content', ko: '말줄임', en: 'Text truncation', aliases: ['말줄임표', '…더보기'], hint: '긴 글 끝이 … 로 잘림', desc: '정해진 줄을 넘는 글을 … 로 자르고, 필요하면 ‘더보기’를 붙여요.', when: ['상품명 · 미리보기 글'] },
+
+  // 디자인 스타일
+  { id: 'liquid-glass', drawer: 'style', ko: '리퀴드 글래스', en: 'Liquid Glass', hint: '물방울처럼 굴절되며 빛나는 유리', desc: '글래스모피즘보다 더 두껍고 투명한 유리예요. 가장자리가 빛을 굴절시켜 반짝여요.', when: ['최신 운영체제 느낌의 메뉴 · 버튼'], vs: [{ id: 'glassmorphism', diff: '글래스모피즘은 뿌연 반투명 판이에요.' }] },
+  { id: 'cyberpunk', drawer: 'style', ko: '사이버펑크', en: 'Cyberpunk / Neon', aliases: ['네온'], hint: '검은 바탕에 빛나는 분홍 · 하늘 네온', desc: '어두운 바탕에 번쩍이는 네온 색과 빛 번짐으로 미래 도시 느낌을 줘요.', when: ['게임 · 음악 · 테크 행사'] },
+  { id: 'monochrome', drawer: 'style', ko: '모노크롬', en: 'Monochrome', aliases: ['흑백'], hint: '검정 · 흰색 · 회색만', desc: '한 가지 색(주로 흑백)의 밝기만으로 그린 스타일이에요. 사진과 글이 돋보여요.', when: ['패션 · 사진 · 고급 브랜드'] },
+  { id: 'duotone', drawer: 'style', ko: '듀오톤', en: 'Duotone', hint: '사진을 두 가지 색으로만 물들임', desc: '사진을 두 가지 색으로만 다시 칠해서 강한 인상을 줘요.', when: ['포스터 · 음악 · 행사'] },
+  { id: 'bauhaus', drawer: 'style', ko: '바우하우스', en: 'Bauhaus', hint: '빨강 · 파랑 · 노랑 동그라미 · 네모 · 세모', desc: '기본 도형과 빨강 · 파랑 · 노랑으로 단순하고 힘 있게 구성한 스타일이에요.', when: ['포스터 · 브랜드 그래픽'], vs: [{ id: 'memphis', diff: '멤피스는 도형을 장난스럽게 흩뿌려요.' }] },
+  { id: 'corporate-memphis', drawer: 'style', ko: '코퍼레이트 멤피스', en: 'Corporate Memphis', aliases: ['알레그리아'], hint: '팔다리가 길쭉한 납작한 사람 일러스트', desc: '팔다리가 과장된 납작한 사람 그림이에요. 테크 회사 소개 페이지에서 정말 많이 봐요.', when: ['서비스 소개 일러스트'] },
+  { id: 'editorial', drawer: 'style', ko: '에디토리얼', en: 'Editorial', aliases: ['매거진 스타일'], hint: '잡지처럼 큰 명조 제목과 여백', desc: '잡지처럼 큰 세리프(명조) 제목, 넓은 여백, 단 나누기로 읽는 맛을 살려요.', when: ['브랜드 스토리 · 기사'], vs: [{ id: 'swiss', diff: '스위스 스타일은 산세리프와 격자가 중심이에요.' }] },
+  { id: 'blob', drawer: 'style', ko: '블롭', en: 'Blob / Organic shapes', aliases: ['유기적 도형'], hint: '말랑한 물방울 같은 비정형 덩어리 배경', desc: '모서리 없이 말랑한 덩어리 도형을 배경에 깔아 부드럽게 만들어요.', when: ['소개 페이지 배경'] },
+
+  // 제스처와 움직임
+  { id: 'swipe-cards', drawer: 'gesture', ko: '스와이프 카드', en: 'Swipe cards', aliases: ['카드 스택'], hint: '카드를 좌우로 던져 고르기', desc: '쌓인 카드를 오른쪽(좋아요) · 왼쪽(넘기기)으로 던져서 골라요.', when: ['추천 · 매칭 · 퀴즈'], vs: [{ id: 'swipe', diff: '스와이프는 미는 동작 자체의 이름이에요.' }] },
+  { id: 'shake-undo', drawer: 'gesture', ko: '흔들어 되돌리기', en: 'Shake to undo', hint: '휴대폰을 흔들면 ‘실행 취소할까요?’', desc: '휴대폰을 흔들면 방금 한 일을 되돌릴지 물어요.', when: ['글 입력 실수'] },
+  { id: 'scroll-reveal', drawer: 'gesture', ko: '스크롤 등장', en: 'Scroll reveal', aliases: ['스크롤 애니메이션'], hint: '내리면 아래 내용이 스르륵 떠오름', desc: '스크롤해서 보일 때가 되면 내용이 아래에서 스르륵 떠오르며 나타나요.', when: ['소개 · 랜딩 페이지'], vs: [{ id: 'parallax', diff: '패럴랙스는 앞뒤가 다른 빠르기로 움직여요.' }] },
+  { id: 'shared-element', drawer: 'gesture', ko: '공유 요소 전환', en: 'Shared element transition', aliases: ['히어로 전환'], hint: '누른 사진이 그대로 커지며 다음 화면이 됨', desc: '목록의 사진이 끊기지 않고 그대로 커지면서 상세 화면으로 이어져요.', when: ['목록 → 상세'] },
+  { id: 'easing', drawer: 'gesture', ko: '이징', en: 'Easing', aliases: ['가속 · 감속 곡선'], hint: '빨리 출발해서 천천히 멈추는 움직임', desc: '움직임의 빠르기 곡선이에요. 빨리 출발해 천천히 멈추면 자연스러워 보여요.', when: ['모든 애니메이션'] },
+  { id: 'spring', drawer: 'gesture', ko: '스프링 애니메이션', en: 'Spring animation', aliases: ['바운스'], hint: '도착해서 살짝 튕기고 멈춤', desc: '용수철처럼 목표를 살짝 넘었다가 튕겨 돌아오며 멈춰요. 손에 붙는 느낌을 줘요.', when: ['끌어서 놓기 · 팝업 등장'], vs: [{ id: 'easing', diff: '이징은 튕기지 않고 곡선대로 멈춰요.' }] },
+
+  // 메뉴 아이콘 별명
+  { id: 'info-icon', drawer: 'icon', ko: '정보 아이콘', en: 'Info icon ⓘ', hint: '동그라미 안 i', desc: '동그라미 안의 i. 누르거나 올리면 설명이 나와요. 보통 툴팁과 같이 써요.', when: ['용어 설명'] },
+  { id: 'external-link', drawer: 'icon', ko: '새 창 아이콘', en: 'External link ↗', hint: '네모에서 오른쪽 위로 나가는 화살표', desc: '누르면 다른 사이트나 새 창으로 열린다는 표시예요.', when: ['바깥 링크'] },
+  { id: 'hamburger-morph', drawer: 'icon', ko: '햄버거 → X', en: 'Hamburger to close morph', hint: '☰ 세 줄이 접혀 ✕ 로 변신', desc: '메뉴를 열면 ☰ 가 ✕ 로 바뀌어 같은 자리에서 닫을 수 있어요.', when: ['모바일 메뉴 열고 닫기'], vs: [{ id: 'hamburger', diff: '햄버거는 세 줄 모양 그 자체예요.' }] },
+  { id: 'bookmark-icon', drawer: 'icon', ko: '북마크', en: 'Bookmark icon', aliases: ['저장 아이콘'], hint: '아래가 V 로 파인 리본', desc: '아래가 파인 리본 모양. 나중에 보려고 저장할 때 써요.', when: ['글 · 상품 저장'] },
+  { id: 'refresh-icon', drawer: 'icon', ko: '새로고침 아이콘', en: 'Refresh icon ↻', hint: '끝이 화살표인 동그라미', desc: '끝이 화살표인 동그라미. 다시 불러오기를 뜻해요.', when: ['목록 새로고침'] },
+
+  // AI 화면
+  { id: 'model-picker', drawer: 'ai', ko: '모델 선택', en: 'Model picker', hint: '입력창 근처 ‘빠름 ▾’ 같은 드롭다운', desc: '어떤 AI 모델로 답할지 고르는 작은 드롭다운이에요.', when: ['여러 모델을 쓰는 AI 서비스'] },
+  { id: 'stop-button', drawer: 'ai', ko: '멈추기 버튼', en: 'Stop generating', hint: '답을 쓰는 동안 보내기 자리에 ■', desc: 'AI가 답을 쓰는 동안 보내기 버튼이 네모(■)로 바뀌어 중간에 멈출 수 있어요.', when: ['스트리밍 응답 중'] },
+  { id: 'copy-button', drawer: 'ai', ko: '복사 버튼', en: 'Copy button', hint: '겹친 네모 ⧉ → 누르면 ✓ 복사됨', desc: '누르면 내용을 복사하고 잠깐 ✓ 로 바뀌어 알려 줘요.', when: ['코드 블록 · AI 답'] },
+  { id: 'chat-history', drawer: 'ai', ko: '대화 목록', en: 'Chat history sidebar', hint: '왼쪽에 지난 대화 제목들', desc: '지난 대화들을 왼쪽에 제목으로 모아 두고 다시 열어요.', when: ['대화형 AI'] },
+  { id: 'tool-call', drawer: 'ai', ko: '도구 사용 표시', en: 'Tool call indicator', aliases: ['검색 중 표시'], hint: '‘웹에서 찾는 중…’ 작은 줄', desc: 'AI가 검색 · 계산 같은 도구를 쓰는 중이라고 작은 줄로 알려 줘요. 펼치면 무엇을 했는지 보여요.', when: ['검색하는 AI · 에이전트'], vs: [{ id: 'thinking', diff: '생각 중 표시는 AI 혼자 고민하는 과정이에요.' }] },
+  { id: 'smart-reply', drawer: 'ai', ko: '빠른 답장', en: 'Smart reply', aliases: ['추천 답장'], hint: '받은 메시지 아래 ‘좋아요!’ 같은 답 칩', desc: '받은 메시지에 맞는 짧은 답을 칩으로 추천해서 눌러 바로 보내요.', when: ['메신저 · 메일'], vs: [{ id: 'suggestion-chips', diff: '추천 질문은 AI에게 물을 말을 추천해요.' }] },
+
+  // 다크 패턴
+  { id: 'fake-social-proof', drawer: 'dark', ko: '가짜 사회적 증거', en: 'Fake social proof', hint: '‘지금 23명이 보고 있어요’', desc: '확인할 수 없는 ‘지금 몇 명이 보는 중’ ‘방금 누가 샀어요’로 서두르게 해요.', when: ['쓰지 마세요! 진짜 숫자만'] },
+  { id: 'fake-scarcity', drawer: 'dark', ko: '거짓 품절 임박', en: 'Fake scarcity', hint: '늘 ‘2개 남았어요’', desc: '재고가 넉넉한데도 ‘몇 개 안 남았어요’라고 겁을 줘요.', when: ['쓰지 마세요!'], vs: [{ id: 'false-urgency', diff: '거짓 긴급성은 시간으로 겁을 줘요.' }] },
+  { id: 'friend-spam', drawer: 'dark', ko: '친구 스팸', en: 'Friend spam', hint: '연락처를 가져가 친구에게 초대 문자', desc: '연락처를 허락받은 김에 내 이름으로 친구들에게 초대를 보내요.', when: ['쓰지 마세요! 보내기 전에 꼭 묻기'] },
+  { id: 'misdirection', drawer: 'dark', ko: '시선 돌리기', en: 'Misdirection', hint: '해지 버튼은 작은 회색, 유지는 크게', desc: '원하는 쪽 버튼만 크고 눈에 띄게, 다른 쪽은 작고 흐리게 만들어요.', when: ['쓰지 마세요! 선택지는 같은 무게로'], vs: [{ id: 'button-hierarchy', diff: '버튼 위계는 사용자에게 도움 되는 순서로 써요.' }] },
+  { id: 'autoplay-next', drawer: 'dark', ko: '자동 재생 함정', en: 'Autoplay trap', hint: '끝나면 5초 뒤 다음 화가 저절로', desc: '멈출 틈 없이 다음 영상 · 다음 화를 저절로 틀어 계속 보게 해요.', when: ['쓰지 마세요! 끄는 설정을 쉽게'] },
 ]
 
 export const byId = new Map(ENTRIES.map((e) => [e.id, e]))
