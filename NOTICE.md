@@ -3,6 +3,8 @@
 UI Drawer — 이름이 생각 안 나는 그 UI, 서랍에서 꺼내 보세요
 Copyright (c) 2026 Team hatility · [MIT License](LICENSE)
 
+만든사람: 이명균 [@aodrha03](https://github.com/aodrha03)
+
 ## 함께 쓴 것
 
 | 이름 | 쓰는 곳 | 라이선스 |
