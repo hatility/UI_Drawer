@@ -6,6 +6,8 @@ Copyright (c) 2026 이명균 (Lee Myunggyun) · hatility (하틸리티) · [MIT 
 - 만든 사람: 이명균 — https://github.com/aodrha03
 - 소스 코드: hatility (하틸리티) — https://github.com/hatility/UI_Drawer
 
+만든사람: 이명균 [@aodrha03](https://github.com/aodrha03)
+
 ## 함께 쓴 것
 
 | 이름 | 쓰는 곳 | 라이선스 |
