@@ -1,0 +1,7 @@
+# UI Drawer
+
+> 이름이 생각 안 나는 UI의 이름을 찾는 사전입니다. 카드마다 그림 · 설명 · 쓰는 때 · 헷갈리는 짝이 있어요.
+
+- 소스 코드: https://github.com/hatility/UI_Drawer (MIT)
+- 만든 사람: 이명균 https://github.com/aodrha03
+- 카드 주소: `#/w/<카드 id>` (예: `#/w/snackbar`)

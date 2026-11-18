@@ -1,15 +1,33 @@
 {
   "name": "ui-drawer",
   "private": true,
-  "version": "0.4.0",
+  "version": "0.5.0",
+  "description": "UI 이름 사전 · 체험관 · 어디서나 이름표",
+  "author": "이명균 (https://github.com/aodrha03)",
   "license": "MIT",
+  "homepage": "https://github.com/hatility/UI_Drawer",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hatility/UI_Drawer.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hatility/UI_Drawer/issues"
+  },
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc --noEmit && vite build",
+    "build": "tsc --noEmit && vite build && (npx --yes tsx scripts/og.ts || echo '카드 미리보기 페이지는 건너뛰었어요 (tsx 를 받을 수 없음)')",
     "preview": "vite preview",
     "test": "vitest run",
-    "release": "node scripts/release.mjs"
+    "release": "node scripts/release.mjs",
+    "extension": "npx --yes tsx scripts/extension.ts",
+    "check:cards": "node scripts/check-cards.mjs",
+    "feed": "npx --yes tsx scripts/feed.ts",
+    "icons": "node scripts/icons.mjs",
+    "stills": "node scripts/stills.mjs",
+    "thumbs": "node scripts/thumbs.mjs",
+    "audit": "node scripts/audit.mjs",
+    "readable": "node scripts/readable.mjs"
   },
   "dependencies": {
     "lucide-react": "0.468.0",
@@ -20,8 +38,9 @@
     "@types/react": "^18.3.1",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.7.0",
+    "playwright-core": "^1.48.2",
     "typescript": "^5.6.3",
     "vite": "^6.4.5",
-    "vitest": "^3.2.4"
+    "vitest": "^5.1.0"
   }
 }

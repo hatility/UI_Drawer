@@ -11,6 +11,9 @@ type S = { liked: boolean; snack: boolean; tag: boolean; sheet: boolean }
 const initial: S = { liked: false, snack: false, tag: false, sheet: false }
 const POSTER: S = { liked: true, snack: true, tag: true, sheet: true }
 
+/** 글자를 가리지 않게 오른쪽 아래쪽을 눌러요 (Stageshow: aim off the label) */
+const aside = (a: Act<S>, name: string) => { const r = a.rect(name); return { x: r.x + r.width * 0.86, y: r.y + r.height * 0.82 } }
+
 async function script(a: Act<S>) {
   await a.wait(700)
   // 1. 하트 → 스낵바
@@ -23,7 +26,7 @@ async function script(a: Act<S>) {
   await a.set({ tag: true })
   await a.wait(900)
   // 3. 이름표를 누르면 시트가 밀려 나와요
-  await a.move('tag')
+  await a.move(aside(a, 'tag'))
   await a.wait(150)
   await a.click()
   await a.set({ sheet: true })
@@ -34,7 +37,7 @@ async function script(a: Act<S>) {
   await a.click()
   await a.set({ sheet: false })
   await a.wait(450)
-  await a.move('undo')
+  await a.move(aside(a, 'undo'))
   await a.wait(150)
   await a.click()
   await a.set({ liked: false, snack: false, tag: false })
@@ -44,7 +47,7 @@ async function script(a: Act<S>) {
 
 export function HeroStage() {
   return (
-    <Stage<S> width={640} height={380} initial={initial} poster={POSTER} script={script} cursor={{ at: { x: 300, y: 250 } }} className="hs">
+    <Stage<S> fill width={640} height={380} compact={{ below: 600, width: 358, height: 330 }} initial={initial} poster={POSTER} script={script} cursor={{ at: { wide: { x: 300, y: 250 }, compact: { x: 190, y: 240 } } }} className="hs">
       {(s) => (
         <>
           <Window url="monggle-bakery.test" nav urlShape="pill" className="hs-win">
@@ -57,11 +60,10 @@ export function HeroStage() {
               </div>
               <div className="hs-grid">
                 <div className="hs-card">
-                  <div className="hs-img hs-img--bread">
-                    <span data-target="heart" data-cursor="pointer" className="hs-heart" data-on={s.liked || undefined}>
-                      <svg viewBox="0 0 24 24" width="18" height="18"><path d="M12 20.5s-7.5-4.6-7.5-10.1A4.4 4.4 0 0 1 12 7.6a4.4 4.4 0 0 1 7.5 2.8c0 5.5-7.5 10.1-7.5 10.1Z" /></svg>
-                    </span>
-                  </div>
+                  <div className="hs-img hs-img--bread" />
+                  <span data-target="heart" data-cursor="pointer" className="hs-heart" data-on={s.liked || undefined}>
+                    <svg viewBox="0 0 24 24" width="18" height="18"><path d="M12 20.5s-7.5-4.6-7.5-10.1A4.4 4.4 0 0 1 12 7.6a4.4 4.4 0 0 1 7.5 2.8c0 5.5-7.5 10.1-7.5 10.1Z" /></svg>
+                  </span>
                   <Text className="hs-name" style={{ fontSize: 14 }}>소금빵</Text>
                   <Text className="hs-price" style={{ fontSize: 12 }}>3,500원</Text>
                 </div>

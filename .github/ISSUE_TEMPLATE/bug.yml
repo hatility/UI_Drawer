@@ -1,0 +1,16 @@
+name: 고장 · 어색한 곳 알리기
+description: 잘 안 되거나 움직임이 어색한 곳을 알려 주세요
+title: "[고장] "
+labels: ["고장"]
+body:
+  - type: input
+    id: where
+    attributes: { label: 어느 화면 · 카드인가요?, placeholder: "예: 사전 › 입력 폼 › 보안 키패드" }
+    validations: { required: true }
+  - type: textarea
+    id: what
+    attributes: { label: 무엇이 이상한가요?, placeholder: "어떻게 했더니 어떻게 됐는지" }
+    validations: { required: true }
+  - type: input
+    id: env
+    attributes: { label: 기기 · 브라우저, placeholder: "예: 아이폰 사파리, 맥 크롬 80% 배율" }

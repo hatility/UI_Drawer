@@ -1,0 +1,28 @@
+{
+  "manifest_version": 3,
+  "name": "UI Drawer 이름표",
+  "version": "0.5.0",
+  "description": "아무 웹사이트에서나 화면 속 UI에 이름표를 붙이고, 누르면 UI Drawer 사전이 열려요.",
+  "action": {
+    "default_title": "UI 이름표 붙이기 · 떼기"
+  },
+  "background": {
+    "service_worker": "background.js",
+    "scripts": [
+      "background.js"
+    ]
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "ui-drawer-tags@hatility",
+      "strict_min_version": "121.0"
+    }
+  },
+  "homepage_url": "https://github.com/hatility/UI_Drawer",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage"
+  ],
+  "options_page": "options.html"
+}

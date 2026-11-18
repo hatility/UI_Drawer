@@ -1,0 +1,88 @@
+// 영어판: 화면 글자(메뉴 · 서랍 이름 · 버튼 · 제목) + 자주 보는 카드 설명문(DESC_EN)을 바꿔요. 나머지 설명문은 한국어 그대로예요.
+import { usePrefs } from './prefs'
+import type { DrawerId } from './data'
+
+/** tx('사전', 'Dictionary') → 설정이 영어면 뒤의 것 */
+export function useTx() {
+  const en = usePrefs().lang === 'en'
+  return (ko: string, eng: string) => (en ? eng : ko)
+}
+export const DRAWER_EN: Record<DrawerId, [string, string]> = {
+  feedback: ['Feedback', 'Tell what just happened'], loading: ['Loading', 'Make waiting feel shorter'], input: ['Inputs', 'Pick, type, switch'], nav: ['Navigation', 'Show where to go'],
+  content: ['Content', 'Group, expand, flip'], style: ['Design styles', 'Names for a whole look'], gesture: ['Gestures & motion', 'Hand and mouse moves'], icon: ['Icon nicknames', 'Fun names from shapes'],
+  ai: ['AI screens', 'Seen in chat AI'], dark: ['Dark patterns', 'Know them, don’t use them'], price: ['Pricing psychology', 'Prices that make you buy'], research: ['Research methods', 'Ways to learn about users'],
+  empty: ['Empty states', 'When there is nothing'], indicator: ['Indicators', 'Status and position marks'], rating: ['Ratings', 'Giving and showing scores'], done: ['Completion', 'Saying it’s done'],
+  share: ['Sharing', 'Share icons and sheets'], transition: ['Transitions', 'Moving to the next screen'], 'text-motion': ['Text motion', 'How text appears'], 'button-state': ['Button states', 'Faces of a button'],
+  onboarding: ['First run', 'Screens on first open'], date: ['Date picking', 'Choosing days and ranges'], 'list-view': ['List layouts', 'Ways to lay out many'], chart: ['Charts', 'Numbers as pictures'],
+  type: ['Typography', 'Font, weight, spacing names'], 'search-screen': ['Search screens', 'Parts of a search page'], permission: ['Permissions', 'Asking for access'], scroll: ['Scroll motion', 'What happens on scroll'],
+  layout: ['Layouts', 'Names for page structure'],
+}
+export const SUB_EN: Record<string, string> = {
+  all: 'All', text: 'Typing', choose: 'Choosing', value: 'Values & dates', file: 'Files & security', button: 'Buttons', block: 'Cards & blocks', list: 'Lists & tables', media: 'Photo · video · map', people: 'People & chat',
+  menu: 'Menus & headers', mobile: 'Mobile bottom', page: 'In-page navigation', notice: 'Notices', dialog: 'Dialogs', hint: 'Hints & marks', touch: 'Touch', sense: 'Sound & haptics', drag: 'Drag', mouse: 'Mouse', motion: 'Motion principles',
+  ask: 'Asking', answer: 'Showing answers', after: 'Handling answers', base: 'Foundations', surface: 'Texture & light', retro: 'Retro & eras', art: 'Art & layout', etc: 'Others',
+}
+
+/** 자주 보는 카드의 영어 설명 (차례로 늘려 가요) */
+export const DESC_EN: Record<string, string> = {
+  toast: 'A short message that pops up and disappears on its own.',
+  snackbar: 'A short message at the bottom with one action, like Undo.',
+  modal: 'A window over the page that blocks the rest until you close it.',
+  alert: 'A small dialog that asks you to confirm or acknowledge something.',
+  tooltip: 'A small label that appears when you hover or focus an element.',
+  popover: 'A floating panel anchored to a button, with richer content than a tooltip.',
+  banner: 'A message strip across the top of a page or app.',
+  badge: 'A small dot or number on an icon showing new items.',
+  spinner: 'A spinning circle that says “please wait”.',
+  skeleton: 'Gray placeholder shapes in the layout of the content that is loading.',
+  progress: 'A bar that fills to show how much is done.',
+  'text-field': 'A box where you type text, with a label and helper text.',
+  select: 'A dropdown where you pick one option from a list.',
+  checkbox: 'A square box you tick to choose one or more options.',
+  radio: 'Round buttons where only one option can be chosen.',
+  toggle: 'A switch that turns a setting on or off right away.',
+  segmented: 'A row of joined buttons where one is selected.',
+  chip: 'A small rounded label used as a filter, choice or tag.',
+  slider: 'A handle you drag along a track to set a value.',
+  stepper: 'Minus and plus buttons around a number.',
+  'date-picker': 'A calendar popup for picking a date.',
+  'search-bar': 'A box for typing what you want to find.',
+  autocomplete: 'Suggestions that appear below the field as you type.',
+  'file-upload': 'An area to choose or drop files to upload.',
+  card: 'A box that groups an image, title and actions about one thing.',
+  accordion: 'Headers that expand and collapse their sections.',
+  carousel: 'Slides you can swipe or move through one by one.',
+  table: 'Rows and columns of data.',
+  avatar: 'A small round picture or initials that stand for a person.',
+  'empty-state': 'What a screen shows when there is nothing yet, with a next step.',
+  gnb: 'The main menu at the top of a website.',
+  breadcrumb: 'A trail showing where you are, like Home › Shop › Bread.',
+  tabs: 'Labels on top that switch between panels in the same place.',
+  pagination: 'Numbered buttons to move between pages of results.',
+  drawer: 'A panel that slides in from the side of the screen.',
+  'bottom-sheet': 'A panel that slides up from the bottom on phones.',
+  'hamburger-menu': 'Three lines that open a hidden menu.',
+  'tab-bar': 'Icon buttons fixed at the bottom of a phone app.',
+  fab: 'A round floating button for the main action on a screen.',
+  'top-app-bar': 'The bar at the top of an app screen with the title and actions.',
+  'pull-refresh': 'Pull the list down to load new content.',
+  swipe: 'Slide a finger across an item to reveal actions.',
+  'long-press': 'Press and hold to open more options.',
+  'drag-drop': 'Grab something and drop it somewhere else.',
+  hover: 'What changes when the mouse pointer is over something.',
+  'infinite-scroll': 'More items load automatically as you reach the bottom.',
+  streaming: 'An AI answer appearing word by word as it is written.',
+  'prompt-box': 'The box where you type a request to an AI.',
+  citation: 'Numbered links showing where an AI answer came from.',
+  'stop-button': 'A button that stops an AI answer while it is being written.',
+  regenerate: 'Ask the AI to write the answer again.',
+  'confirmshaming': 'A decline button worded to make you feel bad for saying no.',
+  'roach-motel': 'Easy to sign up, very hard to cancel.',
+  'dark-mode': 'Light text on dark backgrounds.',
+  glassmorphism: 'Frosted, see-through panels over colorful backgrounds.',
+  neumorphism: 'Soft shapes that look pressed into or out of the background.',
+  material: 'Google’s design system with layers, shadows and motion.',
+  'bento-grid': 'Boxes of different sizes packed together like a lunch box.',
+  'social-login': 'Buttons to sign in with an existing account like Kakao or Google.',
+  'password-strength': 'A bar that shows how strong the new password is.',
+}

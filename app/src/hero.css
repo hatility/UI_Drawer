@@ -1,27 +1,28 @@
 /* 첫 화면 Stage. 창은 아래로, 시트는 오른쪽으로 흘러 나가요.
    창 안의 가게는 주황 M3 테마, 이름표 · 시트는 UI Drawer 의 청록 M3 테마. */
 .hs .ss-stage {
+  overflow: hidden;
   --ss-accent: var(--md-primary);
   --ss-font: var(--font);
   --ss-canvas: transparent;
   background: transparent;
 }
-.hs .hs-win { position: absolute; left: 0; top: 20px; width: 500px; height: 380px; }
+.hs .hs-win { position: absolute; left: 0; top: 20px; width: 500px; height: 440px; }
 
 /* 가게 (주황 M3) */
 .hs .hs-app { position: relative; height: 100%; background: #fff8f6; }
-.hs .hs-bar { display: flex; align-items: center; gap: 10px; height: 52px; padding: 0 20px; }
+.hs .hs-bar { display: flex; align-items: center; gap: 10px; height: 52px; padding: 0 28px; }
 .hs .hs-logo { font: 700 16px/1 var(--ss-font); color: #231917; letter-spacing: -0.02em; }
 .hs .hs-sp { flex: 1; }
 .hs .hs-bar .ss-bar { background: #f7e4df; }
 .hs .hs-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; padding: 4px 20px; }
-.hs .hs-card { display: grid; gap: 7px; align-content: start; padding: 8px 8px 12px; border-radius: 16px; background: #fff1ed; }
+.hs .hs-card { position: relative; display: grid; gap: 7px; align-content: start; padding: 8px 8px 12px; border-radius: 16px; background: #fff1ed; }
 .hs .hs-card .ss-bar { background: #f1dfda; }
 .hs .hs-img { position: relative; height: 92px; border-radius: 12px; background: #f7e4df; }
 .hs .hs-img--bread { background: radial-gradient(54px 30px at 50% 60%, #e7a873 0 96%, transparent 100%), #ffdbd1; }
 .hs .hs-name { font-weight: 600; color: #231917; }
 .hs .hs-price { color: #53433f; }
-.hs .hs-heart { position: absolute; right: 8px; top: 8px; display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: #fff8f6; }
+.hs .hs-heart { position: absolute; right: 16px; top: 16px; display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: #fff8f6; }
 .hs .hs-heart path { fill: transparent; stroke: #85736e; stroke-width: 1.8; transition: fill 0.2s, stroke 0.2s; }
 .hs .hs-heart[data-on] path { fill: #8f4c38; stroke: #8f4c38; }
 .hs .hs-heart[data-on] svg { animation: hs-beat 0.45s cubic-bezier(0.3, 1.6, 0.5, 1); }
@@ -29,7 +30,7 @@
 
 /* M3 스낵바: 아래에서 올라오고, 사라질 땐 가라앉아요 */
 .hs .hs-snack {
-  position: absolute; left: 20px; bottom: 40px;
+  position: absolute; left: 20px; bottom: 100px;
   display: flex; align-items: center; gap: 24px; height: 48px; padding: 0 8px 0 16px; border-radius: 4px;
   background: #322825; color: #fbeeea; font: 400 14px/1 var(--ss-font);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
@@ -55,7 +56,7 @@
 
 /* M3 사이드 시트 (UI Drawer 청록) */
 .hs .hs-sheet {
-  position: absolute; left: 384px; top: 52px; width: 256px; bottom: -24px;
+  position: absolute; left: 364px; top: 52px; width: 256px; bottom: -24px;
   display: grid; align-content: start; gap: 10px; padding: 20px 24px;
   border-radius: 16px 0 0 0; background: var(--md-surface-container-low); color: var(--md-on-surface);
   box-shadow: 0 8px 28px rgba(0, 40, 36, 0.22), 0 0 0 1px var(--md-outline-variant);
@@ -68,10 +69,35 @@
 .hs .hs-x path { stroke: var(--md-on-surface-variant); stroke-width: 2; stroke-linecap: round; }
 .hs .hs-x[data-pressed] { background: color-mix(in srgb, var(--md-on-surface) 10%, transparent); }
 .hs .hs-sheet-en { margin-top: -8px; font: 400 13px/1 var(--ss-font); color: var(--md-on-surface-variant); }
-.hs .hs-sheet-pv { display: grid; place-items: center; height: 84px; border-radius: 12px; background: var(--md-surface-container-high); }
+.hs .hs-sheet-pv { display: grid; place-items: center; height: 84px; margin: 0 -24px; border-radius: 0; background: var(--md-surface-container-high); }
 .hs .hs-mini-snack { display: flex; align-items: center; gap: 12px; height: 30px; padding: 0 10px; border-radius: 4px; background: var(--md-inverse-surface); color: var(--md-inverse-primary); font: 600 11px/1 var(--ss-font); }
 .hs .hs-sheet-desc { margin: 2px 0 2px; font: 400 14px/20px var(--ss-font); color: var(--md-on-surface); }
 .hs .hs-sheet .ss-bar { background: var(--md-surface-container-highest); }
 .hs .hs-sheet-btn { justify-self: start; margin-top: 6px; display: inline-flex; align-items: center; height: 40px; padding: 0 24px; border-radius: 999px; background: var(--md-primary); color: var(--md-on-primary); font: 500 14px/1 var(--ss-font); }
 
 .hs .hs-rest { position: absolute; left: 300px; top: 250px; width: 1px; height: 1px; }
+
+/* 휴대폰용 디자인: 창은 두 칸 카드로, 시트는 창 오른쪽 아래에 걸쳐요 */
+.hs .ss-stage[data-layout='compact'] .hs-win { left: 20px; width: 420px; height: 420px; }
+.hs .ss-stage[data-layout='compact'] .hs-grid { grid-template-columns: repeat(2, 1fr); padding: 4px 14px; }
+.hs .ss-stage[data-layout='compact'] .hs-bar { padding: 0 22px; }
+.hs .ss-stage[data-layout='compact'] .hs-bar .ss-bar:first-of-type { width: 64px !important; }
+.hs .ss-stage[data-layout='compact'] .hs-snack { left: 14px; bottom: 112px; gap: 14px; }
+.hs .ss-stage[data-layout='compact'] .hs-img { height: 64px; }
+.hs .ss-stage[data-layout='compact'] .hs-sheet { bottom: -60px; left: 112px; top: 102px; width: 226px; padding: 16px 18px; gap: 8px; }
+.hs .ss-stage[data-layout='compact'] .hs-sheet-pv { height: 64px; margin: 0 -18px; }
+.hs .ss-stage[data-layout='compact'] .hs-sheet .ss-bar { display: none; }
+.hs .ss-stage[data-layout='compact'] .hs-rest { left: 190px; top: 240px; }
+/* 미끄러져 들어온 창이 멈출 때 글자가 흔들리지 않게 (Stageshow 지적: lands on a transform) */
+.hs .hs-sheet, .hs .hs-snack { will-change: transform, opacity; }
+
+.hs .hs-tag { will-change: transform, opacity; }
+/* 하트는 반투명 대신 비운 모양(fill: none)으로 */
+.hs .hs-heart path { fill: none; }
+.hs .hs-heart[data-on] path { fill: #8f4c38; }
+/* 스낵바 글자 시작선을 카드 글자 시작선(28px)에 맞추고, 이름표가 카드 끝에 붙어 보이지 않게 조금 내려요 */
+.hs .hs-snack { left: 28px; bottom: 92px; }
+.hs .ss-stage[data-layout='compact'] .hs-snack { left: 22px; bottom: 124px; }
+/* 휴대폰 그림: 둘째 줄 카드까지만 (셋째 줄이 화면 끝에 걸리지 않게) */
+.hs .ss-stage[data-layout='compact'] .hs-card:nth-child(n + 5) { display: none; }
+.hs .ss-stage[data-layout='compact'] .hs-img { height: 56px; }

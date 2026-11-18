@@ -4,6 +4,7 @@ import { forwardRef, useEffect, useImperativeHandle, useRef, useState, type Poin
 import { Bell, Heart, Home, Menu, Minus, Plus, Search, ShoppingBag, User, X } from 'lucide-react'
 import { Phone } from './kit/phone'
 import { useLabels } from './labels'
+import { josa } from './data'
 import './mobile.css'
 
 export type MobileHandle = { demo: (id: string) => void }
@@ -132,7 +133,7 @@ export const Mobile = forwardRef<MobileHandle, Props>(function Mobile({ theme, l
               {STORIES.map((t, i) => <button key={t} onClick={() => { setStory(i); saw('story') }}><i className={i < 2 ? 'new' : ''} /><small>{t}</small></button>)}
             </div>
 
-            <h3>오늘의 빵 <small>옆으로 밀고, 사진을 두 번 눌러요</small></h3>
+            <div data-h="2" className="mb-h">오늘의 빵 <small>옆으로 밀고, 사진을 두 번 눌러요</small></div>
             <div className="mb-snap" data-ui="scroll-snap" onScroll={() => saw('scroll-snap')}>
               {BREADS.map((b) => (
                 <div key={b.id} className="mb-card">
@@ -145,7 +146,7 @@ export const Mobile = forwardRef<MobileHandle, Props>(function Mobile({ theme, l
               ))}
             </div>
 
-            <h3>장바구니 <small>왼쪽으로 밀기 · 꾹 누르기</small></h3>
+            <div data-h="2" className="mb-h">장바구니 <small>왼쪽으로 밀기 · 꾹 누르기</small></div>
             <ul className="mb-list" data-ui="list-item">
               {cart.map((id, i) => {
                 const b = BREADS.find((x) => x.id === id)!
@@ -179,26 +180,26 @@ export const Mobile = forwardRef<MobileHandle, Props>(function Mobile({ theme, l
 
         {/* 햄버거 메뉴 → 내비게이션 드로어 */}
         <div className={`mb-scrim${nav ? ' on' : ''}`} onClick={() => setNav(false)} />
-        <aside className={`mb-drawer${nav ? ' on' : ''}`} data-ui="drawer" data-hidden={nav ? undefined : ''}>
+        <aside className={`mb-drawer${nav ? ' on' : ''}`} data-ui="drawer" data-hidden={nav ? undefined : ''} aria-hidden={!nav} {...(nav ? {} : ({ inert: '' } as object))}>
           <b>몽글 베이커리</b>
           {['홈', '주문 내역', '쿠폰', '설정'].map((t, i) => <button key={t} className={i === 0 ? 'on' : ''} onClick={() => setNav(false)}>{t}</button>)}
         </aside>
 
         {/* 바텀시트 */}
         <div className={`mb-scrim${sheetOpen ? ' on' : ''}`} onClick={() => setSheet(null)} />
-        <section className={`mb-sheet${sheetOpen ? ' on' : ''}`} data-ui="bottom-sheet" data-hidden={sheetOpen ? undefined : ''}
+        <section className={`mb-sheet${sheetOpen ? ' on' : ''}`} data-ui="bottom-sheet" data-hidden={sheetOpen ? undefined : ''} aria-hidden={!sheetOpen} {...(sheetOpen ? {} : ({ inert: '' } as object))}
           style={sheetDy ? { translate: `0 ${sheetDy}px`, transition: 'none' } : undefined}>
           <div className="mb-grab" data-ui="grabber" onPointerDown={onGrabDown} onPointerMove={onGrabMove} onPointerUp={onGrabUp} onPointerCancel={onGrabUp}><i /></div>
           {sheet === 'actions' ? (
             <div className="mb-actions">
-              {['공유하기', '찜하기', '숨기기'].map((t) => <button key={t} onClick={() => { setSheet(null); say(`${t}를 눌렀어요`) }}>{t}</button>)}
+              {['공유하기', '찜하기', '숨기기'].map((t) => <button key={t} onClick={() => { setSheet(null); say(`${josa(t, '을', '를')} 눌렀어요`) }}>{t}</button>)}
             </div>
           ) : (
             <>
               <div className="mb-sheet-item"><i style={{ ['--c' as string]: '#e7b277' }} /><div><b>소금빵</b><small>{won(3500)}</small></div>
                 <span className="mb-stepper" data-ui="stepper"><button aria-label="하나 빼기" disabled={qty <= 1} onClick={() => setQty(qty - 1)}><Minus size={16} /></button><b>{qty}</b><button aria-label="하나 더" onClick={() => setQty(qty + 1)}><Plus size={16} /></button></span>
               </div>
-              <p className="mb-sheet-hint">회색 막대를 아래로 끌면 닫혀요</p>
+              <p className="mb-sheet-hint" data-ui="drag-to-dismiss">회색 막대를 아래로 끌면 닫혀요</p>
               <button className="mb-cta" data-ui="sticky-cta" onClick={() => { setSheet(null); setCart((c) => (c.includes(1) ? c : [1, ...c])); say('장바구니에 담았어요') }}><ShoppingBag size={18} />{won(3500 * qty)} 담기</button>
             </>
           )}

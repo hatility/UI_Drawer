@@ -1,0 +1,95 @@
+/* 짝 비교 Stage: 창 두 개가 나란히. 왼쪽 창은 왼쪽 밖으로, 오른쪽 창은 오른쪽 밖으로, 둘 다 아래로 흘러 나가요 */
+.ps .ss-stage { overflow: hidden; --ss-accent: var(--md-primary); --ss-font: var(--font); --ss-canvas: transparent; background: transparent; }
+/* 창 하나가 오른쪽 · 아래로 흘러 나가고(corner bleed), 안을 반으로 나눠 같은 행동의 결과를 비교해요 */
+.ps .ps-win { position: absolute; left: 40px; top: 40px; width: 720px; height: 400px; }
+.ps .ps-split { display: grid; grid-template-columns: 1fr 1fr; height: 100%; }
+.ps .ps-half { position: relative; min-width: 0; overflow: hidden; --in: 20px; }
+.ps .ps-half + .ps-half { box-shadow: inset 1px 0 0 #ead6d0; }
+.ps .ps-b { --in-r: 60px; }
+.ps .ps-app { position: relative; height: 100%; overflow: hidden; padding-right: var(--in-r, 0px); background: #fff8f6; font: 400 13px/1.4 var(--ss-font); color: #231917; }
+.ps .ps-tag { position: absolute; left: var(--in); top: 12px; z-index: 6; padding: 4px 10px; border-radius: 8px; background: var(--md-primary); color: var(--md-on-primary); font: 600 12px/1.3 var(--ss-font); }
+.ps .ps-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; height: 40px; margin-top: 42px; padding: 0 var(--in); }
+.ps .ps-bar b { font-size: 14px; }
+.ps .ps-card { position: relative; display: flex; align-items: center; gap: 10px; margin: 0 var(--in); padding: 10px; border-radius: 12px; background: #fff1ed; }
+.ps .ps-card > div { display: grid; gap: 6px; }
+.ps .ps-card .ss-bar, .ps .ps-bar .ss-bar { background: #f1dfda; }
+.ps .ps-img { width: 40px; height: 40px; border-radius: 10px; background: radial-gradient(circle at 40% 35%, #f3c58e, #c98745); }
+.ps .ps-btn { display: inline-flex; align-items: center; justify-content: center; height: 36px; margin: 16px var(--in) 0; padding: 0 16px; border-radius: 999px; background: #8f4c38; color: #fff; font: 500 13px/1.3 var(--ss-font); transition: background 0.2s; }
+.ps .ps-btn[data-done] { background: #2e7d32; }
+.ps--check-toggle .ps-btn { width: 104px; padding: 0; }
+.ps .ps-btn[data-pressed], .ps .ps-x[data-pressed] { filter: brightness(0.9); }
+.ps .ps-scrim { position: absolute; inset: 0; z-index: 3; background: rgba(0, 0, 0, 0.32); opacity: 0; transition: opacity 0.25s; }
+.ps .ps-app[data-on] .ps-scrim { opacity: 1; }
+.ps :is(.ps-modal, .ps-sheet, .ps-pop) { position: absolute; z-index: 4; display: grid; gap: 8px; padding: 16px; background: #fff; color: #231917; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2); opacity: 0; will-change: transform, opacity; }
+.ps .ps-modal { left: 28px; right: calc(var(--in-r, 0px) + 28px); top: 100px; border-radius: 20px; scale: 0.92; transition: opacity 0.2s, scale 0.25s cubic-bezier(0.2, 0.8, 0.2, 1); }
+.ps .ps-sheet { left: 0; right: var(--in-r, 0px); bottom: 56px; padding: 12px 16px 16px; gap: 8px; border-radius: 20px 20px 0 0; translate: 0 100%; transition: opacity 0.2s, translate 0.35s cubic-bezier(0.2, 0.8, 0.2, 1); }
+.ps .ps-app[data-on] :is(.ps-modal, .ps-sheet, .ps-pop) { opacity: 1; scale: 1; translate: 0 0; }
+.ps .ps-grab { justify-self: center; width: 32px; height: 4px; margin-bottom: 4px; border-radius: 2px; background: #d8c2bc; }
+.ps .ps-opt { display: flex; align-items: center; height: 36px; padding: 0 12px; border-radius: 10px; box-shadow: inset 0 0 0 1px #d8c2bc; }
+.ps .ps-opt.on { box-shadow: inset 0 0 0 2px #8f4c38; font-weight: 600; }
+.ps .ps-x { justify-self: end; padding: 6px 12px; border-radius: 999px; color: #8f4c38; font-weight: 600; }
+.ps .ps-icon { flex: none; margin-left: auto; display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: #f7e4df; color: #8f4c38; font-weight: 700; }
+.ps .ps-tip { position: absolute; right: 0; top: calc(100% + 6px); z-index: 4; padding: 6px 10px; border-radius: 6px; background: #322825; color: #fbeeea; font-size: 12px; white-space: nowrap; opacity: 0; translate: 0 -4px; transition: opacity 0.15s, translate 0.2s; will-change: transform, opacity; }
+.ps .ps-app[data-on] .ps-tip { opacity: 1; translate: 0 0; }
+.ps .ps-pop { right: 0; top: calc(100% + 8px); width: 220px; border-radius: 14px; translate: 0 -6px; transition: opacity 0.2s, translate 0.25s; }
+.ps .ps-row { display: flex; align-items: center; justify-content: space-between; margin: 16px var(--in) 0; padding: 12px 14px; border-radius: 12px; background: #fff1ed; }
+.ps .ps-check { width: 22px; height: 22px; border-radius: 6px; box-shadow: inset 0 0 0 2px #85736e; transition: background 0.15s; }
+.ps .ps-check[data-on] { background: #8f4c38 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5 12l5 5 9-10' fill='none' stroke='white' stroke-width='3'/%3E%3C/svg%3E") center / 16px no-repeat; box-shadow: none; }
+.ps .ps-toggle { position: relative; width: 44px; height: 26px; border-radius: 999px; background: #d8c2bc; transition: background 0.2s; }
+.ps .ps-toggle i { position: absolute; left: 3px; top: 3px; width: 20px; height: 20px; border-radius: 50%; background: #fff; transition: translate 0.2s; will-change: transform; }
+.ps .ps-toggle[data-on] { background: #8f4c38; }
+.ps .ps-toggle[data-on] i { translate: 18px 0; }
+.ps .ps-note { display: block; margin: 16px var(--in) 0; color: #53433f; }
+.ps .ps-rest { position: absolute; left: 344px; top: 300px; width: 1px; height: 1px; }
+/* 휴대폰: 휴대폰 틀 안을 위 · 아래로 나눠요. 휴대폰은 가운데, 아래로 흘러 나가요 */
+.ps .ps-phone { position: absolute; left: 29px; top: 24px; }
+.ps .ss-stage[data-layout='compact'] .ps-split { grid-template-columns: 1fr; grid-template-rows: 1fr 1fr; height: 100%; }
+.ps .ss-stage[data-layout='compact'] .ps-half { --in: 16px; }
+.ps .ss-stage[data-layout='compact'] .ps-b { --in-r: 0px; }
+.ps .ss-stage[data-layout='compact'] .ps-half + .ps-half { box-shadow: inset 0 1px 0 #ead6d0; }
+.ps .ss-stage[data-layout='compact'] .ps-sheet { bottom: 0; }
+.ps .ss-stage[data-layout='compact'] .ps-modal { top: 56px; left: 16px; right: 16px; }
+.ps .ss-stage[data-layout='compact'] .ps-pop { width: 190px; }
+.ps .ss-stage[data-layout='compact'] .ps-bar { margin-top: 30px; height: 34px; }
+.ps .ss-stage[data-layout='compact'] .ps-tag { top: 8px; }
+.ps .ss-stage[data-layout='compact'] .ps-btn, .ps .ss-stage[data-layout='compact'] .ps-row, .ps .ss-stage[data-layout='compact'] .ps-note { margin-top: 10px; }
+.ps .ss-stage[data-layout='compact'] .ps-rest { left: 300px; top: 300px; }
+/* 휴대폰 틀은 안을 약 0.76배로 그려서, 휴대폰 글자 · 여백은 그만큼 키워요 (보이는 크기 10px 넘게) */
+.ps .ss-stage[data-layout='compact'] .ps-app { font-size: 16px; }
+.ps .ss-stage[data-layout='compact'] .ps-tag { top: 16px; font-size: 15px; padding: 5px 12px; }
+.ps .ss-stage[data-layout='compact'] .ps-bar { margin-top: 52px; height: 40px; }
+.ps .ss-stage[data-layout='compact'] .ps-bar b { font-size: 17px; }
+.ps .ss-stage[data-layout='compact'] .ps-card { padding: 12px; }
+.ps .ss-stage[data-layout='compact'] .ps-card b { font-size: 16px; }
+.ps .ss-stage[data-layout='compact'] :is(.ps-btn, .ps-row, .ps-note) { margin-top: 16px; }
+.ps .ss-stage[data-layout='compact'] .ps-btn { height: 44px; font-size: 16px; }
+.ps .ss-stage[data-layout='compact'] .ps-tip { font-size: 15px; }
+.ps .ss-stage[data-layout='compact'] :is(.ps-modal, .ps-sheet, .ps-pop) { font-size: 16px; }
+.ps .ss-stage[data-layout='compact'] .ps-opt { height: 44px; }
+.ps .ss-stage[data-layout='compact'] .ps-modal { top: 196px; }
+.ps .ss-stage[data-layout='compact'] .ps-pop { width: 230px; }
+
+/* 새 소식 머리 그림: 창이 오른쪽 · 아래로 흘러 나가요 (corner bleed) */
+.ns .ss-stage { overflow: hidden; --ss-accent: var(--md-primary); --ss-font: var(--font); --ss-canvas: transparent; background: transparent; }
+.ns .ns-win { position: absolute; left: 32px; top: 32px; width: 640px; height: 320px; }
+.ns .ns-app { height: 100%; padding: 16px 24px; background: #f6faf8; font: 400 14px/1.4 var(--ss-font); color: #171d1c; }
+.ns .ns-head { display: flex; align-items: baseline; justify-content: space-between; padding: 4px 0 12px; }
+.ns .ns-head b { font-size: 17px; }
+.ns .ns-count { font: 600 22px/1 var(--ss-font); color: var(--md-primary); font-variant-numeric: tabular-nums; }
+.ns .ns-row { display: flex; align-items: center; gap: 10px; height: 44px; margin-bottom: 8px; padding: 0 14px; border-radius: 12px; background: #fff; box-shadow: 0 0 0 1px #dfe7e4; }
+.ns .ns-row b { font-size: 14px; }
+.ns .ns-row span { color: #3f4947; font-size: 13px; }
+.ns .ns-row em { margin-left: auto; padding: 3px 9px; border-radius: 999px; background: var(--md-primary-container); color: var(--md-on-primary-container); font: 600 12px/1.3 var(--ss-font); font-style: normal; }
+.ns .ns-row--old { background: #eef3f1; box-shadow: none; }
+.ns .ns-row--old .ss-bar { background: #dbe4e1; }
+.ns .ns-dot { width: 22px; height: 22px; border-radius: 6px; background: var(--md-primary); opacity: 0.85; }
+.ns .ns-row--old .ns-dot { background: #cdd8d5; }
+.ns .ss-stage[data-layout='compact'] .ns-win { left: 16px; top: 16px; width: 380px; height: 320px; }
+.ns .ss-stage[data-layout='compact'] .ns-app { padding: 14px 16px; }
+.ns .ss-stage[data-layout='compact'] .ns-row span { display: none; }
+.ns .ns-row { will-change: transform; }
+.ns .ns-count { animation: ns-in 0.4s ease both; }
+@keyframes ns-in { from { opacity: 0; } }
+/* 창이 오른쪽 밖으로 흘러 나가는 만큼(32px) 오른쪽 안쪽 여백을 더 줘서 숫자 · ‘새로’가 잘리지 않게 */
+.ns .ns-app { padding-right: 60px; }
+.ns .ss-stage[data-layout='compact'] .ns-app { padding-right: 54px; }

@@ -1,0 +1,24 @@
+name: 새 카드 제안
+description: 사전에 없는 UI 이름 · 기능을 알려 주세요
+title: "[카드 제안] "
+labels: ["카드 제안"]
+body:
+  - type: input
+    id: ko
+    attributes: { label: 한국어 이름, placeholder: "예: 토스트 쌓기" }
+    validations: { required: true }
+  - type: input
+    id: en
+    attributes: { label: 영어 이름, placeholder: "예: Toast stack" }
+  - type: textarea
+    id: desc
+    attributes: { label: 어떻게 생겼고 언제 쓰나요?, placeholder: "모양 · 쓰임새를 한두 줄로" }
+    validations: { required: true }
+  - type: input
+    id: where
+    attributes: { label: 어디서 봤나요?, placeholder: "앱 · 사이트 이름 (주소가 있으면 함께)" }
+  - type: dropdown
+    id: drawer
+    attributes:
+      label: 어느 서랍이 어울릴까요?
+      options: [알림과 피드백, 로딩, 입력 폼, 이동 구조, 콘텐츠 담기, 디자인 스타일, 제스처와 움직임, 메뉴 아이콘 별명, AI 화면, 다크 패턴, 잘 모르겠어요]

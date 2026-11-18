@@ -1,0 +1,92 @@
+/* 어디서나 이름표 */
+.tg { max-width: 1200px; margin: 0 auto; padding-top: 24px; }
+.tg-head h1 { margin: 8px 0; font: 400 32px/40px var(--font); }
+.tg-head p { margin: 0; max-width: 620px; font: 400 16px/24px var(--font); color: var(--md-on-surface-variant); }
+.tg-head b { color: var(--md-on-surface); }
+.tg-badge { display: inline-block; padding: 4px 10px; border-radius: 8px; background: var(--md-primary); color: var(--md-on-primary); font: 600 12px/16px var(--font); }
+.tg-hero { margin: 24px 0 8px; overflow: hidden; border-bottom: 1px solid var(--md-outline-variant); }
+.tg-steps { list-style: none; counter-reset: s; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 24px 0 0; padding: 0; }
+.tg-steps li { counter-increment: s; position: relative; display: grid; align-content: start; gap: 8px; padding: 20px 18px 18px; border-radius: var(--md-shape-l); background: var(--md-surface-container-low); }
+.tg-steps li::before { content: counter(s); position: absolute; right: 16px; top: 14px; font: 500 28px/1 var(--font); color: var(--md-outline-variant); }
+.tg-steps b { display: flex; align-items: center; gap: 8px; font: 500 16px/24px var(--font); color: var(--md-primary); }
+.tg-steps p { margin: 0; color: var(--md-on-surface-variant); }
+.tg-steps kbd { padding: 1px 6px; border-radius: 5px; box-shadow: inset 0 0 0 1px var(--md-outline-variant); font: 600 12px var(--font); }
+.tg-bm { justify-self: start; display: inline-flex; align-items: center; gap: 6px; margin-top: 4px; height: 40px; padding: 0 18px; border-radius: 999px; background: var(--md-primary-container); color: var(--md-on-primary-container); font: 600 14px/20px var(--font); cursor: grab; box-shadow: 0 0 0 2px var(--md-primary) inset; }
+.tg-try { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 24px; }
+.tg-note { margin: 16px 0 0; font: 400 13px/20px var(--font); color: var(--md-on-surface-variant); }
+@media (max-width: 839px) { .tg-steps { grid-template-columns: 1fr; } .tg-head h1 { font-size: 28px; line-height: 36px; } }
+
+/* 맨 위 Stage */
+.ts .ss-stage { overflow: hidden; --ss-accent: var(--md-primary); --ss-font: var(--font); --ss-canvas: transparent; background: transparent; }
+.ts .ts-win { position: absolute; left: 16px; top: 16px; width: 688px; height: 440px; }
+.ts .ss-stage[data-layout='compact'] .ts-win { left: 16px; width: 326px; }
+.ts .ss-stage[data-layout='compact'] .ts-head { gap: 10px; padding: 0 14px; }
+.ts .ss-stage[data-layout='compact'] .ts-cards { padding: 22px 14px 14px; }
+.ts .ss-stage[data-layout='compact'] .ts-bar { right: 10px; bottom: 154px; }
+.ts .ts-page { position: relative; height: 100%; background: #fff; }
+.ts .ts-bookmarks { display: flex; align-items: center; gap: 14px; height: 34px; padding: 0 14px; border-bottom: 1px solid var(--ss-line); background: #fafafa; }
+.ts .ts-bm { padding: 4px 10px; border-radius: 6px; background: var(--md-primary-container); color: var(--md-on-primary-container); font: 600 12px/1 var(--ss-font); }
+.ts .ts-bm[data-pressed] { filter: brightness(0.92); }
+.ts .ts-head { display: flex; align-items: center; gap: 16px; height: 56px; padding: 0 20px; }
+.ts .ts-sp { flex: 1; }
+.ts .ts-bell { position: relative; }
+.ts .ts-bell em { position: absolute; right: 2px; top: 0; width: 9px; height: 9px; border-radius: 50%; background: #ef4444; box-shadow: 0 0 0 2px #fff; }
+.ts .ts-tabs { display: flex; gap: 22px; margin: 0 20px; padding-bottom: 8px; border-bottom: 1px solid var(--ss-line); }
+.ts .ts-tabs span { width: 46px; height: 7px; border-radius: 4px; background: var(--ss-ink-3); }
+.ts .ts-tabs span.on { background: var(--ss-ink-5); box-shadow: 0 9px 0 -1px var(--md-primary); }
+.ts .ts-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; padding: 22px 20px 14px; }
+.ts .ss-stage[data-layout='compact'] .ts-cards { grid-template-columns: repeat(2, 1fr); }
+.ts .ts-card { display: grid; gap: 7px; padding: 8px; border-radius: 12px; box-shadow: 0 0 0 1px var(--ss-line); }
+.ts .ts-img { height: 84px; border-radius: 8px; background: var(--ss-ink-2); }
+.ts .ts-card:first-child .ts-img { background: linear-gradient(135deg, #f1d9b8, #e8b98a); }
+.ts .ts-btn { margin: 0 20px; display: inline-flex; padding: 8px 18px; border-radius: 999px; background: #26262a; color: #fff; font: 600 13px/1 var(--ss-font); }
+/* 이름표: 북마크를 누르면 하나씩 차례로 붙어요 */
+.ts .ts-pinwrap { position: relative; outline: 1.5px dashed transparent; outline-offset: 2px; border-radius: 6px; transition: outline-color 0.2s calc(var(--d) * 0.18s); }
+.ts .ts-page[data-on] .ts-pinwrap { outline-color: rgba(0, 106, 96, 0.8); }
+.ts .ts-pin { position: absolute; left: -2px; top: -22px; z-index: 2; padding: 2px 7px; border-radius: 6px; background: var(--md-primary); color: #fff; font: 600 11px/1.3 var(--ss-font); font-style: normal; white-space: nowrap; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3); opacity: 0; scale: 0.7; transform-origin: 10px 100%; transition: opacity 0.2s, scale 0.35s cubic-bezier(0.3, 1.5, 0.5, 1); transition-delay: calc(var(--d) * 0.18s); }
+.ts .ts-page[data-on] .ts-pin { opacity: 1; scale: 1; }
+.ts .ts-bar { position: absolute; right: 16px; bottom: 94px; display: flex; align-items: center; gap: 12px; padding: 8px 8px 8px 14px; border-radius: 12px; background: #2b3231; color: #ecf2ef; font: 500 12px/1 var(--ss-font); opacity: 0; translate: 0 10px; transition: opacity 0.25s 1.1s, translate 0.35s 1.1s; }
+.ts .ts-bar[data-show] { opacity: 1; translate: 0 0; }
+.ts .ts-page:not([data-on]) .ts-bar { transition-delay: 0s; }
+.ts .ts-bar span { padding: 5px 12px; border-radius: 999px; background: #82d5c8; color: #00201c; font-weight: 700; }
+.ts .ts-rest { position: absolute; left: 560px; top: 300px; width: 1px; height: 1px; }
+.ts .ss-stage[data-layout='compact'] .ts-rest { left: 260px; top: 250px; }
+.tg-help { margin-top: 16px; padding: 12px 16px; border-radius: var(--md-shape-m); background: var(--md-surface-container-low); }
+.tg-help summary { cursor: pointer; font: 500 15px/22px var(--font); color: var(--md-primary); }
+.tg-help ul { margin: 10px 0 0; padding-left: 18px; display: grid; gap: 6px; color: var(--md-on-surface-variant); }
+.tg-help b { color: var(--md-on-surface); }
+.tg-help kbd { padding: 0 5px; border-radius: 4px; box-shadow: inset 0 0 0 1px var(--md-outline-variant); font: 500 12px var(--font); }
+.tg-ways { display: grid; gap: 10px; margin-top: 20px; }
+.tg-ways h2 { margin: 0; font: 400 22px/28px var(--font); }
+.tg-way { display: grid; gap: 6px; padding: 14px 16px; border-radius: var(--md-shape-m); background: var(--md-surface-container-low); }
+.tg-way > b { display: flex; align-items: center; gap: 4px; font: 500 16px/24px var(--font); }
+.tg-way p { margin: 0; color: var(--md-on-surface-variant); }
+.tg-way ol { margin: 0; padding-left: 20px; display: grid; gap: 4px; color: var(--md-on-surface-variant); }
+.tg-way ol .btn-text { margin-left: -12px; }
+.tg-way kbd, .tg-ways kbd { padding: 0 5px; border-radius: 4px; box-shadow: inset 0 0 0 1px var(--md-outline-variant); font: 500 12px var(--font); }
+.tg-top { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 14px; color: var(--md-on-surface-variant); }
+.tg-ways h2 small { font-size: 14px; color: var(--md-on-surface-variant); font-weight: 400; margin-left: 6px; }
+.tg-rule { display: flex; flex-wrap: wrap; gap: 8px; }
+.tg-rule input { flex: 1 1 200px; height: 44px; padding: 0 14px; border-radius: 12px; border: 1px solid var(--md-outline); background: var(--md-surface); color: var(--md-on-surface); font: inherit; }
+.tg-rules { margin: 8px 0 0; padding: 0; list-style: none; display: grid; gap: 4px; }
+.tg-rules li { display: flex; align-items: center; gap: 8px; }
+.tg-err { margin: 6px 0 0; color: var(--md-error); font-size: 14px; }
+.tg-ways h2 small { display: block; margin: 4px 0 0; }
+.ts .ts-bar { will-change: transform, opacity; }
+
+.ts .ts-pin { will-change: transform, opacity; }
+/* 버튼 글자가 위아래로 잘리지 않게 줄 높이를 주고, 좌우 여백을 같게 */
+.ts .ts-btn { padding: 6px 18px; line-height: 1.3; }
+.ts .ts-btn .ts-pin { left: -2px; }
+.ts .ss-stage[data-layout='compact'] .ts-pin { font-size: 13px; }
+/* ‘더 보기’ 버튼의 이름표는 버튼 밖(감싼 칸)에 달아서 버튼 안 여백이 좌우 같게 */
+.ts .ts-btnwrap { display: inline-block; margin: 0 20px; border-radius: 999px; }
+.ts .ts-btnwrap .ts-btn { margin: 0; }
+.ts .ts-btnwrap .ts-pin { top: -28px; }
+.ts .ss-stage[data-layout='compact'] .ts-btnwrap { display: none; }
+/* 긴 안내는 접어 두고, 필요할 때 펼쳐요 */
+.tg-fold > summary { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; min-height: 48px; }
+.tg-fold > summary::-webkit-details-marker { display: none; }
+.tg-fold > summary::after { content: '펼치기'; color: var(--md-primary); font: 500 14px var(--font); }
+.tg-fold[open] > summary::after { content: '접기'; }
+.tg-fold > summary h2 { margin: 0; }

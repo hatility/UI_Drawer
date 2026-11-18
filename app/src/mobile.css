@@ -25,8 +25,8 @@
 .mb-stories i.new { box-shadow: 0 0 0 3px var(--b-surface), 0 0 0 5.5px var(--b-primary); }
 .mb-stories small { font-size: 12px; color: var(--b-muted); }
 
-.mb h3 { margin: 24px 0 12px; font-size: 18px; font-weight: var(--b-head); }
-.mb h3 small { display: block; margin-top: 2px; font-size: 12px; font-weight: 400; color: var(--b-muted); }
+.mb :is([data-h="2"], [data-h="3"]) { margin: 24px 0 12px; font-size: 18px; font-weight: var(--b-head); }
+.mb :is([data-h="2"], [data-h="3"]) small { display: block; margin-top: 2px; font-size: 12px; font-weight: 400; color: var(--b-muted); }
 .mb-snap { display: flex; gap: 12px; margin: 0 -16px; padding: 4px 16px 8px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding: 16px; scrollbar-width: none; }
 .mb-snap::-webkit-scrollbar { display: none; }
 .mb-card { flex: none; width: 240px; display: grid; gap: 4px; padding: 8px 8px 12px; scroll-snap-align: start; border-radius: var(--b-r); background: var(--b-surface); box-shadow: var(--b-card-shadow); border: var(--b-card-border); backdrop-filter: var(--b-blur); }
@@ -94,7 +94,7 @@
 .mb-story-bars i.on::after { content: ''; display: block; height: 100%; background: #fff; animation: mb-story 3s linear forwards; }
 .mb-story-x { position: absolute; right: 8px; top: 72px; display: grid; place-items: center; width: 44px; height: 44px; color: #fff !important; }
 
-.mb-toasts { position: absolute; left: 16px; right: 16px; bottom: 104px; z-index: 30; display: grid; justify-items: center; pointer-events: none; }
+.mb-toasts { position: absolute; left: 16px; right: 16px; bottom: 172px; z-index: 30; display: grid; justify-items: center; pointer-events: none; }
 .mb-toasts .pg-snack { justify-self: stretch; justify-content: space-between; }
 
 /* 모바일 화면 배치: 왼쪽에 해 볼 것, 가운데 폰 */

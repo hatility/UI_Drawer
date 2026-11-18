@@ -1,0 +1,59 @@
+/* 체험관 첫 안내 그림. 창 안 가게는 주황 M3, 이름표 · 시트는 UI Drawer 청록 */
+.gs .ss-stage { overflow: hidden; --ss-accent: var(--md-primary); --ss-font: var(--font); --ss-canvas: transparent; background: transparent; }
+.gs .gs-tools { display: flex; align-items: center; gap: 16px; height: 48px; padding: 0 24px; border-bottom: 1px solid var(--ss-line); background: var(--md-surface-container-low); }
+.gs .gs-sp { flex: 1; }
+.gs .gs-sw { display: inline-flex; align-items: center; gap: 8px; font: 600 13px/1 var(--ss-font); color: var(--md-on-surface); }
+.gs .gs-win { position: absolute; left: 16px; top: 16px; width: 700px; height: 360px; }
+.gs .gs-page { position: relative; height: 100%; background: #fff8f6; }
+.gs .gs-head { display: flex; align-items: center; gap: 40px; height: 56px; padding: 0 24px; }
+.gs .gs-logo { font: 700 15px/1 var(--ss-font); color: #231917; }
+.gs .gs-head .ss-bar { background: #f7e4df; }
+.gs .gs-wrap { position: relative; display: inline-flex; border-radius: 6px; outline: 1.5px dashed transparent; outline-offset: 3px; transition: outline-color 0.2s calc(var(--d, 0) * 0.18s); }
+.gs .gs-page[data-on] .gs-wrap { outline-color: rgba(0, 106, 96, 0.75); }
+.gs .gs-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; padding: 14px 24px; }
+.gs .gs-card { display: grid; gap: 8px; align-content: start; padding: 10px 10px 14px; border-radius: 14px; background: #fff1ed; }
+.gs .gs-card .ss-bar { background: #f1dfda; }
+.gs .gs-img { display: block; height: 56px; border-radius: 10px; background: #f7e4df; }
+.gs .gs-img--bread { background: radial-gradient(50px 28px at 50% 60%, #e7a873 0 96%, transparent 100%), #ffdbd1; }
+.gs .gs-name { font: 600 14px/1.2 var(--ss-font); color: #231917; }
+.gs .gs-btnwrap { justify-self: start; }
+.gs .gs-btn { padding: 7px 16px; border-radius: 999px; background: #8f4c38; color: #fff; font: 500 12px/1 var(--ss-font); }
+.gs .gs-pin { position: absolute; left: -2px; top: -26px; z-index: 2; padding: 3px 8px; border-radius: 6px; background: var(--md-primary); color: #fff; font: 600 12px/1.3 var(--ss-font); font-style: normal; white-space: nowrap; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25); opacity: 0; scale: 0.7; transform-origin: 10px 100%; transition: opacity 0.2s, scale 0.35s cubic-bezier(0.3, 1.5, 0.5, 1); transition-delay: calc(var(--d) * 0.18s); }
+.gs .gs-page[data-on] .gs-pin { opacity: 1; scale: 1; }
+.gs .gs-focus .gs-pin { top: -12px; left: 8px; }
+
+/* 설명 시트: 창 오른쪽에 걸쳐 나와요 (오른쪽 여백 16 · 아래로 흘러 나감) */
+.gs .gs-sheet { position: absolute; left: 368px; top: 96px; width: 256px; bottom: -60px; display: grid; align-content: start; gap: 6px; padding: 18px 20px; border-radius: 16px 16px 0 0; background: var(--md-surface-container-low); color: var(--md-on-surface); box-shadow: 0 8px 28px rgba(0, 40, 36, 0.22), 0 0 0 1px var(--md-outline-variant); opacity: 0; translate: 40px 0; transition: opacity 0.3s, translate 0.45s cubic-bezier(0.2, 0.8, 0.2, 1); }
+.gs .gs-sheet[data-show] { opacity: 1; translate: 0 0; }
+.gs .gs-sheet-head { display: flex; align-items: center; justify-content: space-between; }
+.gs .gs-sheet-head b { font: 500 22px/28px var(--ss-font); }
+.gs .gs-x { display: grid; place-items: center; width: 32px; height: 32px; margin-right: -8px; border-radius: 50%; }
+.gs .gs-x path { stroke: var(--md-on-surface-variant); stroke-width: 2; stroke-linecap: round; }
+.gs .gs-sheet small { margin-top: -4px; color: var(--md-on-surface-variant); font: 400 13px/1 var(--ss-font); }
+.gs .gs-sheet p { margin: 6px 0 4px; font: 400 14px/20px var(--ss-font); }
+.gs .gs-sheet-btn { justify-self: start; display: inline-flex; align-items: center; height: 36px; padding: 0 18px; border-radius: 999px; background: var(--md-primary); color: var(--md-on-primary); font: 500 13px/1 var(--ss-font); }
+.gs .gs-rest { position: absolute; left: 300px; top: 250px; width: 1px; height: 1px; }
+
+/* 휴대폰용: 창은 오른쪽으로 흘러 나가고, 카드 두 장 · 시트는 아래쪽에 */
+.gs .ss-stage[data-layout='compact'] .gs-win { left: 16px; width: 440px; }
+.gs .ss-stage[data-layout='compact'] .gs-head { gap: 20px; padding: 0 16px; }
+.gs .ss-stage[data-layout='compact'] .gs-tools { padding: 0 16px; }
+.gs .ss-stage[data-layout='compact'] .gs-cards { grid-template-columns: repeat(2, 180px); padding: 18px 16px; }
+.gs .ss-stage[data-layout='compact'] .gs-sheet { left: 120px; top: 132px; width: 222px; padding: 16px 18px; }
+.gs .ss-stage[data-layout='compact'] .gs-rest { left: 180px; top: 250px; }
+
+/* 체험관 맨 위 안내 칸 */
+.pg-guide { display: grid; grid-template-columns: minmax(240px, 1fr) minmax(0, 640px); gap: 24px; align-items: end; margin: 8px 0 20px; padding: 24px 0 0 28px; border-radius: var(--md-shape-xl); background: var(--md-surface-container-low); overflow: hidden; }
+.pg-guide-copy { align-self: center; display: grid; gap: 10px; padding-bottom: 24px; }
+.pg-guide-copy h2 { margin: 0; font: 400 24px/32px var(--font); }
+.pg-guide-copy ol { margin: 0; padding-left: 20px; display: grid; gap: 4px; color: var(--md-on-surface-variant); font: 400 15px/22px var(--font); }
+.pg-guide-copy .btn { justify-self: start; }
+@media (max-width: 999px) { .pg-guide { grid-template-columns: 1fr; padding: 20px 16px 0; } .pg-guide-copy { padding-bottom: 0; } }
+.gs .gs-btnwrap .gs-pin { left: calc(100% + 10px); top: 50%; translate: 0 -50%; transform-origin: 0 50%; }
+.gs .gs-sheet { will-change: transform, opacity; }
+
+.gs .gs-pin { will-change: transform, opacity; }
+.gs .gs-btn { padding: 6px 16px; line-height: 1.3; }
+/* 카드 이름표를 머리줄 이름표(GNB)와 같은 시작선에 */
+.gs .gs-focus > .gs-pin { left: -2px; }
+.gs .gs-img { height: 48px; }

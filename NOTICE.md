@@ -1,7 +1,10 @@
 # 저작권 및 라이선스 고지
 
 UI Drawer — 이름이 생각 안 나는 그 UI, 서랍에서 꺼내 보세요
-Copyright (c) 2026 Team hatility · [MIT License](LICENSE)
+Copyright (c) 2026 이명균 (Lee Myunggyun) · hatility (하틸리티) · [MIT License](LICENSE)
+
+- 만든 사람: 이명균 — https://github.com/aodrha03
+- 소스 코드: hatility (하틸리티) — https://github.com/hatility/UI_Drawer
 
 ## 함께 쓴 것
 
