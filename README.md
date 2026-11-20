@@ -11,7 +11,7 @@
 
 <br>
 
-![version](https://img.shields.io/badge/version-0.5.0-006A60?style=flat-square)
+![version](https://img.shields.io/badge/version-0.6.0-006A60?style=flat-square)
 ![cards](https://img.shields.io/badge/UI_카드-837장-006A60?style=flat-square)
 ![license](https://img.shields.io/badge/license-MIT-6B6F7A?style=flat-square)
 ![Docker](https://img.shields.io/badge/Docker-ready-2496ED?style=flat-square&logo=docker&logoColor=white)
@@ -30,6 +30,7 @@
 - 디자이너와 개발자가 **같은 걸 다른 이름**으로 부르고 있을 때
 - 토스트와 스낵바, 모달과 바텀시트처럼 **비슷한 둘이 헷갈릴 때**
 - 처음 UI를 배우면서 **이름과 쓰임새를 한 번에** 익히고 싶을 때
+- 바이브 코딩할 때 AI에게 **원하는 UI를 정확한 이름으로** 말하고 싶을 때
 
 <br>
 
@@ -90,6 +91,7 @@
 | | |
 |---|---|
 | **카드** | 움직이는 그림 · 언제 쓰는지 · 헷갈리는 짝 · 잘 만드는 법 · 흔한 실수 · 접근성 점검 · 피그마 · iOS · HTML에서 부르는 이름 · 변천사 · 소리로 듣기 |
+| **바이브 코딩** | 카드마다 ‘AI에게 만들어 달라고 하기’ 프롬프트 복사(React · HTML · Vue · SwiftUI · Flutter), 폴더 · 비교에 담은 카드로 화면 통째로 만들기 |
 | **가져가기** | HTML · React · Vue · CSS · Tailwind 코드 복사, 피그마용 SVG, PNG 내려받기 |
 | **일에 쓰기** | 나란히 보기 링크(`#/vs/카드/카드`), 화면 사진에 이름표 붙이기, 우리 팀이 부르는 이름, 화면 설명 글 · 팀 용어 투표 글, 디자인 시스템 점검표 |
 | **배우기** | 학습 코스(입문 → 중급) · 퀴즈 · 스피드 대결 링크 · 틀린 것만 다시 · 자주 틀리는 이름 · 잘못 만든 UI 고치기 · 틀린 그림 찾기 |

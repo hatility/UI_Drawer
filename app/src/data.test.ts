@@ -122,3 +122,12 @@ test('덧붙인 이야기(lore)에 적은 카드는 모두 있어요', async () 
   const { loreMissing } = await import('./lore')
   expect(loreMissing()).toEqual([])
 })
+
+test('바이브 코딩 프롬프트: 모든 카드에서 만들어지고, 직접 다듬은 카드는 실제로 있어요', async () => {
+  const { cardPrompt, screenPrompt, MUST, TECHS } = await import('./prompt')
+  const { ENTRIES, byId } = await import('./data')
+  expect(Object.keys(MUST).filter((id) => !byId.has(id))).toEqual([])
+  for (const e of ENTRIES) for (const t of TECHS) { const p = cardPrompt(e, t, 'detail'); expect(p).toContain(e.ko); expect(p).not.toMatch(/undefined/) }
+  expect(cardPrompt(byId.get('snackbar')!, 'React', 'detail')).toContain('토스트')
+  expect(screenPrompt(ENTRIES.slice(0, 3), 'HTML')).toContain('1.')
+})

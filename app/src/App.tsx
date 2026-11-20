@@ -31,6 +31,7 @@ const Versus = lazy(() => import('./Pages').then((m) => ({ default: m.Versus }))
 const Annotate = lazy(() => import('./Annotate').then((m) => ({ default: m.Annotate })))
 const ShareImport = lazy(() => import('./Pages').then((m) => ({ default: m.ShareImport })))
 import { issueUrl } from './about'
+import { TECHS, cardPrompt, useVibe, type Tech, type Tone } from './prompt'
 import { Snackbar, copyText, say } from './snack'
 import { DESC_EN, DRAWER_EN, SUB_EN, useTx } from './i18n'
 import './app.css'
@@ -319,7 +320,7 @@ function Dictionary({ drawer, pick, group, setGroup, q, setQ, onOpen, dex }: Dic
 }
 
 // ─── 상세: PC에서는 옆에서 나오는 사이드 시트, 휴대폰에서는 아래에서 올라오는 바텀시트 ───
-// 내용은 탭 셋으로 나눠요. 기본(무엇 · 언제 · 헷갈리는 친구) · 만들기(잘 만드는 법 · 실수 · 접근성 · 코드) · 더 알기(다른 이름 · 변천사 · 이어진 카드)
+// 내용은 탭 셋으로 나눠요. 이해하기(언제 · 헷갈리기 쉬운 것) · 만들기(AI 프롬프트 · 확인할 것 · 접근성, 코드는 접어 둠) · 더 알기(다른 이름 · 변천사 · 이어진 카드, 일할 때 쓰는 도구는 접어 둠)
 type Tab = 'basic' | 'make' | 'more'
 /** 복사할 수 있는 코드 형식 */
 const FMT = { HTML: (pv: HTMLElement) => cardHTML(pv), React: cardReact, Vue: cardVue, CSS: cardCSS, Tailwind: cardTailwind, SVG: (pv: HTMLElement) => cardSVG(pv) } as const
@@ -340,6 +341,7 @@ function Sheet({ id, onOpen, onClose }: { id: string | null; onOpen: (id: string
   const [full, setFull] = useState(false)
   const [more, setMore] = useState(false)
   const [fmt, setFmt] = useState<Fmt>('HTML')
+  const [vibe, setVibe] = useVibe()
   const tx = useTx()
   const prefs = usePrefs()
   /** 상세 창의 그림(움직임을 멈춘 상태)을 꺼내요 */
@@ -396,8 +398,8 @@ function Sheet({ id, onOpen, onClose }: { id: string | null; onOpen: (id: string
                 <button className="icon-btn" aria-label={tx('닫기', 'Close')} onClick={onClose}><X size={22} /></button>
               </span>
             </div>
-            <p className="sheet-en">{e.en}{e.aliases && <> · {e.aliases.join(' · ')}</>}</p>
-            <div className="sheet-tags">
+            <div className="sheet-meta">
+              <span className="sheet-en">{e.en}</span>
               <span className={`sheet-lv lv${levelOf(e)}`}>{tx(LEVEL_NAME[levelOf(e)], ['', 'Basic', 'Intermediate', 'Advanced'][levelOf(e)])}</span>
               {KOREA.has(e.id) && <span className="sheet-kr">{tx('한국 앱에서 자주 봐요', 'Common in Korean apps')}</span>}
             </div>
@@ -405,7 +407,7 @@ function Sheet({ id, onOpen, onClose }: { id: string | null; onOpen: (id: string
             <p className="sheet-desc">{prefs.lang === 'en' && DESC_EN[e.id] ? DESC_EN[e.id] : e.desc}</p>
 
             <div className="sheet-tabs" role="tablist" aria-label={tx('카드 내용', 'Card sections')}>
-              {([['basic', '기본', 'Basics'], ['make', '만들기', 'Build'], ['more', '더 알기', 'More']] as const).map(([k, ko, en]) => (
+              {([['basic', '이해하기', 'Basics'],['make', '만들기', 'Build'], ['more', '더 알기', 'More']] as const).map(([k, ko, en]) => (
                 <button key={k} role="tab" id={`st-${k}`} aria-selected={tab === k} aria-controls="st-panel" tabIndex={tab === k ? 0 : -1} className={tab === k ? 'on' : ''} onClick={() => setTab(k)}
                   onKeyDown={(ev) => { const order: Tab[] = ['basic', 'make', 'more']; const i = order.indexOf(tab); const to = ev.key === 'ArrowRight' ? order[(i + 1) % 3] : ev.key === 'ArrowLeft' ? order[(i + 2) % 3] : null; if (to) { ev.preventDefault(); setTab(to); (ev.currentTarget.parentElement?.querySelector(`#st-${to}`) as HTMLElement)?.focus() } }}>{tx(ko, en)}</button>
               ))}
@@ -416,54 +418,69 @@ function Sheet({ id, onOpen, onClose }: { id: string | null; onOpen: (id: string
                 <h3>{e.drawer === 'dark' ? tx('알아 둘 점', 'Watch out') : tx('이럴 때 써요', 'When to use')}</h3>
                 <ul className="sheet-when">{e.when.map((w) => <li key={w}>{w}</li>)}</ul>
                 {e.vs && <>
-                  <h3>{tx('헷갈리는 친구', 'Often confused with')}</h3>
-                  {e.vs.map((v) => tellOf(e.id, v.id)).filter(Boolean).slice(0, 1).map((t) => <p key={t} className="sheet-tell"><b>{tx('한 줄로 가르기', 'Quick tell')}</b>{t}</p>)}
-                  <VsPair id={e.id} friends={e.vs.map((v) => v.id)} />
-                  <div className="sheet-vs">
-                    {e.vs.map((v) => <button key={v.id} onClick={() => onOpen(v.id)}><b>{byId.get(v.id)!.ko}</b><span>{v.diff}</span></button>)}
-                  </div>
+                  <h3>{tx('헷갈리기 쉬운 것', 'Often confused with')}</h3>
+                  <VsPair id={e.id} friends={e.vs} onOpen={onOpen} />
                 </>}
               </>}
 
               {tab === 'make' && <>
-                {e.drawer !== 'dark' && <>
-                  <h3>{tx('잘 만드는 법', 'Make it well')}</h3>
-                  <ul className="sheet-when">{makeTips(e.drawer).map((t) => <li key={t}>{end(t)}</li>)}</ul>
-                  <h3>{tx('흔한 실수', 'Common mistakes')}</h3>
-                  <ul className="sheet-when sheet-bad">{mistakesOf(e.drawer).map((t) => <li key={t}>{end(t)}</li>)}</ul>
-                </>}
-                <h3>{tx('접근성 점검', 'Accessibility checklist')}</h3>
-                <ul className="sheet-when a11y">{a11yTips(e.id, e.drawer).map((t) => <li key={t}>{end(t)}</li>)}</ul>
-                <h3>{tx('그림 가져가기', 'Take the picture')}</h3>
-                <p className="sheet-note">{tx('모양만 옮긴 뼈대예요. 움직임과 상태는 직접 붙여 주세요.', 'Shape only. Add state and motion yourself.')}</p>
-                <div className="sheet-code" role="group" aria-label={tx('코드 복사', 'Copy code')}>
-                  <select value={fmt} onChange={(ev) => setFmt(ev.target.value as Fmt)} aria-label={tx('코드 형식', 'Format')}>
-                    {(Object.keys(FMT) as Fmt[]).map((k) => <option key={k} value={k}>{k === 'SVG' ? tx('SVG (피그마에 붙여 넣기)', 'SVG (for Figma)') : k}</option>)}
-                  </select>
-                  <button onClick={() => codeCopy(fmt, (pv) => FMT[fmt](pv, e.id))}><Copy size={14} />{tx('복사', 'Copy')}</button>
-                  <button onClick={() => grab((pv) => { downloadPNG(pv, e.id); say(tx('그림을 PNG로 내려받았어요.', 'PNG saved.')) })}><Download size={14} />{tx('그림 내려받기', 'Save PNG')}</button>
-                </div>
+                <section className="sheet-ai" aria-labelledby="sheet-ai-h">
+                  <h3 id="sheet-ai-h">{tx('AI에게 만들어 달라고 하기', 'Ask an AI to build it')}</h3>
+                  <p className="sheet-note">{tx('Claude · ChatGPT · Cursor에 붙여 넣으면 이 카드대로 만들어 줘요.', 'Paste into Claude, ChatGPT or Cursor.')}</p>
+                  <div className="sheet-code sheet-vibe">
+                    <select value={vibe.tech} onChange={(ev) => setVibe({ ...vibe, tech: ev.target.value as Tech })} aria-label={tx('만들 기술', 'Tech')}>{TECHS.map((t) => <option key={t}>{t}</option>)}</select>
+                    <select value={vibe.tone} onChange={(ev) => setVibe({ ...vibe, tone: ev.target.value as Tone })} aria-label={tx('프롬프트 길이', 'Length')}><option value="detail">{tx('자세히', 'Detailed')}</option><option value="short">{tx('짧게', 'Short')}</option></select>
+                    <button className="sheet-vibe-go" onClick={() => copyText(cardPrompt(e, vibe.tech, vibe.tone), tx('프롬프트를 복사했어요. AI 채팅창에 붙여 넣어 보세요.', 'Prompt copied.'))}><Copy size={14} />{tx('프롬프트 복사', 'Copy prompt')}</button>
+                  </div>
+                  <details className="sheet-vibe-peek"><summary>{tx('어떤 글이 복사되나요?', 'Preview')}</summary><pre>{cardPrompt(e, vibe.tech, vibe.tone)}</pre></details>
+                </section>
+
+                <h3>{tx('만들 때 확인할 것', 'Checklist')}</h3>
+                <ul className="sheet-check">
+                  {e.drawer !== 'dark' && makeTips(e.drawer).map((t) => <li key={t}>{end(t)}</li>)}
+                  {e.drawer !== 'dark' && mistakesOf(e.drawer).map((t) => <li key={t} className="no"><span className="sr-only">{tx('하지 마세요: ', 'Avoid: ')}</span>{end(t)}</li>)}
+                </ul>
+                <h3>{tx('접근성', 'Accessibility')}</h3>
+                <ul className="sheet-check">{a11yTips(e.id, e.drawer).map((t) => <li key={t}>{end(t)}</li>)}</ul>
+
+                <details className="sheet-take">
+                  <summary>{tx('코드 · 그림 가져가기', 'Take the code or picture')}</summary>
+                  <p className="sheet-note">{tx('모양만 옮긴 뼈대예요. 움직임과 상태는 직접 붙여 주세요.', 'Shape only. Add state and motion yourself.')}</p>
+                  <div className="sheet-code" role="group" aria-label={tx('코드 복사', 'Copy code')}>
+                    <select value={fmt} onChange={(ev) => setFmt(ev.target.value as Fmt)} aria-label={tx('코드 형식', 'Format')}>
+                      {(Object.keys(FMT) as Fmt[]).map((k) => <option key={k} value={k}>{k === 'SVG' ? tx('SVG (피그마에 붙여 넣기)', 'SVG (for Figma)') : k}</option>)}
+                    </select>
+                    <button onClick={() => codeCopy(fmt, (pv) => FMT[fmt](pv, e.id))}><Copy size={14} />{tx('복사', 'Copy')}</button>
+                    <button onClick={() => grab((pv) => { downloadPNG(pv, e.id); say(tx('그림을 PNG로 내려받았어요.', 'PNG saved.')) })}><Download size={14} />{tx('그림 내려받기', 'Save PNG')}</button>
+                  </div>
+                </details>
               </>}
 
               {tab === 'more' && <>
-                {NAMES[e.id] && <>
+                {(NAMES[e.id] || e.aliases) && <>
                   <h3>{tx('다른 곳에서 부르는 이름', 'Names elsewhere')}</h3>
-                  <dl className="sheet-names">{(['머티리얼 · 피그마', 'iOS', 'HTML · 웹'] as const).map((k, i) => <div key={k}><dt>{k}</dt><dd>{NAMES[e.id][i]}</dd></div>)}</dl>
+                  <dl className="sheet-names">
+                    {NAMES[e.id] && (['머티리얼 · 피그마', 'iOS', 'HTML · 웹'] as const).map((k, i) => <div key={k}><dt>{k}</dt><dd>{NAMES[e.id][i]}</dd></div>)}
+                    {e.aliases && <div><dt>{tx('이렇게도 불러요', 'Also called')}</dt><dd>{e.aliases.join(', ')}</dd></div>}
+                  </dl>
                 </>}
                 {HISTORY[e.id] && <>
                   <h3>{tx('어떻게 바뀌어 왔나', 'History')}</h3>
                   <ol className="sheet-hist">{HISTORY[e.id].map(([y, t]) => <li key={y + t}><b>{y}</b>{t}</li>)}</ol>
                 </>}
-                {e.vs && <>
-                  <h3>{tx('바꿔 달라고 말할 때', 'Asking for a change')}</h3>
-                  <div className="sheet-ask">
-                    {e.vs.slice(0, 2).map((v) => { const f = byId.get(v.id)!; const line = `이 부분은 ${f.ko}(${f.en}) 말고 ${e.ko}(${e.en})로 바꿔 주세요. ${e.desc}`; return <button key={v.id} className="btn-text" onClick={() => copyText(line, tx('요청 문장을 복사했어요.', 'Request copied.'))}><Copy size={14} />{tx(`${f.ko} 대신 ${e.ko}로 바꿔 달라는 문장`, `Ask for ${e.en} instead of ${f.en}`)}</button> })}
-                  </div>
-                </>}
-                <TeamName id={e.id} />
                 <Related e={e} onOpen={onOpen} />
-                <h3>{tx('실제 화면', 'In the wild')}</h3>
-                <a className="btn-text" href={`https://www.google.com/search?tbm=isch&q=${encodeURIComponent(`${e.en} UI example`)}`} target="_blank" rel="noopener noreferrer"><ExternalLink size={16} />{tx('이미지 검색으로 실제 예시 보기', 'Search real examples')}</a>
+                <details className="sheet-take">
+                  <summary>{tx('일할 때 쓰는 도구', 'Work tools')}</summary>
+                  {e.vs && <>
+                    <h3>{tx('바꿔 달라고 말할 때', 'Asking for a change')}</h3>
+                    <div className="sheet-ask">
+                      {e.vs.slice(0, 2).map((v) => { const f = byId.get(v.id)!; const line = `이 부분은 ${f.ko}(${f.en}) 말고 ${e.ko}(${e.en})로 바꿔 주세요. ${e.desc}`; return <button key={v.id} className="btn-text" onClick={() => copyText(line, tx('요청 문장을 복사했어요.', 'Request copied.'))}><Copy size={14} />{tx(`${f.ko} 대신 ${e.ko}로 바꿔 달라는 문장`, `Ask for ${e.en} instead of ${f.en}`)}</button> })}
+                    </div>
+                  </>}
+                  <TeamName id={e.id} />
+                  <h3>{tx('실제 화면', 'In the wild')}</h3>
+                  <a className="btn-text" href={`https://www.google.com/search?tbm=isch&q=${encodeURIComponent(`${e.en} UI example`)}`} target="_blank" rel="noopener noreferrer"><ExternalLink size={16} />{tx('이미지 검색으로 실제 예시 보기', 'Search real examples')}</a>
+                </details>
               </>}
             </div>
 
@@ -512,21 +529,24 @@ function Related({ e, onOpen }: { e: Entry; onOpen: (id: string) => void }) {
 }
 
 /** 헷갈리는 짝을 나란히: 올리면 두 그림이 같이 움직여요 */
-function VsPair({ id, friends }: { id: string; friends: string[] }) {
-  const [f, setF] = useState(friends[0])
-  useEffect(() => setF(friends[0]), [id, friends])
+function VsPair({ id, friends, onOpen }: { id: string; friends: { id: string; diff: string }[]; onOpen: (id: string) => void }) {
+  const tx = useTx()
+  const [f, setF] = useState(friends[0].id)
+  useEffect(() => setF(friends[0].id), [id, friends])
   const me = byId.get(id)!
   const other = byId.get(f)
   if (!other) return null
+  const why = tellOf(id, f) || friends.find((x) => x.id === f)?.diff
   return (
     <div className="vs-wrap">
-      {friends.length > 1 && <div className="vs-tabs">{friends.map((x) => <button key={x} className={`subchip${x === f ? ' on' : ''}`} onClick={() => setF(x)}>{byId.get(x)!.ko}</button>)}</div>}
-      <div className="vs-pair" tabIndex={0} aria-label={`${me.ko} · ${other.ko} 나란히 보기`}>
+      {friends.length > 1 && <div className="vs-tabs" role="group" aria-label={tx('비교할 카드', 'Compare with')}>{friends.map((x) => <button key={x.id} aria-pressed={x.id === f} className={`subchip${x.id === f ? ' on' : ''}`} onClick={() => setF(x.id)}>{byId.get(x.id)!.ko}</button>)}</div>}
+      <div className="vs-pair" tabIndex={0} aria-label={`${me.ko} · ${other.ko} 나란히 보기`} title={tx('올리거나 누르면 둘이 같이 움직여요', 'Hover to play both')}>
         <figure><div><Preview id={me.id} /></div><figcaption>{me.ko}</figcaption></figure>
         <span className="vs-x">vs</span>
         <figure><div><Preview id={other.id} /></div><figcaption>{other.ko}</figcaption></figure>
       </div>
-      <small className="vs-tip">마우스를 올리거나 누르면 둘이 같이 움직여요.</small>
+      {why && <p className="vs-why">{why}</p>}
+      <button className="btn-text vs-open" onClick={() => onOpen(other.id)}>{tx(`${other.ko} 카드 열기`, `Open ${other.en}`)}<ChevronRight size={16} /></button>
     </div>
   )
 }
@@ -582,3 +602,4 @@ function TeamName({ id }: { id: string }) {
     </>
   )
 }
+

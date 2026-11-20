@@ -37,7 +37,7 @@ for (const [w, h, dark] of [[1280, 860, false], [390, 844, false], [390, 844, tr
       for (const el of document.querySelectorAll('h1, h2, h3, p, b, small, span')) {
         if (!vis(el) || !el.textContent.trim() || el.children.length > 2 || el.matches('.lbl')) continue
         const s = getComputedStyle(el)
-        if (s.overflow === 'hidden' && s.textOverflow !== 'ellipsis' && el.scrollWidth > el.clientWidth + 2 && !el.closest('.mu-title, .site, .pg-body')) out.push(`글자가 칸을 넘음 “${el.textContent.trim().slice(0, 24)}”`)
+        if (s.overflow === 'hidden' && s.textOverflow !== 'ellipsis' && el.scrollWidth > el.clientWidth + 2 && !el.closest('.mu-title, .site, .pg-body, .sr-only')) out.push(`글자가 칸을 넘음 “${el.textContent.trim().slice(0, 24)}”`)
       }
       const ids = [...document.querySelectorAll('[id]')].map((e) => e.id); const dup = ids.filter((x, i) => ids.indexOf(x) !== i)
       if (dup.length) out.push(`겹친 id: ${[...new Set(dup)].slice(0, 5).join(', ')}`)

@@ -7,6 +7,7 @@ import { Preview } from './Preview'
 import { addFolder, importPrefs, removeFolder, setPrefs, streakDays, toggleCompare, usePrefs, weekId } from './prefs'
 import { BASIC, NAMES, tellOf } from './lore'
 import { NEWS } from './news'
+import { screenPrompt, useVibe } from './prompt'
 import { PairStage, pairKind } from './PairStage'
 import { NewsStage } from './NewsStage'
 import { copyText, say } from './snack'
@@ -20,6 +21,7 @@ export function Mine({ onOpen, dex }: Open) {
   const names = Object.keys(p.folders)
   const [folder, setFolder] = useState(names[0])
   const [tab, setTab] = useState<'got' | 'log' | 'set'>('got')
+  const [vibe] = useVibe()
   const [name, setName] = useState('')
   const cur = p.folders[folder] ? folder : names[0]
   const removeWithUndo = (n: string) => { const keep = p.folders[n]; removeFolder(n); say(`‘${n}’ 폴더를 지웠어요.`, () => setPrefs((q) => ({ folders: { ...q.folders, [n]: keep } }))) }
@@ -46,6 +48,7 @@ export function Mine({ onOpen, dex }: Open) {
           </div>
           {p.folders[cur]?.length ? <Grid list={ids2(p.folders[cur])} onOpen={onOpen} dex={dex} /> : <Empty title="아직 비어 있어요." how="마음에 드는 카드를 열고 ‘폴더에 담기’를 눌러 보세요." to="#/dict" go="사전 둘러보기" />}
           <div className="mine-tools">
+            {(p.folders[cur]?.length ?? 0) > 0 && <button className="btn-text" onClick={() => copyText(screenPrompt(ids2(p.folders[cur]), vibe.tech, cur), `‘${cur}’ 폴더로 화면을 만드는 프롬프트를 복사했어요.`)}><Copy size={16} />이 폴더로 AI에게 화면 만들어 달라고 하기</button>}
             <button className="btn-text" onClick={() => copyText(shareLink(cur, p.folders[cur] ?? []), '공유 링크를 복사했어요. 받은 사람이 열면 이 폴더를 담을 수 있어요.')}><Link2 size={16} />공유 링크 복사</button>
             <button className="btn-text" onClick={() => { save(glossary(cur, ids2(p.folders[cur] ?? [])), `${cur}-용어집.md`, 'text/markdown'); say('용어집 파일을 내려받았어요.') }}><Download size={16} />용어집으로 내려받기</button>
             {names.length > 1 && <button className="btn-text danger" onClick={() => removeWithUndo(cur)}><Trash2 size={16} />이 폴더 지우기</button>}
@@ -133,6 +136,7 @@ function Empty({ title, how, to, go }: { title: string; how: string; to?: string
 export function Compare({ onOpen }: { onOpen: (id: string) => void }) {
   const p = usePrefs()
   const list = ids2(p.compare)
+  const [vibe] = useVibe()
   return (
     <div className="pg-page">
       <header className="pg-page-head"><h1>나란히 비교</h1><p>카드를 4장까지 나란히 놓고 볼 수 있어요. 상세 창에서 ‘비교’를 누르면 여기에 담겨요.</p></header>
@@ -154,6 +158,7 @@ export function Compare({ onOpen }: { onOpen: (id: string) => void }) {
         <section className="pg-sec">
           <h2>이 카드들로 <small>기획서나 회의 자료에 바로 붙여 넣을 수 있어요.</small></h2>
           <div className="mine-tools">
+            <button className="btn-text" onClick={() => copyText(screenPrompt(list, vibe.tech), `이 ${list.length}장으로 화면을 만드는 프롬프트를 복사했어요. AI 채팅창에 붙여 넣어 보세요.`)}><Copy size={16} />AI에게 화면 만들어 달라고 하기</button>
             <button className="btn-text" onClick={() => copyText(specText(list), '화면 설명 글을 복사했어요. 기획서에 붙여 넣으면 돼요.')}><Copy size={16} />화면 설명 글 복사</button>
             <button className="btn-text" onClick={() => copyText(voteText(list), '투표 글을 복사했어요. 슬랙이나 카카오톡에 붙여 넣고 이모지로 골라 달라고 하면 돼요.')}><Copy size={16} />팀 용어 투표 글 복사</button>
           </div>
