@@ -20,6 +20,9 @@ let n = 0
 for (const group of ['UI 부품', '주제별']) {
   await page.getByRole('radio', { name: group }).first().click().catch(() => {})
   await page.waitForTimeout(800)
+  // 주제별은 고른 서랍만 보이니 ‘전체’ 를 눌러 모든 카드를 펼쳐요
+  await page.getByRole('tab', { name: /^(전체|All)$/ }).first().click().catch(() => {})
+  await page.waitForTimeout(1200)
   const ids = (await page.$$eval('.ec[data-card]', (els) => els.map((e) => e.dataset.card))).filter((id) => !done.has(id))
   for (const id of ids) {
     if (n >= LIMIT) break

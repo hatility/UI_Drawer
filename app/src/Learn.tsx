@@ -128,7 +128,7 @@ function Quiz({ pairs, onOpen }: { pairs: Pair[]; onOpen: (id: string) => void }
   return (
     <section className="ln-quiz">
       <div className="ln-quiz-top">
-        <b>이건 무엇일까요?</b>
+        <b>이건 무엇일까요? <small className="ln-daily-n">{((picked ? score.total - 1 : score.total) % 5) + 1} / 5</small></b>
         <span className="ln-score">{score.total}문제 중 {score.right}개 맞힘</span>
         <button className="ln-text" onClick={() => setScore({ right: 0, total: 0 })}><RotateCcw size={16} />처음부터</button>
       </div>
@@ -146,8 +146,9 @@ function Quiz({ pairs, onOpen }: { pairs: Pair[]; onOpen: (id: string) => void }
           <b>{right ? <><Check size={18} />맞아요!</> : <><X size={18} />아쉬워요. 이건 {josa(q.answer.ko, '이에요', '예요')}.</>}</b>
           <p>{q.answer.desc}{about ? ` ${about}` : ''}</p>
           {tellOf(q.p.a.id, q.p.b.id) && <p className="ln-tell-q"><b>한 줄로 가르기</b> {tellOf(q.p.a.id, q.p.b.id)}</p>}
+          {score.total % 5 === 0 && <p className="ln-daily"><b>5문제 한 묶음 끝!</b> 지금까지 {score.total}문제 중 {score.right}개 맞혔어요. 한 묶음 더 할까요?{score.right < score.total && <> <a href="#/learn/wrong">틀린 것만 다시</a></>}</p>}
           <div className="ln-result-actions">
-            <button className="ln-btn" onClick={() => { setQ(next()); setPicked(null) }}><Shuffle size={16} />다음 문제</button>
+            <button className="ln-btn" onClick={() => { setQ(next()); setPicked(null) }}><Shuffle size={16} />{score.total % 5 === 0 ? '다음 5문제' : '다음 문제'}</button>
             <button className="ln-text" onClick={() => onOpen(q.answer.id)}>사전에서 보기</button>
           </div>
         </div>
@@ -299,7 +300,7 @@ function Fix({ onOpen }: { onOpen: (id: string) => void }) {
   return (
     <section className="ln-quiz">
       <p className="ln-q">이 화면은 사용자를 속이고 있어요. <b>어떤 다크 패턴</b>일까요?</p>
-      <div className="ln-find-screen"><div className="ln-find-pv"><Preview id={q.ans.id} /></div></div>
+      <div className="ln-quiz-pv"><Preview id={q.ans.id} size="large" /></div>
       <div className="ln-choices">
         {q.opts.map((o) => <button key={o.id} disabled={!!pick} className={pick ? (o.id === q.ans.id ? 'right' : o.id === pick ? 'wrong' : 'dim') : ''} onClick={() => setPick(o.id)}>{o.ko}</button>)}
       </div>

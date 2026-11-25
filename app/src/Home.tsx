@@ -3,7 +3,7 @@
 import { AUTHOR, ORG, REPO, issueUrl } from './about'
 import { useMemo, useState, type FormEvent } from 'react'
 import { ArrowRight, BookOpen, Check, MousePointerClick, Search, Shuffle, Tag, X } from 'lucide-react'
-import { ENTRIES, byId, josa, type Entry } from './data'
+import { ENTRIES, DRAWERS, byId, josa, type Entry } from './data'
 import { Preview } from './Preview'
 import { HeroStage } from './HeroStage'
 import { Grid } from './Grid'
@@ -59,7 +59,7 @@ export function Home({ onOpen, onSearch, dex, collect }: Props) {
       <Welcome />
 
       <nav className="hh-go" aria-label="바로 가기">
-        <a href="#/dict"><BookOpen size={22} /><span><b>{tx('사전 둘러보기', 'Browse the dictionary')}</b><small>{tx('서랍 29개를 하나씩 열어 봐요', '29 drawers, split into groups')}</small></span><ArrowRight size={18} /></a>
+        <a href="#/dict"><BookOpen size={22} /><span><b>{tx('사전 둘러보기', 'Browse the dictionary')}</b><small>{tx(`서랍 ${DRAWERS.length}개를 하나씩 열어 봐요`, `${DRAWERS.length} drawers, split into groups`)}</small></span><ArrowRight size={18} /></a>
         <a href="#/play"><MousePointerClick size={22} /><span><b>{tx('체험관에서 눌러 보기', 'Try them in the playground')}</b><small>{tx('가짜 사이트 12곳에서 직접 눌러 봐요', 'Ten pretend sites to click around')}</small></span><ArrowRight size={18} /></a>
         <a href="#/tags"><Tag size={22} /><span><b>{tx('어디서나 이름표', 'Name tags anywhere')}</b><small>{tx('다른 사이트에서도 UI 이름을 확인해요', 'Label UI on any site')}</small></span><ArrowRight size={18} /></a>
       </nav>
@@ -70,7 +70,7 @@ export function Home({ onOpen, onSearch, dex, collect }: Props) {
 
       <footer className="hm-foot">
         <span><a href="#/news">{tx(`새로 들어온 카드 ${fresh.length}장 보기`, 'See new cards')}</a> · <a href={issueUrl('new-card', '[새 카드] ', {})} target="_blank" rel="noopener noreferrer">{tx('없는 UI 제안하기', 'Suggest a card')}</a></span>
-        <span>UI Drawer v{__APP_VERSION__} · <a href={REPO + '/blob/main/LICENSE'} target="_blank" rel="noopener noreferrer">MIT</a></span>
+        <span><a href="#/about">{tx('이 사이트에 대해', 'About')}</a> · UI Drawer v{__APP_VERSION__} · <a href={REPO + '/blob/main/LICENSE'} target="_blank" rel="noopener noreferrer">MIT</a></span>
         <span>만든 사람 <a href={AUTHOR.url} target="_blank" rel="noopener noreferrer">{AUTHOR.name}</a> · 소스 코드 <a href={REPO} target="_blank" rel="noopener noreferrer">{ORG.name}</a></span>
       </footer>
     </div>

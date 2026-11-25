@@ -17,7 +17,7 @@
 .pg-sites button + button { box-shadow: inset 1px 0 0 var(--md-outline); }
 .pg-sites button.on { background: var(--md-secondary-container); color: var(--md-on-secondary-container); }
 .pg-style { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 4px 0 14px; border-radius: var(--md-shape-s); box-shadow: inset 0 0 0 1px var(--md-outline); font: 500 13px/20px var(--font); color: var(--md-on-surface-variant); }
-.pg-style select { height: 100%; padding: 0 8px; border: 0; background: none; font: 500 14px var(--font); color: var(--md-on-surface); outline: none; cursor: pointer; }
+.pg-style select { height: 100%; padding: 0 8px; border: 0; background: none; font: 500 14px var(--font); color: var(--md-on-surface); cursor: pointer; }
 .pg-switch-label { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 4px 0 8px; font: 500 14px/20px var(--font); color: var(--md-on-surface); }
 .pg-track { position: relative; width: 52px; height: 32px; margin-left: 4px; border-radius: 999px; background: var(--md-surface-container-highest); box-shadow: inset 0 0 0 2px var(--md-outline); transition: background 0.2s; }
 .pg-track i { position: absolute; left: 8px; top: 8px; width: 16px; height: 16px; border-radius: 50%; background: var(--md-outline); transition: left 0.25s var(--md-ease), top 0.25s var(--md-ease), width 0.25s var(--md-ease), height 0.25s var(--md-ease), background-color 0.25s var(--md-ease); }
@@ -182,9 +182,12 @@
 .pg-arrow { position: absolute; top: 50%; translate: 0 -50%; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: var(--b-surface-3) !important; color: var(--b-text) !important; box-shadow: var(--b-float-shadow); }
 .pg-arrow--l { left: 16px; }
 .pg-arrow--r { right: 16px; }
-.pg-dots { position: absolute; left: 50%; bottom: 14px; translate: -50% 0; display: flex; gap: 6px; padding: 6px 8px; border-radius: 999px; background: rgba(0, 0, 0, 0.18); }
-.pg-dots button { width: 6px; height: 6px; padding: 0; border-radius: 3px; background: rgba(255, 255, 255, 0.6) !important; transition: width 0.3s var(--md-ease); }
-.pg-dots button.on { width: 20px; background: #fff !important; }
+.pg-dots { position: absolute; left: 50%; bottom: 14px; translate: -50% 0; display: flex; gap: 0; padding: 0 4px; border-radius: 999px; background: rgba(0, 0, 0, 0.18); }
+/* 점은 6px 로 보이지만 누르는 곳은 24px (WCAG 2.2 target-size) */
+.pg-dots button { position: relative; width: 24px; height: 24px; padding: 0; background: none !important; }
+.pg-dots button::before { content: ""; position: absolute; left: 50%; top: 50%; translate: -50% -50%; width: 6px; height: 6px; border-radius: 3px; background: rgba(255, 255, 255, 0.6); transition: width 0.3s var(--md-ease); }
+.pg-dots button.on { width: 32px; }
+.pg-dots button.on::before { width: 20px; background: #fff; }
 .pg-tour { position: absolute; right: 16px; top: 16px; height: 32px; padding: 0 14px; border-radius: 8px; background: var(--b-surface-3) !important; color: var(--b-text) !important; font-size: 13px; font-weight: 500; box-shadow: var(--b-btn-shadow); border: var(--b-btn-border) !important; }
 
 /* 탭 (M3 primary tabs) */
@@ -482,3 +485,11 @@
 @media (max-width: 599px) { .pg-more { position: static; } .pg-bar { position: relative; } .pg-more-pop { left: 0; right: 0; min-width: 0; max-width: none; } }
 /* 도구 줄(더보기 메뉴 포함)이 아래 체험 창보다 위에 오도록 */
 .pg-bar { position: relative; z-index: 60; }
+
+/* 이 화면의 UI 목록 */
+.pg-uilist { position: relative; }
+.pg-uilist summary { display: inline-flex; align-items: center; gap: 4px; height: 40px; padding: 0 14px; border-radius: 999px; box-shadow: inset 0 0 0 1px var(--md-outline); font: 500 14px/20px var(--font); color: var(--md-on-surface); cursor: pointer; list-style: none; white-space: nowrap; }
+.pg-uilist summary::-webkit-details-marker { display: none; }
+.pg-uilist[open] summary { background: var(--md-secondary-container); color: var(--md-on-secondary-container); box-shadow: none; }
+.pg-uilist-pop { position: absolute; right: 0; top: calc(100% + 6px); z-index: 70; display: flex; flex-wrap: wrap; gap: 6px; width: min(560px, calc(100vw - 32px)); max-height: 50vh; padding: 12px; overflow: auto; border-radius: 16px; background: var(--md-surface-container-lowest); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18); }
+@media (max-width: 839px) { .pg-uilist-pop { left: 0; right: auto; } }

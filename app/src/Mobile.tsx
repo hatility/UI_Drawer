@@ -134,7 +134,7 @@ export const Mobile = forwardRef<MobileHandle, Props>(function Mobile({ theme, l
             </div>
 
             <div data-h="2" className="mb-h">오늘의 빵 <small>옆으로 밀고, 사진을 두 번 눌러요</small></div>
-            <div className="mb-snap" data-ui="scroll-snap" onScroll={() => saw('scroll-snap')}>
+            <div className="mb-snap" data-ui="scroll-snap" tabIndex={0} aria-label="옆으로 넘기는 목록" onScroll={() => saw('scroll-snap')}>
               {BREADS.map((b) => (
                 <div key={b.id} className="mb-card">
                   <div className="mb-img" style={{ ['--c' as string]: b.color }} data-ui={b.id === 1 ? 'double-tap' : undefined} onDoubleClick={() => like(b.id)}>

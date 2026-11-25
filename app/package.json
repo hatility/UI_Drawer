@@ -1,7 +1,7 @@
 {
   "name": "ui-drawer",
   "private": true,
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "UI 이름 사전 · 체험관 · 어디서나 이름표",
   "author": "이명균 (https://github.com/aodrha03)",
   "license": "MIT",

@@ -1,7 +1,7 @@
 // 레일 아래쪽에서 들어가는 화면들: 내 서랍(#/mine) · 비교(#/compare) · 새 소식(#/news)
 import { useState } from 'react'
-import { Copy, Download, FolderPlus, Link2, Trash2, Upload, X } from 'lucide-react'
-import { DRAWERS, ENTRIES, byId, inDrawer, type Entry } from './data'
+import { BookOpen, Copy, Download, FolderPlus, GraduationCap, Link2, MousePointerClick, Sparkles, Tag, Trash2, Upload, X } from 'lucide-react'
+import { DRAWERS, ENTRIES, FAMILIES, byId, inDrawer, type Drawer, type Entry } from './data'
 import { Grid } from './Grid'
 import { Preview } from './Preview'
 import { addFolder, importPrefs, removeFolder, setPrefs, streakDays, toggleCompare, usePrefs, weekId } from './prefs'
@@ -11,6 +11,8 @@ import { screenPrompt, useVibe } from './prompt'
 import { PairStage, pairKind } from './PairStage'
 import { NewsStage } from './NewsStage'
 import { copyText, say } from './snack'
+import { DRAWER_EN, useTx } from './i18n'
+import { AUTHOR, ORG, REPO, issueUrl } from './about'
 import './pages.css'
 
 type Open = { onOpen: (id: string) => void; dex: Set<string> }
@@ -101,6 +103,7 @@ export function Mine({ onOpen, dex }: Open) {
             <label className="mine-sw"><input type="checkbox" checked={p.lang === 'en'} onChange={(e) => setPrefs(() => ({ lang: e.target.checked ? 'en' : 'ko' }))} />English</label>
             <label className="mine-sw"><input type="checkbox" checked={p.view.big} onChange={(e) => setPrefs((q) => ({ view: { ...q.view, big: e.target.checked } }))} />글자 크게</label>
             <label className="mine-sw"><input type="checkbox" checked={p.view.contrast} onChange={(e) => setPrefs((q) => ({ view: { ...q.view, contrast: e.target.checked } }))} />또렷하게 (고대비)</label>
+            <label className="mine-sw"><input type="checkbox" checked={p.density === 'compact'} onChange={(e) => setPrefs(() => ({ density: e.target.checked ? 'compact' : 'cozy' }))} />카드 작게 (한 화면에 더 많이)</label>
             <label className="mine-sw"><input type="checkbox" checked={p.notify} onChange={async (e) => { const on = e.target.checked; if (on && typeof Notification !== 'undefined' && Notification.permission !== 'granted') { const r = await Notification.requestPermission(); if (r !== 'granted') { say('브라우저에서 알림을 허용해야 켤 수 있어요.'); return } } setPrefs(() => ({ notify: on })); say(on ? '하루에 처음 들어올 때 오늘의 UI를 하나 알려 드릴게요.' : '알림을 껐어요.') }} />오늘의 UI 알림</label>
           </div>
         </section>
@@ -115,6 +118,8 @@ export function Mine({ onOpen, dex }: Open) {
         <section className="pg-sec">
           <h2>더 보기</h2>
           <a className="btn-text" href="#/news">새로 들어온 카드</a>
+          <a className="btn-text" href="#/drawers">서랍 지도</a>
+          <a className="btn-text" href="#/about">이 사이트에 대해</a>
           <a className="btn-text" href="#/compare">나란히 비교 ({p.compare.length}/4)</a>
         </section>
         <section className="pg-sec">
@@ -219,6 +224,7 @@ export function Audit({ onOpen }: { onOpen: (id: string) => void }) {
 
 export function News({ onOpen, dex }: Open) {
   const [open, setOpen] = useState<number | null>(0)
+  const [shown, setShown] = useState(48)
   return (
     <div className="pg-page">
       <header className="pg-page-head"><h1>새 소식</h1><p>서랍에 새로 들어온 카드를 차례대로 모았어요.</p></header>
@@ -229,10 +235,10 @@ export function News({ onOpen, dex }: Open) {
         if (!list.length) return null
         return (
           <section key={title} className="pg-sec news">
-            <h2><button aria-expanded={open === i} onClick={() => setOpen(open === i ? null : i)}>{title} <small>{list.length}장</small></button></h2>
+            <h2><button aria-expanded={open === i} onClick={() => { setOpen(open === i ? null : i); setShown(48) }}>{title} <small>{list.length}장</small></button></h2>
             <p className="pg-note">{note}</p>
             {open !== i && <div className="news-art" aria-hidden="true">{list.slice(0, 3).map((e) => <div key={e.id} className="news-art-pv"><Preview id={e.id} /></div>)}</div>}
-            {open === i ? <Grid list={list} onOpen={onOpen} dex={dex} /> : <div className="news-peek">{list.slice(0, 8).map((e) => <button key={e.id} className="chip" onClick={() => onOpen(e.id)}>{e.ko}</button>)}{list.length > 8 && <button className="chip" onClick={() => setOpen(i)}>+{list.length - 8}</button>}</div>}
+            {open === i ? <><Grid list={list.slice(0, shown)} onOpen={onOpen} dex={dex} />{list.length > shown && <button className="ln-more" onClick={() => setShown((n) => n + 96)}>더보기 ({list.length - shown}장 남음)</button>}</> : <div className="news-peek">{list.slice(0, 8).map((e) => <button key={e.id} className="chip" onClick={() => onOpen(e.id)}>{e.ko}</button>)}{list.length > 8 && <button className="chip" onClick={() => setOpen(i)}>+{list.length - 8}</button>}</div>}
           </section>
         )
       })}
@@ -310,6 +316,115 @@ function Grass({ days }: { days: string[] }) {
   return (
     <div className="grass" role="img" aria-label={`최근 8주 중 ${cells.filter((d) => set.has(d.toLocaleDateString('sv-SE'))).length}일 들렀어요`}>
       {cells.map((d) => { const k = d.toLocaleDateString('sv-SE'); return <i key={k} data-on={set.has(k) || undefined} data-future={d > today || undefined} title={k} /> })}
+    </div>
+  )
+}
+
+/** 이 사이트에 대해 (#/about): 무엇인지 · 숫자 · 쓰는 법 · 약속 세 가지(내 정보 · 접근성 · AI) · 걸어온 길 · 만든 사람 */
+export function About() {
+  const tx = useTx()
+  const pairs = new Set(ENTRIES.flatMap((e) => (e.vs ?? []).map((v) => [e.id, v.id].sort().join('|')))).size
+  const stats: [string, string][] = [[ENTRIES.length.toLocaleString(), tx('UI 카드', 'UI cards')], [String(DRAWERS.length), tx('서랍', 'drawers')], [pairs.toLocaleString(), tx('헷갈리는 짝', 'confusable pairs')], ['12', tx('체험 사이트', 'playground sites')]]
+  const ways: [string, typeof BookOpen, string, string, string][] = [
+    ['#/dict', BookOpen, tx('사전', 'Dictionary'), tx('이름을 몰라도 생김새나 초성으로 찾아요.', 'Search by shape or initials.'), tx('카드마다 움직이는 그림과 헷갈리는 짝', 'Moving pictures and confusable twins')],
+    ['#/learn', GraduationCap, tx('배우기', 'Learn'), tx('헷갈리는 짝을 나란히 보고 한 줄로 가르는 법을 익혀요.', 'See pairs side by side, learn the one-line tell.'), tx('퀴즈 · 코스 · 틀린 것만 다시', 'Quiz · course · retry')],
+    ['#/play', MousePointerClick, tx('체험관', 'Playground'), tx('가짜 사이트 12곳에서 직접 눌러 봐요.', 'Click around 12 pretend sites.'), tx('이름표를 켜면 UI마다 이름이 붙어요', 'Turn on name tags')],
+    ['#/tags', Tag, tx('어디서나 이름표', 'Name tags anywhere'), tx('북마크 하나로 아무 웹사이트에나 이름표를 붙여요.', 'One bookmark labels UI on any site.'), tx('크롬 · 엣지 · 파이어폭스 확장도 있어요', 'Browser extension too')],
+  ]
+  return (
+    <div className="pg-page about">
+      <section className="about-hero">
+        <img src="/icon-192.png" width={64} height={64} alt="" />
+        <h1>{tx('이름이 생각 안 나는 그 UI,', 'That UI whose name you forgot,')}<br />{tx('서랍에서 꺼내 보세요', 'pull it out of the drawer')}</h1>
+        <p>{tx('UI Drawer는 생김새만 적어도 이름을 찾아 주고, 직접 눌러 보며 익히는 UI 이름 사전이에요. 디자이너 · 개발자 · 기획자가 같은 말로 이야기하게 하려고 만들었어요.', 'UI Drawer is a UI name dictionary: describe the shape, get the name, try it yourself. Built so designers, developers and planners speak the same words.')}</p>
+        <ul className="about-pills" aria-label={tx('한눈에', 'At a glance')}>
+          <li>{tx('가입 없음', 'No sign-up')}</li><li>{tx('광고 없음', 'No ads')}</li><li>{tx('오픈 소스 · MIT', 'Open source · MIT')}</li><li>{tx('한국어 · English', 'Korean · English')}</li>
+        </ul>
+      </section>
+
+      <ul className="about-stats" aria-label={tx('숫자로 보면', 'By the numbers')}>
+        {stats.map(([n, l]) => <li key={l}><b>{n}</b><span>{l}</span></li>)}
+      </ul>
+
+      <section className="pg-sec">
+        <h2>{tx('네 가지로 써요', 'Four ways in')}</h2>
+        <div className="about-ways">
+          {ways.map(([href, Icon, t, d, s]) => <a key={href} href={href}><i><Icon size={22} /></i><b>{t}</b><span>{d}</span><small>{s}</small></a>)}
+        </div>
+      </section>
+
+      <section className="pg-sec">
+        <h2>{tx('이럴 때 써요', 'Use it when')}</h2>
+        <ul className="about-list">
+          <li>{tx('기획서에 ‘그 아래에서 쓱 올라오는 거’라고 적다가 멈췄을 때', 'You are writing a spec and only have “that thing that slides up”')}</li>
+          <li>{tx('디자이너와 개발자가 같은 걸 다른 이름으로 부르고 있을 때', 'Designers and developers call the same thing different names')}</li>
+          <li>{tx('토스트와 스낵바, 모달과 바텀시트처럼 비슷한 둘이 헷갈릴 때', 'Toast vs snackbar, modal vs bottom sheet')}</li>
+          <li>{tx('바이브 코딩할 때 AI에게 원하는 UI를 정확한 이름으로 말하고 싶을 때', 'You want to tell an AI exactly which UI you mean')}</li>
+        </ul>
+      </section>
+
+      <section className="pg-sec">
+        <h2>{tx('세 가지 약속', 'Three promises')}</h2>
+        <div className="about-promise">
+          <article>
+            <h3>{tx('내 정보는 내 브라우저에만', 'Your data stays in your browser')}</h3>
+            <p>{tx('가입이 없어요. 열어 본 카드, 폴더, 오답 노트는 이 브라우저에만 저장되고 서버로 보내지 않아요. 내 서랍 › 설정에서 내려받거나 지울 수 있어요.', 'No account. What you open or save lives in this browser only; nothing goes to a server. Export or delete it in My drawer › Settings.')}</p>
+          </article>
+          <article>
+            <h3>{tx('누구나 쓸 수 있게', 'Usable by everyone')}</h3>
+            <p>{tx('키보드만으로 쓸 수 있고(Tab · 화살표 · Esc · ⌘K), 화면 낭독기 이름과 상태를 붙였어요. 큰 글자 · 고대비 · 움직임 줄이기 설정을 따라요.', 'Keyboard operable (Tab · arrows · Esc · ⌘K), labelled for screen readers, and it follows large text, high contrast and reduced motion.')}</p>
+            <a className="btn-text" href={issueUrl('bug', '[접근성] ', {})} target="_blank" rel="noopener noreferrer">{tx('접근성 문제 알리기', 'Report an accessibility problem')}</a>
+          </article>
+          <article className="about-ai">
+            <h3><Sparkles size={18} aria-hidden="true" />{tx('AI와 함께 만들었어요', 'Built with AI')}</h3>
+            <p>{tx('코드, 카드 설명문, 그림 틀을 만들 때 Claude Code(Anthropic)의 도움을 받았어요. 무엇을 넣을지, 어떻게 부를지, 맞는지 확인하고 고치는 일은 사람이 했어요. 사이트 안에서 AI를 부르지는 않고, ‘AI에게 만들어 달라고 하기’는 글을 복사해 줄 뿐이에요.', 'Claude Code (Anthropic) helped write the code, card copy and picture templates. Choosing what goes in, what to call it, and checking it was done by a person. The site never calls an AI itself; “Ask an AI to build it” only copies text.')}</p>
+            <p className="pg-note">{tx('틀린 이름이나 설명을 보셨다면 알려 주세요. 바로 고칠게요.', 'Spotted a wrong name or description? Tell us and we will fix it.')}</p>
+          </article>
+        </div>
+      </section>
+
+      <section className="pg-sec">
+        <h2>{tx('걸어온 길', 'How it grew')}</h2>
+        <ol className="about-timeline">
+          {NEWS.slice(0, 4).map(([title, note, from], i) => <li key={title}><b>{title}</b><span>{note}</span><small>{(i === 0 ? ENTRIES.length : NEWS[i - 1][2]) - from}{tx('장', ' cards')}</small></li>)}
+        </ol>
+        <a className="btn-text" href="#/news">{tx('새 소식에서 전부 보기', 'See everything in News')}</a>
+      </section>
+
+      <section className="pg-sec">
+        <h2>{tx('함께 만들기', 'Help build it')}</h2>
+        <div className="about-links">
+          <a className="btn" href={issueUrl('new-card', '[새 카드] ', {})} target="_blank" rel="noopener noreferrer">{tx('사전에 없는 UI 제안하기', 'Suggest a missing UI')}</a>
+          <a className="btn-text" href={issueUrl('bug', '[고장] ', {})} target="_blank" rel="noopener noreferrer">{tx('그림이 이상하거나 잘 안 돼요', 'Something looks wrong')}</a>
+          <a className="btn-text" href={issueUrl('dark-pattern', '[다크 패턴] ', {})} target="_blank" rel="noopener noreferrer">{tx('이런 다크 패턴을 봤어요', 'I saw a dark pattern')}</a>
+        </div>
+      </section>
+
+      <section className="about-made">
+        <span className="about-avatar" aria-hidden="true">명</span>
+        <div>
+          <b>{AUTHOR.name}</b> <a href={AUTHOR.url} target="_blank" rel="noopener noreferrer">@aodrha03</a>
+          <p>{tx('소스 코드', 'Source')} <a href={REPO} target="_blank" rel="noopener noreferrer">{ORG.name}</a> · <a href={REPO + '/blob/main/LICENSE'} target="_blank" rel="noopener noreferrer">MIT</a> · UI Drawer v{__APP_VERSION__}</p>
+          <p className="pg-note">{tx('그림은 Stageshow 킷으로 그렸고, 체험관의 ‘몽글 베이커리’를 비롯한 가게들은 모두 지어낸 이름이에요. 함께 쓴 오픈 소스는 저장소의 NOTICE.md에 있어요.', 'Pictures are drawn with the Stageshow kit; every shop in the playground is made up. Open-source credits are in NOTICE.md.')}</p>
+        </div>
+      </section>
+    </div>
+  )
+}
+
+/** 서랍 지도 (#/drawers): 서랍 46개를 타일로 한눈에. 누르면 그 서랍이 열려요 */
+export function DrawerMap() {
+  const tx = useTx()
+  const tile = (d: Drawer) => { const list = inDrawer(d.id); return (
+    <a key={d.id} className="dmap-tile" href={`#/dict/${d.id}`}>
+      <span className="dmap-pvs" aria-hidden="true">{list.slice(0, 3).map((e) => <span key={e.id} className="dmap-pv"><Preview id={e.id} /></span>)}</span>
+      <b>{tx(d.label, DRAWER_EN[d.id][0])}</b><span>{tx(d.note, DRAWER_EN[d.id][1])}</span><small>{list.length}{tx('장', ' cards')}</small>
+    </a>) }
+  return (
+    <div className="pg-page dmap">
+      <header className="pg-page-head"><h1>{tx('서랍 지도', 'Drawer map')}</h1><p>{tx(`서랍 ${DRAWERS.length}개를 한눈에 봐요. 누르면 그 서랍이 열려요.`, `All ${DRAWERS.length} drawers at a glance.`)}</p></header>
+      <section className="pg-sec"><h2>{tx('UI 부품', 'UI parts')}</h2><div className="dmap-grid">{DRAWERS.filter((d) => d.group === 'part').map(tile)}</div></section>
+      {FAMILIES.map((f) => <section key={f.label} className="pg-sec"><h2>{tx(f.label, f.en)}</h2><div className="dmap-grid">{f.ids.map((id) => DRAWERS.find((d) => d.id === id)!).map(tile)}</div></section>)}
     </div>
   )
 }

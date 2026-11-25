@@ -80,3 +80,32 @@ export function cardTailwind(pv: HTMLElement, id: string) {
   walk(doc)
   return `<!-- UI Drawer · ${id} (Tailwind 임의 값 클래스) -->\n${doc.outerHTML}\n`
 }
+
+/** 공유 이미지 (1200×630): 왼쪽 그림, 오른쪽 이름 · 영어 이름 · 설명. SNS · 메신저에 붙이기 좋아요 */
+export function downloadShareCard(pv: HTMLElement, e: { id: string; ko: string; en: string; desc: string }) {
+  const img = new Image()
+  img.onload = () => {
+    const W = 1200, H = 630, c = document.createElement('canvas'); c.width = W; c.height = H
+    const g = c.getContext('2d')!
+    const v = (name: string, fb: string) => getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fb
+    const font = (s: string) => `${s} -apple-system, "Apple SD Gothic Neo", Pretendard, "Noto Sans KR", sans-serif`
+    const wrap = (text: string, x: number, y: number, max: number, lh: number, lines: number) => {
+      let line = '', n = 0
+      for (const ch of text) { if (g.measureText(line + ch).width > max && line) { g.fillText(line, x, y); y += lh; line = ch; if (++n >= lines - 1) { line += '…'; break } } else line += ch }
+      g.fillText(line, x, y); return y + lh
+    }
+    g.fillStyle = v('--md-surface', '#f6faf8'); g.fillRect(0, 0, W, H)
+    const box = { x: 56, y: 96, w: 560, h: 440 }
+    g.fillStyle = v('--md-surface-container-low', '#eef3f1'); g.beginPath(); g.roundRect(box.x, box.y, box.w, box.h, 28); g.fill()
+    const k = Math.min((box.w - 40) / img.width, (box.h - 40) / img.height), w = img.width * k, h = img.height * k
+    g.drawImage(img, box.x + (box.w - w) / 2, box.y + (box.h - h) / 2, w, h)
+    const x = 672, max = 470
+    g.fillStyle = v('--md-primary', '#006a60'); g.font = font('600 22px'); g.fillText('UI Drawer · UI 이름 사전', x, 130)
+    g.fillStyle = v('--md-on-surface', '#191c1b'); g.font = font('500 54px'); let y = wrap(e.ko, x, 215, max, 64, 2)
+    g.fillStyle = v('--md-on-surface-variant', '#3f4946'); g.font = font('400 28px'); g.fillText(e.en, x, y + 4); y += 60
+    g.fillStyle = v('--md-on-surface', '#191c1b'); g.font = font('400 24px'); wrap(e.desc, x, y + 10, max, 36, 4)
+    g.fillStyle = v('--md-on-surface-variant', '#3f4946'); g.font = font('400 20px'); g.fillText(`${location.host}${location.pathname}#/w/${e.id}`, x, H - 56)
+    c.toBlob((b) => b && save(b, `ui-drawer-${e.id}-share.png`))
+  }
+  img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(cardSVG(pv))
+}

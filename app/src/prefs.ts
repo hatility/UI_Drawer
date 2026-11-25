@@ -16,6 +16,10 @@ export type Prefs = {
   week: { id: string; score: number; best: number }
   /** 카드를 연 횟수 (많이 본 카드 순위, 이 브라우저에만) */
   opens: Record<string, number>
+  /** 최근 연 카드 (최근 것이 앞, 12장) */
+  recent: string[]
+  /** 카드 격자 밀도 (compact: 한 화면에 더 많이) */
+  density: 'cozy' | 'compact'
   /** 들른 날 (연속 방문 업적용, 최근 60일) */
   days: string[]
   /** 디자인 시스템 점검표: 우리 서비스에 있는 UI */
@@ -28,7 +32,7 @@ export type Prefs = {
   team: Record<string, string[]>
 }
 const KEY = 'ui-drawer-prefs'
-const DEFAULT: Prefs = { theme: 'auto', lang: 'ko', folders: { 즐겨찾기: [] }, compare: [], quiz: { streak: 0, best: 0, wrong: [] }, view: { big: false, contrast: false }, misses: [], week: { id: '', score: 0, best: 0 }, opens: {}, days: [], audit: [], notify: false, rules: [], team: {} }
+const DEFAULT: Prefs = { theme: 'auto', lang: 'ko', folders: { 즐겨찾기: [] }, compare: [], recent: [], density: 'cozy', quiz: { streak: 0, best: 0, wrong: [] }, view: { big: false, contrast: false }, misses: [], week: { id: '', score: 0, best: 0 }, opens: {}, days: [], audit: [], notify: false, rules: [], team: {} }
 /** 이번 주 이름 (월요일 기준, 예: 2026-W47) */
 export const weekId = (d = new Date()) => { const t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate())); const day = t.getUTCDay() || 7; t.setUTCDate(t.getUTCDate() + 4 - day); const y = t.getUTCFullYear(); return `${y}-W${String(Math.ceil(((+t - Date.UTC(y, 0, 1)) / 864e5 + 1) / 7)).padStart(2, '0')}` }
 
@@ -62,7 +66,7 @@ export const quizResult = (id: string, right: boolean) => setPrefs((p) => {
   return { quiz: { streak, best: Math.max(p.quiz.best, streak), wrong }, week }
 })
 /** 카드를 열 때마다 세요 (최대 300종) */
-export const noteOpen = (id: string) => setPrefs((p) => ({ opens: Object.fromEntries(Object.entries({ ...p.opens, [id]: (p.opens[id] ?? 0) + 1 }).sort((a, b) => b[1] - a[1]).slice(0, 300)) }))
+export const noteOpen = (id: string) => setPrefs((p) => ({ recent: [id, ...(p.recent ?? []).filter((x) => x !== id)].slice(0, 12), opens: Object.fromEntries(Object.entries({ ...p.opens, [id]: (p.opens[id] ?? 0) + 1 }).sort((a, b) => b[1] - a[1]).slice(0, 300)) }))
 /** 오늘 들렀다고 적어요. 새로 들른 날이면 true */
 export const today = () => new Date().toLocaleDateString('sv-SE')
 export const noteDay = () => { const d = today(); if (state.days.includes(d)) return false; setPrefs((p) => ({ days: [...p.days, d].slice(-60) })); return true }

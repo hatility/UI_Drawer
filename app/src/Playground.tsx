@@ -161,6 +161,10 @@ export function Playground({ onOpen, onSee, show, showKey }: { onOpen: (id: stri
   // 잘못 만든 버전: 같은 사이트를 일부러 불편하게 (작은 버튼 · 흐린 글자 · 빽빽한 줄 · 모호한 문구)
   const [bad, setBad] = useState(false)
   const [badShow, setBadShow] = useState(false)
+  // 지금 화면에 있는 UI 목록 (data-ui 로 셈)
+  const [uiList, setUiList] = useState<string[]>([])
+  const [uiOpen, setUiOpen] = useState(false)
+  useEffect(() => { const t = setTimeout(() => setUiList([...new Set([...(body.current?.querySelectorAll<HTMLElement>('[data-ui]') ?? [])].map((el) => el.dataset.ui!))].filter((id) => byId.has(id))), 700); return () => clearTimeout(t) }, [site, device, bad])
   // 더보기 메뉴: 메뉴 밖을 누르거나 Esc 를 누르면 닫혀요
   const moreRef = useRef<HTMLDetailsElement>(null)
   useEffect(() => {
@@ -371,6 +375,10 @@ export function Playground({ onOpen, onSee, show, showKey }: { onOpen: (id: stri
         <button className={`pg-switch-label${labels ? ' on' : ''}`} role="switch" aria-checked={labels} onClick={() => setLabels((l) => !l)}>
           <Tag size={16} />이름표<span className="pg-track"><i /></span>
         </button>
+        <details className="pg-uilist" onToggle={(ev) => setUiOpen((ev.currentTarget as HTMLDetailsElement).open)}>
+          <summary>이 화면의 UI <b>{uiList.length}</b>개</summary>
+          <div className="pg-uilist-pop">{uiOpen && uiList.map((id) => <button key={id} className="chip" onClick={() => onOpen(id)}>{byId.get(id)!.ko}</button>)}</div>
+        </details>
       </div>
       {device === 'mobile' && (
         <div className="pg-mobile pg-stage ss-stage">

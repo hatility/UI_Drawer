@@ -11,8 +11,8 @@
 
 <br>
 
-![version](https://img.shields.io/badge/version-0.6.0-006A60?style=flat-square)
-![cards](https://img.shields.io/badge/UI_카드-837장-006A60?style=flat-square)
+![version](https://img.shields.io/badge/version-0.7.0-006A60?style=flat-square)
+![cards](https://img.shields.io/badge/UI_카드-1454장-006A60?style=flat-square)
 ![license](https://img.shields.io/badge/license-MIT-6B6F7A?style=flat-square)
 ![Docker](https://img.shields.io/badge/Docker-ready-2496ED?style=flat-square&logo=docker&logoColor=white)
 
@@ -81,7 +81,7 @@
 
 | UI 카드 | 서랍 | 헷갈리는 짝 | 체험 사이트 | 직접 눌러 보는 UI |
 |:---:|:---:|:---:|:---:|:---:|
-| **837장** | **29개** | **600쌍+** | **12곳** | **176개** |
+| **1,454장** | **46개** | **600쌍+** | **12곳** | **176개** |
 
 <details>
 <summary><b>기능 전체 보기</b></summary>

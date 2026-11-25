@@ -7,10 +7,10 @@
 //  #/w/<id>          사전에서 그 카드를 바로 열기 (이름표 · 링크 공유)
 import { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { BookOpen, Check, ChevronLeft, ChevronRight, Columns3, Download, ExternalLink, Flag, FolderPlus, GraduationCap, HelpCircle, Home as HomeIcon, Languages, Link2, Moon, MoreHorizontal, MousePointerClick, Newspaper, Play, Search, Star, Sun, SunMoon, Tag, Volume2, X, Copy } from 'lucide-react'
-import { DRAWERS, ENTRIES, byId, guess, search, type DrawerId, type Entry } from './data'
+import { ALSO, DRAWERS, ENTRIES, FAMILIES, byId, guess, inDrawer, search, type DrawerId, type Entry } from './data'
 import { addFolder, applyTheme, applyView, noteDay, noteMiss, noteOpen, setPrefs, toggleCompare, toggleIn, usePrefs } from './prefs'
 import { a11yTips, makeTips } from './a11y'
-import { cardCSS, cardHTML, cardReact, cardSVG, cardTailwind, cardVue, downloadPNG, downloadSVG } from './exportCard'
+import { cardCSS, cardHTML, cardReact, cardSVG, cardTailwind, cardVue, downloadPNG, downloadSVG, downloadShareCard } from './exportCard'
 import { HISTORY, KOREA, LEVEL_NAME, NAMES, levelOf, mistakesOf, tellOf } from './lore'
 import { SUBS, splitDrawer } from './subs'
 import { Preview } from './Preview'
@@ -30,22 +30,24 @@ const Audit = lazy(() => import('./Pages').then((m) => ({ default: m.Audit })))
 const Versus = lazy(() => import('./Pages').then((m) => ({ default: m.Versus })))
 const Annotate = lazy(() => import('./Annotate').then((m) => ({ default: m.Annotate })))
 const ShareImport = lazy(() => import('./Pages').then((m) => ({ default: m.ShareImport })))
+const About = lazy(() => import('./Pages').then((m) => ({ default: m.About })))
+const DrawerMap = lazy(() => import('./Pages').then((m) => ({ default: m.DrawerMap })))
 import { issueUrl } from './about'
 import { TECHS, cardPrompt, useVibe, type Tech, type Tone } from './prompt'
 import { Snackbar, copyText, say } from './snack'
 import { DESC_EN, DRAWER_EN, SUB_EN, useTx } from './i18n'
 import './app.css'
 
-type Route = 'home' | 'dict' | 'play' | 'learn' | 'tags' | 'mine' | 'compare' | 'news' | 'share' | 'audit' | 'test' | 'vs' | 'annotate'
+type Route = 'home' | 'dict' | 'play' | 'learn' | 'tags' | 'mine' | 'compare' | 'news' | 'share' | 'audit' | 'test' | 'vs' | 'annotate' | 'about' | 'drawers'
 const NAV: [Route, string, string, typeof BookOpen][] = [
   ['home', '#/', '홈', HomeIcon], ['dict', '#/dict', '사전', BookOpen], ['learn', '#/learn', '배우기', GraduationCap], ['play', '#/play', '체험관', MousePointerClick], ['tags', '#/tags', '이름표', Tag],
 ]
-const NAV_EN: Record<Route, string> = { home: 'Home', dict: 'Dictionary', learn: 'Learn', play: 'Playground', tags: 'Name tags', mine: 'My drawer', compare: 'Compare', news: 'News', share: 'Shared', audit: 'Checklist', test: 'Usability test', vs: 'Side by side', annotate: 'Label a screen' }
+const NAV_EN: Record<Route, string> = { home: 'Home', dict: 'Dictionary', learn: 'Learn', play: 'Playground', tags: 'Name tags', mine: 'My drawer', compare: 'Compare', news: 'News', share: 'Shared', audit: 'Checklist', about: 'About', drawers: 'Drawer map', test: 'Usability test', vs: 'Side by side', annotate: 'Label a screen' }
 const isDrawer = (x: string): x is DrawerId => DRAWERS.some((d) => d.id === x)
 
 const readHash = () => {
   const [, route = '', arg = '', n = ''] = location.hash.split('/')
-  const r: Route = (['play', 'learn', 'tags', 'dict', 'mine', 'compare', 'news', 'share', 'audit', 'test', 'vs', 'annotate'] as string[]).includes(route) ? (route as Route) : route === 'w' ? 'dict' : 'home'
+  const r: Route = (['play', 'learn', 'tags', 'dict', 'mine', 'compare', 'news', 'share', 'audit', 'test', 'vs', 'annotate', 'about', 'drawers'] as string[]).includes(route) ? (route as Route) : route === 'w' ? 'dict' : 'home'
   return { route: r, arg: route === 'w' ? '' : arg, n, word: route === 'w' ? arg : '' }
 }
 /** 글자를 적는 곳에서는 단축키를 가로채지 않아요 */
@@ -94,6 +96,15 @@ export function App() {
   const openRef = useRef<string | null>(null)
   openRef.current = open
   const close = useCallback(() => { if (pushed.current) { pushed.current = false; history.back() } else setOpen(null) }, [])
+  const density = usePrefs().density ?? 'cozy'
+  useEffect(() => { document.documentElement.setAttribute('data-density', density) }, [density])
+  const [keys, setKeys] = useState(false)
+  useEffect(() => {
+    const on = (e: KeyboardEvent) => { if (e.key === '?' && !typing(document.activeElement)) { e.preventDefault(); setKeys((k) => !k) } }
+    const ev = () => setKeys(true)
+    addEventListener('keydown', on); addEventListener('ui-drawer:keys', ev)
+    return () => { removeEventListener('keydown', on); removeEventListener('ui-drawer:keys', ev) }
+  }, [])
   const show = useCallback((id: string) => {
     if (!openRef.current && !pushed.current) { history.pushState({ sheet: true }, ''); pushed.current = true }
     setOpen(id); collect(id); noteOpen(id)
@@ -135,7 +146,11 @@ export function App() {
     return () => { removeEventListener('scroll', keep); removeEventListener('hashchange', on) }
   }, [])
   // #/w/<id>: 그 카드를 바로 열어요
-  useEffect(() => { if (hash.word && byId.has(hash.word)) show(hash.word) }, [hash.word, show])
+  useEffect(() => {
+    if (!hash.word) return
+    if (byId.has(hash.word)) show(hash.word)
+    else { find(hash.word); say(`‘${hash.word}’ 카드는 없어요. 비슷한 이름을 찾아봤어요.`) } // 없는 카드 주소는 검색으로 (비슷한 이름 제안이 떠요)
+  }, [hash.word, show])
 
   const pick = (d: DrawerId | 'all') => { setQ(''); location.hash = d === 'all' ? '#/dict' : `#/dict/${d}` }
   const find = (x: string) => { setQ(x); location.hash = '#/dict' }
@@ -180,12 +195,15 @@ export function App() {
           : hash.route === 'annotate' ? <Annotate onOpen={show} />
           : hash.route === 'vs' ? <Versus a={hash.arg} b={hash.n} onOpen={show} />
           : hash.route === 'share' ? <ShareImport arg={hash.arg} onOpen={show} dex={dex} />
+          : hash.route === 'about' ? <About />
+          : hash.route === 'drawers' ? <DrawerMap />
           : <Dictionary key={drawer} drawer={drawer} pick={pick} group={drawer === 'all' ? group : DRAWERS.find((d) => d.id === drawer)!.group} setGroup={(g) => { setGroup(g); pick('all') }} q={q} setQ={setQ} onOpen={show} dex={dex} />}
         </Suspense>
       </main>
 
       <Sheet id={open} onOpen={show} onClose={close} />
       {palette && <Palette onClose={() => setPalette(false)} onOpen={(id) => { setPalette(false); show(id) }} />}
+      {keys && <Shortcuts onClose={() => setKeys(false)} />}
       <Snackbar />
       <TrialBar />
       <DevDwell />
@@ -238,6 +256,10 @@ function Dictionary({ drawer, pick, group, setGroup, q, setQ, onOpen, dex }: Dic
     const rest = search(q).filter((e) => !mine.includes(e))
     return [...mine, ...rest]
   }, [q, team])
+  const [foundIn, setFoundIn] = useState<DrawerId | 'all'>('all')
+  useEffect(() => setFoundIn('all'), [q])
+  const foundDrawers = useMemo(() => { const m = new Map<DrawerId, number>(); for (const e of found ?? []) m.set(e.drawer, (m.get(e.drawer) ?? 0) + 1); return [...m.entries()].sort((a, b) => b[1] - a[1]) }, [found])
+  const recent = (usePrefs().recent ?? []).map((id) => byId.get(id)).filter(Boolean) as Entry[]
   // 검색해도 없으면 잠깐 기다렸다가 ‘없던 말’로 기록해요 (치는 중인 글자는 빼려고)
   useEffect(() => { if (!found || found.length) return; const t = setTimeout(() => noteMiss(q.trim()), 1500); return () => clearTimeout(t) }, [found, q])
   // 키보드: J · → 다음 카드, K · ← 이전 카드, Enter 열기
@@ -255,6 +277,10 @@ function Dictionary({ drawer, pick, group, setGroup, q, setQ, onOpen, dex }: Dic
     return () => removeEventListener('keydown', on)
   }, [])
   const inGroup = DRAWERS.filter((d) => d.group === group)
+  // 주제별은 2단 탭: 1단 묶음(FAMILIES), 2단 그 묶음의 서랍. 묶음을 누르면 첫 서랍이 바로 열려요
+  const fam = drawer === 'all' ? null : FAMILIES.find((f) => f.ids.includes(drawer as DrawerId)) ?? null
+  // 주제별 ‘전체’ 에 적는 숫자: 전체 카드 수에서 UI 부품 서랍에만 있는 카드를 뺀 것 (주제별 서랍은 카드가 겹칠 수 있어 서랍 숫자 합과는 달라요)
+  const inGroupCount = group === 'topic' ? ENTRIES.filter((e) => DRAWERS.find((d) => d.id === e.drawer)?.group === 'part' && !Object.values(ALSO).some((ids) => ids?.includes(e.id))).length : 0
   const subs = drawer === 'all' ? [] : splitDrawer(drawer)
   const count = (id: DrawerId) => splitDrawer(id).reduce((n, s) => n + s.list.length, 0)
   const here = DRAWERS.find((d) => d.id === drawer)
@@ -269,13 +295,29 @@ function Dictionary({ drawer, pick, group, setGroup, q, setQ, onOpen, dex }: Dic
         </label>
         {!found && (
           <div className="drawer-bar">
+            <a className="btn-text dict-map" href="#/drawers">{tx('서랍 지도', 'Drawer map')}</a>
             <div className="seg" role="radiogroup" aria-label="서랍 묶음">
               {(['part', 'topic'] as const).map((g) => <button key={g} role="radio" aria-checked={group === g} className={group === g ? 'on' : ''} onClick={() => setGroup(g)}>{group === g && <Check size={16} />}{g === 'part' ? tx('UI 부품', 'UI parts') : tx('주제별', 'Topics')}</button>)}
             </div>
-            <div className="chips-scroll" role="tablist" aria-label="서랍">
-              <button role="tab" aria-selected={drawer === 'all'} className={`fchip${drawer === 'all' ? ' on' : ''}`} onClick={() => pick('all')}>{tx('전체', 'All')}</button>
-              {inGroup.map((d) => <button key={d.id} role="tab" aria-selected={drawer === d.id} className={`fchip${drawer === d.id ? ' on' : ''}`} onClick={() => pick(d.id)}>{tx(d.label, DRAWER_EN[d.id][0])}<small>{count(d.id)}</small></button>)}
-            </div>
+            {group === 'part' ? (
+              <div className="chips-scroll" role="tablist" aria-label="서랍">
+                <button role="tab" aria-selected={drawer === 'all'} className={`fchip${drawer === 'all' ? ' on' : ''}`} onClick={() => pick('all')}>{tx('전체', 'All')}</button>
+                {inGroup.map((d) => <button key={d.id} role="tab" aria-selected={drawer === d.id} className={`fchip${drawer === d.id ? ' on' : ''}`} onClick={() => pick(d.id)}>{tx(d.label, DRAWER_EN[d.id][0])}<small>{count(d.id)}</small></button>)}
+              </div>
+            ) : (
+              // 주제별 서랍은 36개라 2단 탭이에요: 1단 묶음 9개, 2단 고른 묶음의 서랍
+              <div className="fam-tabs">
+                <div className="chips-scroll" role="tablist" aria-label={tx('묶음', 'Groups')}>
+                  <button role="tab" aria-selected={drawer === 'all'} className={`fchip${drawer === 'all' ? ' on' : ''}`} onClick={() => pick('all')}>{tx('전체', 'All')}<small>{ENTRIES.length - inGroupCount}</small></button>
+                  {FAMILIES.map((f) => <button key={f.label} role="tab" aria-selected={f === fam} className={`fchip${f === fam ? ' on' : ''}`} onClick={() => pick(f.ids[0])}>{tx(f.label, f.en)}</button>)}
+                </div>
+                {fam && (
+                  <div className="chips-scroll fam-sub" role="tablist" aria-label={tx('서랍', 'Drawers')}>
+                    {fam.ids.map((id) => DRAWERS.find((d) => d.id === id)!).map((d) => <button key={d.id} role="tab" aria-selected={drawer === d.id} className={`subchip${drawer === d.id ? ' on' : ''}`} onClick={() => pick(d.id)}>{tx(d.label, DRAWER_EN[d.id][0])} <small>{count(d.id)}</small></button>)}
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         )}
         {!found && subs.length > 1 && (
@@ -287,10 +329,22 @@ function Dictionary({ drawer, pick, group, setGroup, q, setQ, onOpen, dex }: Dic
         )}
       </div>
 
+      {!found && drawer === 'all' && recent.length > 0 && (
+        <section className="recent" aria-labelledby="recent-h">
+          <h2 id="recent-h">{tx('최근 본 카드', 'Recently viewed')}</h2>
+          <div className="chips">{recent.map((e) => <button key={e.id} className="chip" onClick={() => onOpen(e.id)}>{e.ko}</button>)}</div>
+        </section>
+      )}
       {found ? (
         <section className="group">
           <h2>‘{q.trim()}’ <small>{found.length}장</small></h2>
-          {found.length ? <Grid list={found} onOpen={onOpen} dex={dex} /> : (
+          {found.length > 0 && foundDrawers.length > 1 && (
+            <div className="chips found-in" role="tablist" aria-label={tx('서랍으로 좁히기', 'Narrow by drawer')}>
+              <button role="tab" aria-selected={foundIn === 'all'} className={`subchip${foundIn === 'all' ? ' on' : ''}`} onClick={() => setFoundIn('all')}>{tx('모두', 'All')} <small>{found.length}</small></button>
+              {foundDrawers.map(([d, n]) => <button key={d} role="tab" aria-selected={foundIn === d} className={`subchip${foundIn === d ? ' on' : ''}`} onClick={() => setFoundIn(d)}>{tx(DRAWERS.find((x) => x.id === d)!.label, DRAWER_EN[d][0])} <small>{n}</small></button>)}
+            </div>
+          )}
+          {found.length ? <Grid list={foundIn === 'all' ? found : found.filter((e) => e.drawer === foundIn)} onOpen={onOpen} dex={dex} /> : (
             <div className="empty empty--box">
               <b>‘{q.trim()}’ 카드는 아직 없어요.</b>
               <p>이름 대신 생김새로 찾아보세요. 이런 식으로 적으면 돼요.</p>
@@ -421,6 +475,10 @@ function Sheet({ id, onOpen, onClose }: { id: string | null; onOpen: (id: string
                   <h3>{tx('헷갈리기 쉬운 것', 'Often confused with')}</h3>
                   <VsPair id={e.id} friends={e.vs} onOpen={onOpen} />
                 </>}
+                {(() => { const near = inDrawer(e.drawer).filter((x) => x.id !== e.id).slice(0, 12); return near.length > 0 && <>
+                  <h3>{tx('같은 서랍의 다른 카드', 'More in this drawer')}</h3>
+                  <div className="sheet-rail">{near.map((x) => <button key={x.id} className="sheet-rail-card" onClick={() => onOpen(x.id)}><span className="sheet-rail-pv"><Preview id={x.id} /></span><b>{x.ko}</b></button>)}</div>
+                </> })()}
               </>}
 
               {tab === 'make' && <>
@@ -493,6 +551,7 @@ function Sheet({ id, onOpen, onClose }: { id: string | null; onOpen: (id: string
                 {more && (
                   <div className="folder-pop sheet-more-pop" role="menu" onClick={() => setMore(false)}>
                     <button role="menuitem" onClick={link}><Link2 size={16} />{tx('링크 복사', 'Copy link')}</button>
+                    <button role="menuitem" onClick={() => grab((pv) => { downloadShareCard(pv, e); say(tx('공유 이미지를 내려받았어요. 메신저나 SNS에 붙여 보세요.', 'Share image saved.')) })}><Download size={16} />{tx('공유 이미지 저장', 'Save share image')}</button>
                     <button role="menuitem" onClick={() => speak(`${e.ko}. ${prefs.lang === 'en' && DESC_EN[e.id] ? DESC_EN[e.id] : e.desc}`, prefs.lang)}><Volume2 size={16} />{tx('소리로 듣기', 'Read aloud')}</button>
                     {e.vs && <a role="menuitem" href={`#/vs/${e.id}/${e.vs[0].id}`}><Columns3 size={16} />{tx(`${byId.get(e.vs[0].id)!.ko}와 나란히 보기`, 'Side by side')}</a>}
                     {e.id !== 'drawer' && e.id !== 'bottom-sheet' && <button role="menuitem" onClick={() => onOpen(matchMedia('(max-width: 839px)').matches ? 'bottom-sheet' : 'drawer')}><HelpCircle size={16} />{tx('이 창은 이름이 뭘까요?', 'What is this panel?')}</button>}
@@ -603,3 +662,21 @@ function TeamName({ id }: { id: string }) {
   )
 }
 
+
+/** 키보드 단축키 안내 (? 로 열고 닫아요) */
+function Shortcuts({ onClose }: { onClose: () => void }) {
+  const tx = useTx()
+  const ref = useRef<HTMLDivElement>(null)
+  useEffect(() => { ref.current?.focus(); const on = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }; addEventListener('keydown', on); return () => removeEventListener('keydown', on) }, [onClose])
+  const rows: [string, string][] = [['/', tx('검색창으로', 'Focus search')], ['⌘ K', tx('빠른 이동', 'Quick jump')], ['J · K', tx('사전에서 카드 아래 · 위로', 'Next · previous card')], ['Enter', tx('고른 카드 열기', 'Open the focused card')], ['← →', tx('상세 창에서 옆 카드', 'Previous · next card in the sheet')], ['Esc', tx('창 닫기', 'Close')], ['?', tx('이 안내 열고 닫기', 'Toggle this help')]]
+  return (
+    <>
+      <div className="scrim on" onClick={onClose} />
+      <div ref={ref} tabIndex={-1} role="dialog" aria-modal="true" aria-labelledby="keys-h" className="keys-dialog">
+        <h2 id="keys-h">{tx('키보드 단축키', 'Keyboard shortcuts')}</h2>
+        <dl>{rows.map(([k, t]) => <div key={k}><dt><kbd>{k}</kbd></dt><dd>{t}</dd></div>)}</dl>
+        <button className="btn" onClick={onClose}>{tx('닫기', 'Close')}</button>
+      </div>
+    </>
+  )
+}

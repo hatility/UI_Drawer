@@ -103,7 +103,7 @@ a:hover .logo-drawer { translate: 0 2px; }
 .sub-bar { display: flex; gap: 6px; overflow-x: auto; padding: 2px; scrollbar-width: none; }
 .sub-bar::-webkit-scrollbar { display: none; }
 .subchip { flex: none; display: inline-flex; align-items: center; gap: 4px; height: 30px; padding: 0 12px; border-radius: 999px; background: var(--md-surface-container); font: 500 13px/20px var(--font); color: var(--md-on-surface-variant); white-space: nowrap; transition: background 0.2s; }
-.subchip small { font-size: 11px; opacity: 0.75; }
+.subchip small { font-size: 11px; font-weight: 500; }
 .subchip:hover { background: var(--md-surface-container-high); }
 .subchip.on { background: var(--md-primary); color: var(--md-on-primary); }
 .group-link { padding: 0; font: inherit; color: inherit; border-radius: 6px; }
@@ -417,3 +417,33 @@ html { -moz-osx-font-smoothing: grayscale; }
 .sheet-take > .sheet-note { margin-top: 0; }
 /* 상세 창 안의 글자 버튼은 모두 위 글과 시작선을 맞춰요 */
 :root :is(.sheet-panel, .sheet-take) > a.btn-text { margin-left: -12px; justify-self: start; }
+/* 검색창: 안쪽 input 은 테두리를 지웠으니, 상자 전체에 초점 테두리를 그려요 */
+.searchbar:focus-within { outline: 2px solid var(--md-primary); outline-offset: 2px; }
+/* ─── 사전: 주제별 2단 탭 (0.7.0) — 1단 묶음, 2단 서랍 ─── */
+.drawer-bar:has(.fam-tabs) { flex-wrap: wrap; }
+.fam-tabs { flex: 1 1 100%; display: grid; gap: 8px; min-width: 0; }
+.fam-sub { padding-left: 2px; }
+.fam-sub .subchip { height: 30px; }
+@media (max-width: 839px) { .drawer-bar:has(.fam-tabs) { flex-wrap: nowrap; } .fam-tabs { flex: none; } }
+
+/* ─── 0.7.0 더함: 검색 좁히기 · 최근 본 카드 · 상세 창 같은 서랍 줄 · 밀도 · 단축키 창 ─── */
+.found-in { margin: 0 0 12px; }
+.recent { margin: 12px 0 4px; }
+.recent h2 { margin: 0 0 8px; font: 500 14px/20px var(--font); color: var(--md-on-surface-variant); }
+.sheet-rail { display: flex; gap: 10px; margin: 0; padding: 2px 0 8px; overflow-x: auto; scrollbar-width: none; }
+.sheet-rail::-webkit-scrollbar { display: none; }
+.sheet-rail-card { flex: none; display: grid; gap: 6px; width: 132px; text-align: left; }
+.sheet-rail-pv { display: grid; justify-items: center; width: 132px; height: 84px; overflow: hidden; border-radius: var(--md-shape-m); background: var(--md-surface-container); }
+.sheet-rail-pv .pv.ss-stage { flex: none; width: 236px; height: 152px; zoom: 0.56; }
+.sheet-rail-card b { font: 500 13px/18px var(--font); color: var(--md-on-surface); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+:root[data-density='compact'] .grid { grid-template-columns: repeat(auto-fill, minmax(164px, 1fr)); gap: 10px; }
+:root[data-density='compact'] .ec > b { font-size: 14px; }
+.dict-map { margin-left: -12px; }
+.keys-dialog { position: fixed; left: 50%; top: 50%; z-index: 95; width: min(420px, calc(100vw - 32px)); translate: -50% -50%; display: grid; gap: 14px; padding: 22px 24px; border-radius: var(--md-shape-xl); background: var(--md-surface-container-low); box-shadow: 0 8px 12px 6px rgba(0, 0, 0, 0.15), 0 4px 4px rgba(0, 0, 0, 0.3); outline: none; }
+.keys-dialog h2 { margin: 0; font: 400 22px/28px var(--font); }
+.keys-dialog dl { display: grid; gap: 8px; margin: 0; }
+.keys-dialog dl > div { display: grid; grid-template-columns: 88px 1fr; align-items: center; gap: 12px; }
+.keys-dialog dt { margin: 0; }
+.keys-dialog kbd { display: inline-block; padding: 3px 8px; border-radius: 6px; background: var(--md-surface-container-highest); font: 500 13px/18px var(--font); white-space: nowrap; }
+.keys-dialog dd { margin: 0; font: 400 15px/22px var(--font); }
+.keys-dialog .btn { justify-self: end; }

@@ -4,6 +4,8 @@
 import type { ReactNode } from 'react'
 import { Bar } from './kit/window'
 import { MOTION } from './motion'
+import { byId } from './data'
+import { scene, PIC_MOTION } from './PreviewMore'
 import './preview.css'
 
 const Lines = ({ n = 3, w = [80, 64, 72, 56] }: { n?: number; w?: number[] }) => (
@@ -24,6 +26,8 @@ const SV = { fill: 'none', stroke: 'currentColor', strokeWidth: 1.8, strokeLinec
 const Dots = ({ dir }: { dir: 'v' | 'h' }) => <span className={`pv-dots pv-dots--${dir}`}><i /><i /><i /></span>
 
 function body(id: string): ReactNode {
+  const pic = byId.get(id)?.pic
+  if (pic) return scene(pic)
   switch (id) {
     case 'toast': return <Screen><Lines /><div className="pv-toast pv-pop">찜 목록에 저장했어요</div></Screen>
     case 'snackbar': return <Screen><Lines /><div className="pv-toast pv-toast--wide pv-pop">삭제했어요 <b>실행 취소</b></div></Screen>
@@ -884,7 +888,7 @@ function body(id: string): ReactNode {
 
 export function Preview({ id, size = 'card' }: { id: string; size?: 'card' | 'large' }) {
   return (
-    <div className={`pv ss-stage pv--${size}`} data-pv={id} data-m={MOTION[id]} aria-hidden="true">
+    <div className={`pv ss-stage pv--${size}`} data-pv={id} data-m={MOTION[id] ?? (byId.get(id)?.pic && PIC_MOTION[byId.get(id)!.pic!.k])} aria-hidden="true">
       {body(id)}
     </div>
   )

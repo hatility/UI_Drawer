@@ -1,11 +1,16 @@
 // UI Drawer 사전 데이터. 서랍(분류)마다 항목을 넣어요.
 // 항목 하나 = 이름 카드 한 장. hint 는 "모양으로 찾기" 검색에 쓰여요.
+import type { Pic } from './pic'
+import { MORE } from './more'
 
 export type DrawerId =
   | 'feedback' | 'loading' | 'input' | 'nav' | 'content' | 'style' | 'gesture' | 'icon' | 'ai' | 'dark'
   // 주제별 서랍 (0.5.0)
   | 'price' | 'research' | 'empty' | 'indicator' | 'rating' | 'done' | 'share' | 'transition' | 'text-motion' | 'button-state'
   | 'onboarding' | 'date' | 'list-view' | 'chart' | 'type' | 'search-screen' | 'permission' | 'scroll' | 'layout'
+  // 주제별 서랍 (src/more/)
+  | 'payment' | 'commerce' | 'settings' | 'profile' | 'auth' | 'form-flow' | 'media' | 'chat' | 'social' | 'map' | 'table' | 'editor'
+  | 'calendar' | 'a11y' | 'copy' | 'device' | 'game'
 
 /** part: UI 부품 서랍 · topic: 주제별 서랍 */
 export type Drawer = { id: DrawerId; label: string; note: string; group: 'part' | 'topic' }
@@ -27,6 +32,8 @@ export type Entry = {
   vs?: { id: string; diff: string }[]
   /** 체험관에서 직접 볼 수 있어요 */
   play?: boolean
+  /** 손으로 그린 그림(Preview.tsx) 대신 장면 틀로 그려요 (PreviewMore.tsx) */
+  pic?: Pic
 }
 
 export const DRAWERS: Drawer[] = [
@@ -59,9 +66,39 @@ export const DRAWERS: Drawer[] = [
   { id: 'permission', label: '권한 묻기', note: '허락을 구하는 화면들', group: 'topic' },
   { id: 'scroll', label: '스크롤 움직임', note: '내릴 때 일어나는 움직임', group: 'topic' },
   { id: 'layout', label: '화면 배치', note: '화면을 나누고 놓는 방식의 이름', group: 'topic' },
+  { id: 'payment', label: '결제 화면', note: '담고, 적고, 내는 화면의 부품', group: 'topic' },
+  { id: 'commerce', label: '쇼핑 화면', note: '상품을 고르고 비교하는 화면들', group: 'topic' },
+  { id: 'settings', label: '설정 화면', note: '앱을 내 맘대로 맞추는 화면', group: 'topic' },
+  { id: 'profile', label: '프로필 · 계정', note: '나를 보여 주고 관리하는 화면', group: 'topic' },
+  { id: 'auth', label: '로그인 · 보안', note: '들어가고, 확인하고, 지키는 화면', group: 'topic' },
+  { id: 'form-flow', label: '폼 흐름', note: '적어 내는 과정을 매끄럽게', group: 'topic' },
+  { id: 'media', label: '영상 · 음악', note: '보고 듣는 화면의 부품', group: 'topic' },
+  { id: 'chat', label: '메신저 · 채팅', note: '대화 화면에서 보는 것들', group: 'topic' },
+  { id: 'social', label: '소셜 · 피드', note: '올리고, 반응하고, 따라가는 화면', group: 'topic' },
+  { id: 'map', label: '지도 · 길 찾기', note: '위치를 보여 주고 안내하는 화면', group: 'topic' },
+  { id: 'table', label: '표 · 데이터', note: '많은 데이터를 다루는 화면의 부품', group: 'topic' },
+  { id: 'editor', label: '편집기 · 문서', note: '글과 파일을 만드는 화면', group: 'topic' },
+  { id: 'calendar', label: '일정 · 예약', note: '시간을 잡고 관리하는 화면', group: 'topic' },
+  { id: 'a11y', label: '접근성', note: '누구나 쓸 수 있게 하는 장치들', group: 'topic' },
+  { id: 'copy', label: '마이크로카피', note: '화면 속 짧은 글의 이름', group: 'topic' },
+  { id: 'device', label: '워치 · TV · 차량', note: '휴대폰 밖 화면의 부품', group: 'topic' },
+  { id: 'game', label: '게임 UI', note: '게임 화면에서 자주 보는 것', group: 'topic' },
 ]
 
-export const ENTRIES: Entry[] = [
+/** 주제별 서랍이 많아져서 사전 화면에서는 네 묶음으로 나눠 보여 줘요 */
+export const FAMILIES: { label: string; en: string; ids: DrawerId[] }[] = [
+  { label: '쇼핑 · 결제', en: 'Shopping', ids: ['commerce', 'payment', 'price'] },
+  { label: '계정 · 설정', en: 'Account', ids: ['auth', 'profile', 'settings', 'permission'] },
+  { label: '소통', en: 'Social', ids: ['chat', 'social', 'share'] },
+  { label: '콘텐츠 · 도구', en: 'Content & tools', ids: ['media', 'editor', 'table', 'calendar', 'date', 'map'] },
+  { label: '앱 흐름', en: 'App flows', ids: ['onboarding', 'form-flow', 'search-screen', 'empty', 'done'] },
+  { label: '작은 부품', en: 'Small parts', ids: ['indicator', 'rating', 'list-view', 'chart', 'type', 'button-state'] },
+  { label: '움직임', en: 'Motion', ids: ['transition', 'text-motion', 'scroll'] },
+  { label: '기준 · 방법', en: 'Rules & methods', ids: ['layout', 'a11y', 'copy', 'research'] },
+  { label: '기기 · 게임', en: 'Devices & games', ids: ['device', 'game'] },
+]
+
+const BASE: Entry[] = [
   // ─── A. 알림과 피드백 ───
   { id: 'toast', drawer: 'feedback', ko: '토스트', en: 'Toast', aliases: ['토스트 메시지'], hint: '잠깐 떴다가 저절로 사라지는 알림', desc: '잠깐 떴다가 저절로 사라지는 짧은 알림이에요. 누를 것이 없어요.', when: ['저장, 복사, 찜처럼 결과만 알려 주면 될 때', '하던 일을 멈추게 하고 싶지 않을 때'], vs: [{ id: 'snackbar', diff: '스낵바는 ‘실행 취소’ 같은 버튼이 하나 붙어요.' }], play: true },
   { id: 'snackbar', drawer: 'feedback', ko: '스낵바', en: 'Snackbar', hint: '아래에 뜨는 알림 + 실행 취소 버튼', desc: '화면 아래에 잠깐 뜨는 알림인데, 버튼이 하나 붙어 있어요.', when: ['지운 것을 되돌릴 기회를 줄 때', '알림에 이어서 바로 할 일이 하나 있을 때'], vs: [{ id: 'toast', diff: '토스트는 버튼 없이 알리기만 해요.' }], play: true },
@@ -1006,6 +1043,9 @@ export const ENTRIES: Entry[] = [
   { id: 'sound-toggle', play: true, drawer: 'gesture', ko: '소리 켜기 · 끄기', en: 'Sound toggle', aliases: ['음소거 버튼'], hint: '스피커에 빗금 친 버튼', desc: '앱의 소리를 한 번에 켜고 꺼요. 저절로 나는 소리가 있다면 꼭 있어야 해요.', when: ['동영상, 게임, 알림음 있는 앱'], vs: [{ id: 'toggle', diff: '토글은 설정 일반 스위치예요.' }] },
   { id: 'click-sound', drawer: 'gesture', ko: '누름 소리', en: 'Click sound', aliases: ['키보드 소리'], hint: '누를 때마다 “톡”', desc: '키보드와 버튼을 누를 때마다 작은 소리로 눌렸다는 걸 알려요. 기기 설정을 따라요.', when: ['키보드와 보안 키패드와 계산기'], vs: [{ id: 'haptic', diff: '햅틱은 같은 일을 진동으로 해요.' }] },
 ]
+
+/** 손으로 적은 카드(BASE) + 주제별 파일(src/more/)의 카드 */
+export const ENTRIES: Entry[] = [...BASE, ...MORE]
 
 export const byId = new Map(ENTRIES.map((e) => [e.id, e]))
 

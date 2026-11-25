@@ -19,7 +19,7 @@ test('이름 · 영어 · 다른 이름 · 모양 · 초성으로 찾아요', ()
   expect(search('ㅂㄹㄷㅋㄹ')[0].id).toBe('breadcrumb')
   expect(search('유리')[0].id).toBe('glassmorphism')
   expect(search('ㄴㅁㅍㅈ')[0].id).toBe('neumorphism')
-  expect(ENTRIES.filter((e) => e.drawer === 'style')).toHaveLength(50)
+  expect(ENTRIES.filter((e) => e.drawer === 'style')).toHaveLength(60)
   expect(search('그래버')[0].id).toBe('grabber')
   expect(search('없는말쀍')).toEqual([])
   expect(search('  ')).toHaveLength(ENTRIES.length)
@@ -29,7 +29,7 @@ test('모든 카드에 자기 그림이 있어요 (Preview.tsx 의 case)', async
   const { readFileSync } = await import('node:fs')
   const src = readFileSync(new URL('./Preview.tsx', import.meta.url), 'utf8')
   const cases = new Set([...src.matchAll(/case '([^']+)'/g)].map((m) => m[1]))
-  expect(ENTRIES.filter((e) => !cases.has(e.id)).map((e) => e.id)).toEqual([])
+  expect(ENTRIES.filter((e) => !cases.has(e.id) && !e.pic).map((e) => e.id)).toEqual([])
 })
 
 test('주제별 서랍에 함께 보여 주는 카드는 모두 있는 카드예요', async () => {

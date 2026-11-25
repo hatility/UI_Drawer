@@ -7,7 +7,7 @@
 import { chromium } from 'playwright-core'
 
 const BASE = process.argv[2] || 'http://localhost:5180/'
-const ALLOW = '.px-canvas,.px-map,.px-vapor,.px-neon,.px-mesh,.px-aero,.px-tstack,.px-shelf,.px-sfade,.py-inf,.py-pin,.pv-marquee,.pv-carousel,.pv-scroller,.pv-hscroll,.py-spg,.py-inr,.pv-snap,.pz-circ,.pz-term,.pz-riso,.pz-chrome,.pv-road1,.pv-road2,.pv-swipe-row,.pv-dismiss,.pz-scrollto,.py-terms,.pz-glow,.px-indet,.pv-tabs--scroll,.py-fz .rest,.pq-flat,.pq-sth2 > div,.pv-par-fg'
+const ALLOW = '.pv-hidebar,.px-canvas,.px-map,.px-vapor,.px-neon,.px-mesh,.px-aero,.px-tstack,.px-shelf,.px-sfade,.py-inf,.py-pin,.pv-marquee,.pv-carousel,.pv-scroller,.pv-hscroll,.py-spg,.py-inr,.pv-snap,.pz-circ,.pz-term,.pz-riso,.pz-chrome,.pv-road1,.pv-road2,.pv-swipe-row,.pv-dismiss,.pz-scrollto,.py-terms,.pz-glow,.px-indet,.pv-tabs--scroll,.py-fz .rest,.pq-flat,.pq-sth2 > div,.pv-par-fg'
 
 const browser = await chromium.launch({ channel: 'chrome' }).catch(() => chromium.launch())
 const page = await browser.newPage({ viewport: { width: 1440, height: 900 } })

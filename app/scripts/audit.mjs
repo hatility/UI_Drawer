@@ -6,7 +6,7 @@ import { chromium } from 'playwright-core'
 
 const BASE = process.argv.find((a) => a.startsWith('http')) || 'http://localhost:5180/'
 const ROUTES = ['#/', '#/dict', '#/dict/feedback', '#/dict/price', '#/w/snackbar', '#/learn/compare', '#/learn/course', '#/learn/misname', '#/learn/fix', '#/learn/quiz', '#/learn/speed', '#/learn/reverse', '#/learn/find', '#/learn/spot',
-  '#/learn/wrong', '#/vs/modal/bottom-sheet', '#/vs/tooltip/popover', '#/annotate', '#/play', '#/tags', '#/mine', '#/compare', '#/news', '#/audit', '#/test', '#/share/%7B%22n%22%3A%22a%22%2C%22i%22%3A%5B%22toast%22%5D%7D', '#/dict?q']
+  '#/learn/wrong', '#/vs/modal/bottom-sheet', '#/vs/tooltip/popover', '#/annotate', '#/play', '#/tags', '#/mine', '#/compare', '#/news', '#/about', '#/drawers', '#/audit', '#/test', '#/share/%7B%22n%22%3A%22a%22%2C%22i%22%3A%5B%22toast%22%5D%7D', '#/dict?q']
 const SITES = ['community', 'bank', 'messenger', 'shop', 'booking', 'join', 'admin', 'delivery', 'music', 'docs', 'route', 'app']
 const problems = []
 const add = (where, what) => problems.push(`${where} · ${what}`)
@@ -31,7 +31,7 @@ for (const [w, h, dark] of [[1280, 860, false], [390, 844, false], [390, 844, tr
         if (!label) out.push(`이름 없는 ${el.tagName.toLowerCase()} .${[...el.classList].join('.')}`)
         if (el.matches('button, a, [role=tab], [role=radio]') && getComputedStyle(el).whiteSpace !== 'normal' && el.scrollWidth > el.clientWidth + 2 && getComputedStyle(el).overflow !== 'visible') out.push(`글자 잘림 “${name(el).slice(0, 20)}”`)
         if (mobile && (r.width < 24 || r.height < 24) && !el.closest('.site, .mb, .pg-body, .ss-phone, label') && !(el.closest('p, li') && el.tagName === 'A')) out.push(`누르는 곳이 작음 ${Math.round(r.width)}×${Math.round(r.height)} “${name(el).slice(0, 16)}”`)
-        if (r.right > innerWidth + 1 && !el.closest('.chips-scroll, .sub-bar, .pg-mobile-hints, .news-peek, .ln-modes, [class*=scroll]')) out.push(`화면 밖으로 나감 “${name(el).slice(0, 16)}”`)
+        if (r.right > innerWidth + 1 && !el.closest('.chips-scroll, .drawer-grid, .sheet-rail, .pg-uilist, .sub-bar, .pg-mobile-hints, .news-peek, .ln-modes, [class*=scroll]')) out.push(`화면 밖으로 나감 “${name(el).slice(0, 16)}”`)
       }
       // 글자가 칸 밖으로 넘친 제목 · 문단
       for (const el of document.querySelectorAll('h1, h2, h3, p, b, small, span')) {

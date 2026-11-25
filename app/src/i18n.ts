@@ -16,6 +16,10 @@ export const DRAWER_EN: Record<DrawerId, [string, string]> = {
   onboarding: ['First run', 'Screens on first open'], date: ['Date picking', 'Choosing days and ranges'], 'list-view': ['List layouts', 'Ways to lay out many'], chart: ['Charts', 'Numbers as pictures'],
   type: ['Typography', 'Font, weight, spacing names'], 'search-screen': ['Search screens', 'Parts of a search page'], permission: ['Permissions', 'Asking for access'], scroll: ['Scroll motion', 'What happens on scroll'],
   layout: ['Layouts', 'Names for page structure'],
+  payment: ['Checkout', 'Parts of paying'], commerce: ['Shopping', 'Picking and comparing products'], settings: ['Settings', 'Making the app yours'], profile: ['Profile & account', 'Showing and managing you'],
+  auth: ['Login & security', 'Getting in and staying safe'], 'form-flow': ['Form flows', 'Filling things in smoothly'], media: ['Video & audio', 'Watching and listening'], chat: ['Messaging', 'Seen in conversations'],
+  social: ['Social & feed', 'Posting, reacting, following'], map: ['Maps & directions', 'Showing where'], table: ['Tables & data', 'Handling lots of rows'], editor: ['Editors & docs', 'Making text and files'],
+  calendar: ['Scheduling', 'Booking and managing time'], a11y: ['Accessibility', 'So everyone can use it'], copy: ['Microcopy', 'Names for the small words'], device: ['Watch, TV & car', 'Beyond the phone'], game: ['Game UI', 'Seen in games'],
 }
 export const SUB_EN: Record<string, string> = {
   all: 'All', text: 'Typing', choose: 'Choosing', value: 'Values & dates', file: 'Files & security', button: 'Buttons', block: 'Cards & blocks', list: 'Lists & tables', media: 'Photo · video · map', people: 'People & chat',
