@@ -18,6 +18,7 @@ import { CardDemo } from './CardDemo'
 import { Grid } from './Grid'
 import { Home, dailyQuiz } from './Home'
 import { Palette } from './Palette'
+import { SiteFooter } from './Footer'
 import { DevDwell, Trial, TrialBar } from './Trial'
 // 무거운 화면은 들어갈 때 불러와요 (첫 화면을 가볍게)
 const Playground = lazy(() => import('./Playground').then((m) => ({ default: m.Playground })))
@@ -199,6 +200,7 @@ export function App() {
           : hash.route === 'drawers' ? <DrawerMap />
           : <Dictionary key={drawer} drawer={drawer} pick={pick} group={drawer === 'all' ? group : DRAWERS.find((d) => d.id === drawer)!.group} setGroup={(g) => { setGroup(g); pick('all') }} q={q} setQ={setQ} onOpen={show} dex={dex} />}
         </Suspense>
+        {(['home', 'about', 'mine', 'news', 'drawers', 'compare'] as Route[]).includes(hash.route) && <SiteFooter />}
       </main>
 
       <Sheet id={open} onOpen={show} onClose={close} />

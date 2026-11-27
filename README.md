@@ -11,7 +11,7 @@
 
 <br>
 
-![version](https://img.shields.io/badge/version-0.7.0-006A60?style=flat-square)
+![version](https://img.shields.io/badge/version-0.7.1-006A60?style=flat-square)
 ![cards](https://img.shields.io/badge/UI_카드-1454장-006A60?style=flat-square)
 ![license](https://img.shields.io/badge/license-MIT-6B6F7A?style=flat-square)
 ![Docker](https://img.shields.io/badge/Docker-ready-2496ED?style=flat-square&logo=docker&logoColor=white)

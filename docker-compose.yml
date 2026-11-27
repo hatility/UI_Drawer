@@ -1,8 +1,8 @@
-# UI Drawer v0.7.0: docker compose up -d --build → http://localhost:8081
+# UI Drawer v0.7.1: docker compose up -d --build → http://localhost:8081
 services:
   web:
     build: ./app
-    image: ui-drawer:0.7.0
+    image: ui-drawer:0.7.1
     ports:
       - "${PORT:-8081}:80"
     restart: unless-stopped

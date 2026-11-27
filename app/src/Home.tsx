@@ -1,6 +1,6 @@
 // 홈: 메인 배너(Stageshow) → 오늘의 카드 · 내 서랍 → 서랍 둘러보기 → 새로 들어온 카드.
 // 사전으로 바로 떨어지지 않고, 무엇을 할 수 있는지 먼저 보여 줘요.
-import { AUTHOR, ORG, REPO, issueUrl } from './about'
+import { issueUrl } from './about'
 import { useMemo, useState, type FormEvent } from 'react'
 import { ArrowRight, BookOpen, Check, MousePointerClick, Search, Shuffle, Tag, X } from 'lucide-react'
 import { ENTRIES, DRAWERS, byId, josa, type Entry } from './data'
@@ -68,11 +68,6 @@ export function Home({ onOpen, onSearch, dex, collect }: Props) {
       {/* 홈은 단순하게: 찾기 · 바로가기 · 오늘의 카드 하나. 내 서랍은 위 막대의 ‘내 서랍’ 알약으로, 새 카드는 새 소식으로 */}
       <Today onOpen={onOpen} collect={collect} />
 
-      <footer className="hm-foot">
-        <span><a href="#/news">{tx(`새로 들어온 카드 ${fresh.length}장 보기`, 'See new cards')}</a> · <a href={issueUrl('new-card', '[새 카드] ', {})} target="_blank" rel="noopener noreferrer">{tx('없는 UI 제안하기', 'Suggest a card')}</a></span>
-        <span><a href="#/about">{tx('이 사이트에 대해', 'About')}</a> · UI Drawer v{__APP_VERSION__} · <a href={REPO + '/blob/main/LICENSE'} target="_blank" rel="noopener noreferrer">MIT</a></span>
-        <span>만든 사람 <a href={AUTHOR.url} target="_blank" rel="noopener noreferrer">{AUTHOR.name}</a> · 소스 코드 <a href={REPO} target="_blank" rel="noopener noreferrer">{ORG.name}</a></span>
-      </footer>
     </div>
   )
 }
